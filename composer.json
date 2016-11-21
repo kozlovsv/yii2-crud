@@ -1,0 +1,31 @@
+{
+  "name": "kozlovsv/yii2-crud",
+  "keywords": [
+    "yii2",
+    "extension",
+    "widget",
+    "form",
+    "crud"
+  ],
+  "homepage": "https://github.com/kozlovsv/yii2-crud",
+  "type": "yii2-extension",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kozlov Sergey",
+      "email": "kozlovsv78@gmail.com",
+      "homepage": "http://atonex.ru/"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "yiisoft/yii2-bootstrap": "@dev",
+    "kozlovsv/yii2-helpers": "*",
+    "kozlovsv/yii2-widgets": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "kozlovsv\\crud\\": ""
+    }
+  }
+}
