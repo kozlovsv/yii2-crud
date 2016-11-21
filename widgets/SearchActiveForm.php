@@ -10,7 +10,7 @@ class SearchActiveForm extends BActiveForm
     /**
      * @var string
      */
-    public $fieldClass = 'app\modules\crud\SearchActiveField';
+    public $fieldClass = 'kozlovsv\crud\widgets\SearchActiveField';
 
     public $enableClientValidation = false;
 
