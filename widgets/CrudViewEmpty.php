@@ -3,7 +3,6 @@
 namespace kozlovsv\crud\widgets;
 use yii\bootstrap\Html;
 use kozlovsv\helpers\ModelPermission;
-use Yii;
 use yii\base\Widget;
 
 /**

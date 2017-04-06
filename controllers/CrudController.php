@@ -98,14 +98,22 @@ abstract class CrudController extends Controller
         ];
     }
 
-   public function actionCreate(){
-       $model = $this->createModel();
-       $post = Yii::$app->request->post();
-       if ($model->load($post) && $model->save()) {
-           Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+   public function actionCreate()
+   {
+       try {
+           $model = $this->createModel();
+           $post = Yii::$app->request->post();
+           if ($model->load($post) && $model->save()) {
+               Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+               return $this->goBackAfterCreate();
+           }
+           return $this->renderIfAjax($this->createViewName, compact('model'));
+       } catch (\Exception $e) {
+           Yii::error($e->getMessage());
+           $message = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
+           Yii::$app->session->setFlash('error', $message);
            return $this->goBackAfterCreate();
        }
-       return $this->renderIfAjax($this->createViewName, compact('model'));
    }
 
     public function actionDelete($id)
@@ -124,13 +132,20 @@ abstract class CrudController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $post = Yii::$app->request->post();
-        if ($model->load($post) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+        try {
+            $model = $this->findModel($id);
+            $post = Yii::$app->request->post();
+            if ($model->load($post) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+                return $this->goBackAfterUpdate();
+            }
+            return $this->renderIfAjax($this->updateViewName, compact('model'));
+        } catch (\Exception $e) {
+            Yii::error($e->getMessage());
+            $message = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
+            Yii::$app->session->setFlash('error', $message);
             return $this->goBackAfterUpdate();
         }
-        return $this->renderIfAjax($this->updateViewName, compact('model'));
     }
 
     public function actionIndex()
@@ -188,10 +203,9 @@ abstract class CrudController extends Controller
     public abstract function getSearchModel();
 
     /**
-     * Возврат назад
      * @return \yii\web\Response
      */
-    public function goBack()
+    public function goBackCrud()
     {
         return ReturnUrl::goBack($this, $this->defaultBackUrl);
     }
@@ -201,7 +215,7 @@ abstract class CrudController extends Controller
      * @return \yii\web\Response
      */
     public function goBackAfterCreate() {
-        return $this->goBack();
+        return $this->goBackCrud();
     }
 
     /**
@@ -209,7 +223,7 @@ abstract class CrudController extends Controller
      * @return \yii\web\Response
      */
     public function goBackAfterUpdate() {
-        return $this->goBack();
+        return $this->goBackCrud();
     }
 
     /**
@@ -217,7 +231,7 @@ abstract class CrudController extends Controller
      * @return \yii\web\Response
      */
     public function goBackAfterDelete() {
-        return $this->goBack();
+        return $this->goBackCrud();
     }
 
     /**
