@@ -24,6 +24,8 @@ class CrudIndexEmpty extends Widget
      */
     public $isModal = true;
 
+    public $createButtonTitle = 'Добавить';
+
     /**
      * Массив настроек полей для формы поиска (для виджета CrudField)
      * [
@@ -74,7 +76,7 @@ class CrudIndexEmpty extends Widget
         echo Html::beginTag('div', ['class' => 'pull-left']);
         if (ModelPermission::canCreate($this->searchModel->tableName())) {
             echo Html::beginTag('div', ['class' => 'pull-left']);
-            echo Html::a('Добавить', ['create'], ['class' => 'btn btn-success btn-create', 'data-modal' => $this->isModal ? 1 : 0, 'data-pjax' => 0]);
+            echo Html::a($this->createButtonTitle, ['create'], ['class' => 'btn btn-success btn-create', 'data-modal' => $this->isModal ? 1 : 0, 'data-pjax' => 0]);
             echo Html::endTag('div');
         };
         //Панель фильтров
