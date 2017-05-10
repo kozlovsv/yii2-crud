@@ -2,6 +2,7 @@
 
 namespace kozlovsv\crud\controllers;
 
+use kozlovsv\crud\filters\RememberQueryParams;
 use kozlovsv\helpers\ModelPermission;
 use kozlovsv\helpers\ReturnUrl;
 use Yii;
@@ -94,6 +95,10 @@ abstract class CrudController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+            'rememberQueryParams' => [
+                'class' => RememberQueryParams::className(),
+                'only' => ['index'],
             ],
         ];
     }
