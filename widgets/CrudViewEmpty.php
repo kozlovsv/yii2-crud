@@ -1,9 +1,11 @@
 <?php
 
 namespace kozlovsv\crud\widgets;
+use kozlovsv\helpers\ReturnUrl;
 use yii\bootstrap\Html;
 use kozlovsv\helpers\ModelPermission;
 use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * Class ActiveForm
@@ -89,7 +91,7 @@ class CrudViewEmpty extends Widget
     {
         $arr = [];
         if (ModelPermission::canUpdate($model->tableName())) {
-            $arr[] = Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey()],
+            $arr[] = Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])],
                 [ 'class' => 'btn btn-primary', 'data-modal' => $isModalEdit? 1 : 0]);
         }
         $arr[] = Html::a('Отмена', ['index'], ['class' => 'btn btn-default form-cancel']);
