@@ -6,7 +6,6 @@ use yii\bootstrap\Html;
 use kozlovsv\helpers\ReturnUrl;
 use Yii;
 use yii\base\Widget;
-use yii\widgets\Pjax;
 
 /**
  * Виджет шаблона пустой (без полей) формы с кнопками для просмотра и редактирования записи.
@@ -14,12 +13,6 @@ use yii\widgets\Pjax;
  */
 class CrudFormEmpty extends Widget
 {
-    /**
-     * Модель
-     * @var \yii\db\ActiveRecord
-     */
-    public $model;
-
     /**
      * HTML id формы
      * @var string
@@ -107,7 +100,6 @@ class CrudFormEmpty extends Widget
     protected function normalizeIdForm()
     {
         if (!empty($this->idForm)) return $this->idForm;
-        if (!empty($this->model)) return ($this->needPjax()? 'pjax-' : ''). $this->model->tableName() . '-form';
         return 'pjax-form';
     }
 
