@@ -13,3 +13,4 @@ composer.phar
 composer.lock
 
 auth.json
+composer.bat

@@ -24,7 +24,7 @@ class CrudIndexEmpty extends Widget
      */
     public $isModal = true;
 
-    public $createButtonTitle = 'Добавить';
+    public $createButtonOptions = [];
 
     /**
      * Массив настроек полей для формы поиска (для виджета CrudField)
@@ -43,6 +43,8 @@ class CrudIndexEmpty extends Widget
      * @inheritdoc
      */
     public function init() {
+        parent::init();
+        $this->normalizeCreateButtonOptions();
         $this->renderBeginForm();
         $this->renderTopPanel();
     }
@@ -76,7 +78,7 @@ class CrudIndexEmpty extends Widget
         echo Html::beginTag('div', ['class' => 'pull-left']);
         if (ModelPermission::canCreate($this->searchModel->tableName())) {
             echo Html::beginTag('div', ['class' => 'pull-left']);
-            echo Html::a($this->createButtonTitle, ['create'], ['class' => 'btn btn-success btn-create', 'data-modal' => $this->isModal ? 1 : 0, 'data-pjax' => 0]);
+            echo Html::a($this->createButtonOptions['title'], $this->createButtonOptions['url'], ['class' => $this->createButtonOptions['class'], 'data-modal' => $this->isModal ? 1 : 0, 'data-pjax' => 0]);
             echo Html::endTag('div');
         };
         //Панель фильтров
@@ -110,6 +112,24 @@ class CrudIndexEmpty extends Widget
     private function renderEndForm()
     {
         Pjax::end();
+    }
+
+    /**
+     * Нормализация опций кнопки Создать (добавляем недостающие обязательные поля)
+     */
+    protected function normalizeCreateButtonOptions()
+    {
+        if (!isset($this->createButtonOptions['title'])) {
+            $this->createButtonOptions['title'] = 'Добавить';
+        }
+
+        if (!isset($this->createButtonOptions['url'])) {
+            $this->createButtonOptions['url'] = ['create'];
+        }
+
+        if (!isset($this->createButtonOptions['class'])) {
+            $this->createButtonOptions['class'] = 'btn btn-success btn-create';
+        }
     }
 
 }
