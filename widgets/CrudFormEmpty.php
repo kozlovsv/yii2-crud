@@ -126,6 +126,10 @@ class CrudFormEmpty extends Widget
             ]);
         }
         $this->activeForm = ActiveForm::begin($this->normalizeActiveFormConfig());
+        //Задаем параметр обновления родительского окна после закрытия
+        if (Yii::$app->request->isAjax && ReturnUrl::isSetReturnUrl()) {
+            $this->view->registerJs('var parent_window_reloaded = 1');
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace kozlovsv\crud\filters;
 
-use Herrera\Json\Exception\Exception;
+use Exception;
 use kozlovsv\helpers\ReturnUrl;
 use Yii;
 use yii\base\ActionFilter;
