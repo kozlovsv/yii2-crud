@@ -43,6 +43,9 @@ class SearchActiveForm extends BActiveForm
     public $eventSubmit = 'change';
 
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function init()
     {
         parent::init();

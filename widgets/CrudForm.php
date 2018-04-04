@@ -27,6 +27,7 @@ class CrudForm extends CrudFormEmpty
     /**
      * Отрисовка полей ввода. Для переопределения в классах потомках.
      * @param array $fields
+     * @throws \Exception
      */
     protected function renderFields($fields)
     {

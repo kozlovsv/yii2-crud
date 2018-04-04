@@ -83,6 +83,10 @@ class CrudIndex extends CrudIndexEmpty
         return $this->actionColumnsAfter;
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     protected function renderGrid()
     {
         $actionColumnsBefore = $this->normalizeActionColumnsBefore();

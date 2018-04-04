@@ -6,7 +6,6 @@ use kozlovsv\crud\filters\RememberQueryParams;
 use kozlovsv\helpers\ModelPermission;
 use kozlovsv\helpers\ReturnUrl;
 use Yii;
-use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -121,6 +120,11 @@ abstract class CrudController extends Controller
        }
    }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws \Exception
+     */
     public function actionDelete($id)
     {
         try {
@@ -128,7 +132,7 @@ abstract class CrudController extends Controller
             if ($model->delete()) {
                 Yii::$app->session->setFlash('success', 'Запись удалена');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $message = 'Запись не может быть удалена, имеются связанные данные';
             Yii::$app->session->setFlash('error', $message);
         }

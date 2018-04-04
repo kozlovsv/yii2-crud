@@ -34,6 +34,9 @@ class CrudView extends CrudViewEmpty
         return !empty($this->attributes) ? $this->attributes : [];
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function renderDetailView()
     {
         $attributes = $this->normalizeAttributes();

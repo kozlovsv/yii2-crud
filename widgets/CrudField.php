@@ -2,6 +2,7 @@
 
 namespace kozlovsv\crud\widgets;
 
+use Closure;
 use kozlovsv\widgets\ActiveField;
 use yii\base\Widget;
 
@@ -21,7 +22,16 @@ class CrudField extends Widget
 
     /**
      * Параметры
-     * @var array
+     * [
+     *      'defaultValue' => 1 //Значение по умолчанию
+     *      'attribute' => 'name' //Наименование атрибута модели
+     *      'format' => 'textInput' //Формат поля (текст, календерь). Вызывается в форме ActiveField->$format(...);
+     *      'options' => ['class' => 'myClass'] //Массив HTML опций поля
+     *      'items' => [] //Массив списков для выпадающих списков
+     *      'fieldOptions' => [] //Массив $options в функции ActiveField->field
+     * ]
+     * Если элемент массива $value - строка, то это интерпретируется как текстовое поле с атрибутом $value
+     * @var array|string
      */
     public $params;
 
@@ -36,12 +46,14 @@ class CrudField extends Widget
      */
     public function run()
     {
+        $this->normalizeParams();
         $attribute = $this->normalizeAttribute();
         $format = $this->normalizeFormat();
         $options = $this->normalizeOptions($format);
         $items = $this->normalizeItems();
+        $fieldOptions = $this->normalizefieldOptions();
 
-        return $this->renderField($attribute, $format, $options, $items);
+        return $this->renderField($attribute, $format, $options, $items, $fieldOptions);
     }
 
     /**
@@ -49,22 +61,25 @@ class CrudField extends Widget
      * @param $format
      * @param $options
      * @param $items
+     * @param $fieldOptions
      * @return ActiveField the created ActiveField object
      */
-    public function renderField($attribute, $format, $options, $items)
+    public function renderField($attribute, $format, $options, $items, $fieldOptions)
     {
-
         /** @var ActiveField $field */
-        $field = $this->form->field($this->model, $attribute);
+        $field = $this->form->field($this->model, $attribute, $fieldOptions);
         if (isset($this->params['defaultValue'])) {
             $field->setDefaultValue($this->params['defaultValue']);
         }
-        if ($items !== null) {
-            $field->$format($items, $options);
+        if (!($format instanceof Closure)) {
+            if ($items !== null) {
+                $field->$format($items, $options);
+            } else {
+                $field->$format($options);
+            }
         } else {
-            $field->$format($options);
+            call_user_func($format, $field, $this);
         }
-
         return $field;
     }
 
@@ -109,4 +124,25 @@ class CrudField extends Widget
         return isset($this->params['items']) ? $this->params['items'] : null;
     }
 
+    /**
+     * Нормализовать параметр options для функции ->field
+     * @return array|mixed
+     */
+    protected function normalizefieldOptions()
+    {
+        return isset($this->params['fieldOptions']) ? $this->params['fieldOptions'] : [];
+    }
+
+    /**
+     * Нормализация поля Params. Если поле текстовое, то тогда надо развернуть его
+     */
+    protected function normalizeParams()
+    {
+        if (!empty($this->params) && is_string($this->params)) {
+            $arr = explode(':', $this->params);
+            $this->params = [];
+            $this->params['attribute'] = $arr[0];
+            if (!empty($arr[1])) $this->params['format'] = $arr[1];
+        }
+    }
 }

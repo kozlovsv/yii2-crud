@@ -33,14 +33,7 @@ class CrudFormEmpty extends Widget
 
     /**
      * Массив настроек полей ввода
-     * [
-     *      'defaultValue' => 1 //Значение по умолчанию
-     *      'attribute' => 'name' //Наименование атрибута модели
-     *      'format' => 'textInput' //Формат поля (текст, календерь). Вызывается в форме ActiveField->$format(...);
-     *      'options' => ['class' => 'myClass'] //Массив HTML опций поля
-     *      'items' => [] //Массив списков для выпадающих списков
-     * ]
-     * Если элемент массива $value - строка, то это интерпретируется как текстовое поле с атрибутом $value
+     * @see \kozlovsv\crud\widgets\CrudField::$params for details on how attributes are being rendered.
      * @var array
      */
     public $fields = [];
@@ -63,30 +56,9 @@ class CrudFormEmpty extends Widget
      */
     public function run()
     {
-        $fields = $this->normalizeFields();
-        $this->renderFields($fields);
+        $this->renderFields($this->fields);
         $this->renderButtons();
         $this->renderEndForm();
-    }
-
-    /**
-     * Нормализовать  параметры
-     * @return array
-     */
-    protected function normalizeFields()
-    {
-        $fields = !empty($this->fields) ? $this->fields : [];
-        $fld = [];
-        foreach ($fields as $field) {
-            if (!is_string($field)) {
-                $fld[] = $field;
-            } else {
-                $fld[] = [
-                    'attribute' => $field,
-                ];
-            }
-        }
-        return $fld;
     }
 
     protected function needPjax(){
