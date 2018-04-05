@@ -36,6 +36,12 @@ class CrudField extends Widget
     public $params;
 
     /**
+     * Указывает является ли поле первым в форме, это нужно для установки автофокуса на это поле.
+     * @var bool
+     */
+    public $first = false;
+
+    /**
      * Формат поля по умолчанию
      * @var string
      */
@@ -51,7 +57,7 @@ class CrudField extends Widget
         $format = $this->normalizeFormat();
         $options = $this->normalizeOptions($format);
         $items = $this->normalizeItems();
-        $fieldOptions = $this->normalizefieldOptions();
+        $fieldOptions = $this->normalizeFieldOptions();
 
         return $this->renderField($attribute, $format, $options, $items, $fieldOptions);
     }
@@ -109,9 +115,8 @@ class CrudField extends Widget
     protected function normalizeOptions($format)
     {
         $opt = isset($this->params['options']) ? $this->params['options'] : [];
-        if ($format == 'textInput') {
-            $opt = array_merge(['maxlength' => true], $opt);
-        }
+        if ($this->first && !isset($opt['autofocus'])) $opt['autofocus'] = true;
+        if ($format == 'textInput' && !isset($opt['maxlength'])) $opt['maxlength'] = true;
         return $opt;
     }
 
@@ -128,7 +133,7 @@ class CrudField extends Widget
      * Нормализовать параметр options для функции ->field
      * @return array|mixed
      */
-    protected function normalizefieldOptions()
+    protected function normalizeFieldOptions()
     {
         return isset($this->params['fieldOptions']) ? $this->params['fieldOptions'] : [];
     }

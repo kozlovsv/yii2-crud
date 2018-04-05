@@ -45,6 +45,12 @@ class CrudFormEmpty extends Widget
     public $buttons = [];
 
     /**
+     * Имя класса CrudField
+     * @var string
+     */
+    public $crudFieldClass = 'kozlovsv\crud\widgets\CrudField';
+
+    /**
      * @inheritdoc
      */
     public function init() {

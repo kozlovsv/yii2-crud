@@ -32,18 +32,16 @@ class CrudForm extends CrudFormEmpty
     protected function renderFields($fields)
     {
         parent::renderFields($fields);
-        //echo $form->errorSummary($model);
         $first = true;
         foreach ($fields as $params) {
-            if ($first) {
-                $params['options'] = array_merge(isset($params['options'])? $params['options'] : [], ['autofocus' => true]);
-                $first = false;
-            }
-            echo CrudField::widget([
+            /** @noinspection PhpUndefinedMethodInspection */
+            echo $this->crudFieldClass::widget([
                 'model' => $this->model,
                 'form' => $this->activeForm,
                 'params' => $params,
+                'first' => $first,
             ]);
+            $first = false;
         }
     }
 }

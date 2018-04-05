@@ -113,6 +113,7 @@ abstract class CrudController extends Controller
            }
            return $this->renderIfAjax($this->createViewName, compact('model'));
        } catch (\Exception $e) {
+           if (YII_ENV_DEV) throw $e;
            Yii::error($e->getMessage());
            $message = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
            Yii::$app->session->setFlash('error', $message);
@@ -150,6 +151,7 @@ abstract class CrudController extends Controller
             }
             return $this->renderIfAjax($this->updateViewName, compact('model'));
         } catch (\Exception $e) {
+            if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
             $message = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
             Yii::$app->session->setFlash('error', $message);
