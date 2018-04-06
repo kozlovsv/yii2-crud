@@ -47,7 +47,7 @@ class CrudFormEmpty extends Widget
      * Имя класса CrudField
      * @var string
      */
-    public $crudFieldClass = 'kozlovsv\crud\widgets\CrudField';
+    public $crudFieldClass = CrudField::class;
 
     /**
      * @inheritdoc
