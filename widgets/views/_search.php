@@ -2,7 +2,7 @@
 
 use kozlovsv\crud\widgets\CrudField;
 use kozlovsv\crud\widgets\SearchActiveForm;
-use kozlovsv\widgets\FilterReset;
+use kozlovsv\crud\widgets\FilterReset;
 use yii\bootstrap\Html;
 
 /* @var $this yii\web\View */

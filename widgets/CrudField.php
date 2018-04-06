@@ -3,7 +3,6 @@
 namespace kozlovsv\crud\widgets;
 
 use Closure;
-use kozlovsv\widgets\ActiveField;
 use yii\base\Widget;
 
 class CrudField extends Widget
@@ -16,7 +15,7 @@ class CrudField extends Widget
 
     /**
      * Форма
-     * @var \kozlovsv\widgets\ActiveForm
+     * @var \kozlovsv\crud\widgets\ActiveForm
      */
     public $form;
 

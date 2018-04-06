@@ -2,7 +2,6 @@
 
 namespace kozlovsv\crud\widgets;
 
-use kozlovsv\widgets\ActiveField;
 use yii\bootstrap\Html;
 
 /**

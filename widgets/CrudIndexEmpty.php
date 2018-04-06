@@ -3,7 +3,7 @@
 namespace kozlovsv\crud\widgets;
 
 use yii\bootstrap\Html;
-use kozlovsv\helpers\ModelPermission;
+use kozlovsv\crud\helpers\ModelPermission;
 use yii\base\Widget;
 use yii\widgets\Pjax;
 

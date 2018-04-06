@@ -1,8 +1,7 @@
 <?php
 
 namespace kozlovsv\crud\widgets;
-use kozlovsv\helpers\ModelPermission;
-use kozlovsv\widgets\GridView;
+use kozlovsv\crud\helpers\ModelPermission;
 
 /**
  * Class ActiveForm
@@ -49,36 +48,45 @@ class CrudIndex extends CrudIndexEmpty
         echo $this->render($this->viewName, compact('grid'));
     }
 
+    public static function defaultActionColumnsBefore($isModal, $tableName){
+        return [
+            [
+                'class' => 'kozlovsv\crud\widgets\ActionColumn',
+                'template' => '{view}',
+                'isModal' => $isModal,
+                'visible' => ModelPermission::canView($tableName),
+            ],
+        ];
+    }
+
     private function normalizeActionColumnsBefore()
     {
         if (!isset($this->actionColumnsBefore)) {
-            return [
-                [
-                    'class' => 'kozlovsv\widgets\ActionColumn',
-                    'template' => '{view}',
-                    'isModal' => $this->isModal,
-                ],
-            ];
+            return self::defaultActionColumnsAfter($this->isModal, $this->searchModel->tableName());
         }
         return $this->actionColumnsBefore;
+    }
+
+    public static function defaultActionColumnsAfter($isModal, $tableName){
+        return [
+            [
+                'class' => 'kozlovsv\crud\widgets\ActionColumn',
+                'template' => '{update}',
+                'isModal' => $isModal,
+                'visible' => ModelPermission::canUpdate($tableName),
+            ],
+            [
+                'class' => 'kozlovsv\crud\widgets\ActionColumn',
+                'template' => '{delete}',
+                'visible' => ModelPermission::canDelete($tableName),
+            ],
+        ];
     }
 
     private function normalizeActionColumnsAfter()
     {
         if (!isset($this->actionColumnsAfter)) {
-            return [
-                [
-                    'class' => 'kozlovsv\widgets\ActionColumn',
-                    'template' => '{update}',
-                    'isModal' => $this->isModal,
-                    'visible' => ModelPermission::canUpdate($this->searchModel->tableName()),
-                ],
-                [
-                    'class' => 'kozlovsv\widgets\ActionColumn',
-                    'template' => '{delete}',
-                    'visible' => ModelPermission::canDelete($this->searchModel->tableName()),
-                ],
-            ];
+            return self::defaultActionColumnsAfter($this->isModal, $this->searchModel->tableName());
         }
         return $this->actionColumnsAfter;
     }

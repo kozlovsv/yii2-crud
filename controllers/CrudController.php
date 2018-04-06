@@ -3,8 +3,8 @@
 namespace kozlovsv\crud\controllers;
 
 use kozlovsv\crud\filters\RememberQueryParams;
-use kozlovsv\helpers\ModelPermission;
-use kozlovsv\helpers\ReturnUrl;
+use kozlovsv\crud\helpers\ModelPermission;
+use kozlovsv\crud\helpers\ReturnUrl;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -69,7 +69,7 @@ abstract class CrudController extends Controller
         $tableName = $className::tableName();
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => array_merge([
                     [
                         'actions' => ['index', 'view'],
@@ -90,13 +90,13 @@ abstract class CrudController extends Controller
                 ], $this->accessRules),
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
             'rememberQueryParams' => [
-                'class' => RememberQueryParams::className(),
+                'class' => RememberQueryParams::class,
                 'only' => ['index'],
             ],
         ];

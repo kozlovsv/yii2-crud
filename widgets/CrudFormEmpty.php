@@ -1,9 +1,8 @@
 <?php
 
 namespace kozlovsv\crud\widgets;
-use kozlovsv\widgets\ActiveForm;
 use yii\bootstrap\Html;
-use kozlovsv\helpers\ReturnUrl;
+use kozlovsv\crud\helpers\ReturnUrl;
 use Yii;
 use yii\base\Widget;
 

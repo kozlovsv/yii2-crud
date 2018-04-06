@@ -20,8 +20,8 @@
   "minimum-stability": "dev",
   "require": {
     "yiisoft/yii2-bootstrap": "@dev",
-    "kozlovsv/yii2-helpers": "*",
-    "kozlovsv/yii2-widgets": "*"
+    "kozlovsv/yii2-widget-datetimepicker": "*",
+    "kartik-v/yii2-widget-select2": "*"
   },
   "autoload": {
     "psr-4": {

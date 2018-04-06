@@ -1,9 +1,9 @@
 <?php
 
 namespace kozlovsv\crud\widgets;
-use kozlovsv\helpers\ReturnUrl;
+use kozlovsv\crud\helpers\ReturnUrl;
 use yii\bootstrap\Html;
-use kozlovsv\helpers\ModelPermission;
+use kozlovsv\crud\helpers\ModelPermission;
 use yii\base\Widget;
 use yii\helpers\Url;
 
