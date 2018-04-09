@@ -103,7 +103,7 @@ class GridView extends \yii\grid\GridView
     protected function initDefaultActionColumnsBefore()
     {
         if ($this->actionColumnsBefore == null) {
-            $this->actionColumnsBefore = self::defaultActionColumnsAfter($this->isModal, $this->tableName);
+            $this->actionColumnsBefore = self::defaultActionColumnsBefore($this->isModal, $this->tableName);
         }
     }
 

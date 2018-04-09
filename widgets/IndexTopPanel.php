@@ -93,8 +93,8 @@ class IndexTopPanel extends Widget
                     'params' => $params,
                 ]);
             }
-            echo Html::submitButton(Html::icon('search'), ['class' => 'btn btn-default']);
-            FilterReset::widget(['model' => $this->model, 'url' => ['index'],]);
+            echo '&nbsp' . Html::submitButton(Html::icon('search'), ['class' => 'btn btn-default']);
+            echo '&nbsp' . FilterReset::widget(['model' => $this->model, 'url' => ['index'],]);
             SearchActiveForm::end();
             echo Html::endTag('div');
         }
