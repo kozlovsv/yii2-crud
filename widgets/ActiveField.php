@@ -4,6 +4,7 @@ namespace kozlovsv\crud\widgets;
 
 use kartik\select2\Select2;
 use kozlovsv\crud\helpers\Html;
+use kozlovsv\datepicker\DateTimePicker;
 use yii\helpers\ArrayHelper;
 
 class ActiveField extends \yii\bootstrap\ActiveField
