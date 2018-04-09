@@ -51,7 +51,7 @@ class ViewTopPanel extends Widget
 
     public function run()
     {
-        echo Html::beginTag('div', ['' => $this->buttonsContainerOptions]);
+        echo Html::beginTag('div', $this->buttonsContainerOptions);
         $this->renderButtons($this->buttonsLeft, 'pull-left');
         $this->renderButtons($this->buttonsRight, 'pull-right');
         echo Html::endTag('div');
@@ -103,7 +103,7 @@ class ViewTopPanel extends Widget
         echo Html::beginTag('div', ['class' => $className]);
         foreach ($buttons as $button) {
             echo Html::beginTag('div', ['class' => 'btn-group']);
-            echo $button;
+            echo $button . '&nbsp';
             echo Html::endTag('div');
         }
         echo Html::endTag('div');
