@@ -42,6 +42,11 @@ class SearchActiveForm extends BActiveForm
      */
     public $eventSubmit = 'change';
 
+    /**
+     * Переопределяем параметр action
+     * @var array
+     */
+    public $action = ['index'];
 
     /**
      * @throws \yii\base\InvalidConfigException
