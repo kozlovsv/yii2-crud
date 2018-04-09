@@ -41,6 +41,26 @@ class ViewTopPanel extends Widget
     public $buttonsContainerOptions = ['class' => 'form-group', 'style' => 'margin-bottom: 10px'];
 
     /**
+     * @param \yii\db\ActiveRecord $model
+     * @param bool $isModalEdit
+     * @return string
+     */
+    public static function editButton($model, $isModalEdit)
+    {
+        if (!ModelPermission::canUpdate($model->tableName())) return '';
+        return Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])],
+                ['class' => 'btn btn-primary', 'data-modal' => $isModalEdit ? 1 : 0]);
+    }
+
+    /**
+     * @return string
+     */
+    public static function cancelButton()
+    {
+        return Html::a('Отмена', ReturnUrl::getBackUrl(), ['class' => 'btn btn-default form-cancel']);
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -64,13 +84,10 @@ class ViewTopPanel extends Widget
      */
     public static function defaultButtonsLeft($model, $isModalEdit = true)
     {
-        $arr = [];
-        if (ModelPermission::canUpdate($model->tableName())) {
-            $arr[] = Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])],
-                ['class' => 'btn btn-primary', 'data-modal' => $isModalEdit ? 1 : 0]);
-        }
-        $arr[] = Html::a('Отмена', ReturnUrl::getBackUrl(), ['class' => 'btn btn-default form-cancel']);
-        return $arr;
+        return [
+            self::editButton($model, $isModalEdit),
+            self::cancelButton(),
+        ];
     }
 
     /**
@@ -102,6 +119,7 @@ class ViewTopPanel extends Widget
     {
         echo Html::beginTag('div', ['class' => $className]);
         foreach ($buttons as $button) {
+            if (empty($button)) continue;
             echo Html::beginTag('div', ['class' => 'btn-group']);
             echo $button . '&nbsp';
             echo Html::endTag('div');
