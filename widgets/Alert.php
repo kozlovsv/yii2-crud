@@ -1,86 +1,117 @@
 <?php
 
-namespace kozlovsv\crud\widgets;
+namespace app\widgets;
 
-use yii\bootstrap\Widget;
-use yii\helpers\Html;
+use kartik\icons\FontAwesomeAsset;
+use kozlovsv\crud\assets\PNotifyAsset;
+use Yii;
+use yii\base\Widget;
+use yii\helpers\Json;
 
-/**
- * Уведомление о выполнении
- *
- * @author Ilya Norkin <ilya@itender.kz>
- */
 class Alert extends Widget
 {
+
+    const STYLING_FONTAWESOME = 'fontawesome';
+    const STYLING_BOOTSTRAP = 'bootstrap3';
+
     /**
-     * Скрывать автоматически
-     * @var bool
+     * Настройки плагина PNotify
+     * @var array
      */
-    public $autoClose = true;
+    public $clientOptions = [];
+
+    public $styling = self::STYLING_FONTAWESOME;
 
     /**
      * Таймаут скрытия
      * @var int
      */
-    public $closeTimeout = 5000;
+    public $closeTimeout = 3000;
 
     /**
-     * Время закрытия
-     * @var int
+     * Initializes the widget.
      */
-    public $outTime = 400;
-
-    /**
-     * Эффект скрытия
-     * @var string
-     */
-    public $outType = 'fadeOut';
-
-    /**
-     * Типы сообщений
-     */
-    public $alertTypes = [
-        'error' => 'alert-danger',
-        'danger' => 'alert-danger',
-        'success' => 'alert-success',
-        'info' => 'alert-info',
-        'warning' => 'alert-warning',
-    ];
-
     public function init()
     {
         parent::init();
-        $session = \Yii::$app->session;
-        $flashes = $session->getAllFlashes();
-        $appendCss = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
-        foreach ($flashes as $type => $data) {
-            if (isset($this->alertTypes[$type])) {
-                $data = (array) $data;
-                foreach ($data as $i => $message) {
-                    $this->options['class'] = "alert alert-dismissible " . $this->alertTypes[$type] . $appendCss;
-                    $this->options['id'] = $this->getId() . '-' . $type . '-' . $i;
-                    $alert = Html::beginTag('div', $this->options);
-                    $alert .= Html::button('×', ['class' => 'close', 'data-dismiss' => 'alert', 'aria-hidden' => true]);
-                    $alert .= Html::tag('strong', $message);
-                    $alert .= Html::endTag('div');
-                    $this->registerAutoCloseJs("#{$this->options['id']}");
-
-                    echo $alert;
-
-                }
-                $session->removeFlash($type);
-            }
-        }
+        $this->initOptions();
     }
 
-    protected function registerAutoCloseJs($selector)
+    /**
+     * Initializes the widget options.
+     * This method sets the default values for various options.
+     */
+    protected function initOptions()
     {
-        if ($this->autoClose) {
-            $view = $this->getView();
-            $js = '$("' . $selector . '").delay(' . $this->closeTimeout . ').'. $this->outType .'('. $this->outTime .');';
-
-            $view->registerJs($js, $view::POS_READY);
-        }
+        $this->clientOptions = array_merge([
+            'delay' => $this->closeTimeout,
+            'styling' => $this->styling,
+            'addclass' => 'stack-bottomright',
+            'stack' => [
+                'dir1' => 'up',
+                'dir2' => 'left',
+                'firstpos1' => 60,
+                'firstpos2' => 10
+            ]
+        ], $this->clientOptions);
     }
 
+    /**
+     * Renders the widget.
+     */
+    public function run()
+    {
+        $this->registerClientScript();
+    }
+
+
+    /**
+     * Registers the needed JavaScript.
+     */
+    public function registerClientScript()
+    {
+        $flashes = Yii::$app->session->getAllFlashes(true);
+        if (!$flashes) return; //Если нет сообщений, то скрипты не подключаем.
+        $this->registerAssets();
+        $optionsJSVarName = 'alertPnotifyOptions';
+        $js = "var {$optionsJSVarName}  = {$this->getPnotifyOptionsJS()} \n";
+        $js .= "var {$optionsJSVarName}  = {$this->getPnotifyOptionsJS()} \n";
+        foreach ($flashes as $key => $message) {
+            $js .= $this->notifyJS($key, $message, $optionsJSVarName) . "\n";
+        }
+        $this->getView()->registerJs($js);
+    }
+
+    public function registerAssets()
+    {
+        $view = $this->getView();
+        if ($this->styling === self::STYLING_FONTAWESOME) FontAwesomeAsset::register($view);
+        PNotifyAsset::register($view);
+    }
+
+    /**
+     * Получить настройки для плагина PNotify в формате JSON
+     * @return string
+     */
+    public function getPnotifyOptionsJS()
+    {
+        return Json::encode($this->clientOptions);
+    }
+
+    /**
+     * JS Код вывода сообщения
+     * @param $type string Тип сообщения (info, error, success, warning)
+     * @param $text string Текст сообщения
+     * @param $optionsJSVarName string Имя переменной JS в котором хранятся настройки
+     * @return string
+     */
+    public function notifyJS($type, $text, $optionsJSVarName)
+    {
+        return <<<JS
+            new PNotify($.extend({}, {$optionsJSVarName}, {
+                            type: "{$type}",
+                            text: "{$text}"
+                        }));
+JS;
+    }
 }
