@@ -96,6 +96,4 @@ class ActiveForm extends  \kartik\form\ActiveForm
             $this->view->registerJs('var parent_window_reloaded = 1');
         }
     }
-
-
 }

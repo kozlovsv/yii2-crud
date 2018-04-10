@@ -2,7 +2,6 @@
 
 namespace kozlovsv\crud\widgets;
 
-use kartik\builder\Form;
 use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
 
@@ -31,11 +30,15 @@ class SearchPanel extends Widget
     {
         if (!empty($this->attributes)) {
             $form = ActiveFormSearch::begin();
-            Form::widget(
+            echo FormBuilder::widget(
                 [
                     'model' => $this->model,
                     'form' => $form,
                     'attributes' => $this->attributes,
+                    'options' => [
+                        'tag' => 'div',
+                        'class' => 'form-group',
+                    ],
                 ]
             );
 
