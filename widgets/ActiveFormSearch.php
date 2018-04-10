@@ -3,10 +3,8 @@ namespace kozlovsv\crud\widgets;
 
 use yii\web\View;
 
-class ActiveFormSearch extends ActiveForm
+class ActiveFormSearch extends \kartik\form\ActiveForm
 {
-
-    public $pjaxId = 'pjax-search-form';
 
     /**
      * @var string
