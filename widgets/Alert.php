@@ -1,6 +1,6 @@
 <?php
 
-namespace app\widgets;
+namespace kozlovsv\crud\widgets;
 
 use kartik\icons\FontAwesomeAsset;
 use kozlovsv\crud\assets\PNotifyAsset;
