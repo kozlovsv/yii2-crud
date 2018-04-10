@@ -1,10 +1,13 @@
 <?php
+
 namespace kozlovsv\crud\helpers;
+use yii\helpers\Url;
 
 /**
  * Вспомогательный класс для отрисовки стандартных кнопок КРУД (редактирование, удаление, отмена и т.п.)
  */
-class CrudButton {
+class CrudButton
+{
     /**
      * Рисует кнопку Назад, меняет заголовок в зависимости от того задан параметр returnUrl или нет
      * @param string $indexTitle текст кнопки если параметр returnUrl не задан
@@ -14,11 +17,12 @@ class CrudButton {
      * @param string $iconName Имя Bootstrap3 иконки
      * @return string
      */
-    public static function backButton($indexTitle = 'Список', $backTitle = 'Назад', $defAction = 'index', $options = [], $iconName = 'arrow-left') {
+    public static function backButton($indexTitle = 'Список', $backTitle = 'Назад', $defAction = 'index', $options = [], $iconName = 'arrow-left')
+    {
         Html::addCssClass($options, ['btn', 'btn-default']);
-        $title = ReturnUrl::isSetReturnUrl()? $backTitle : $indexTitle;
+        $title = ReturnUrl::isSetReturnUrl() ? $backTitle : $indexTitle;
         if ($iconName) $title = Html::icon('') . ' ' . $title;
-        return Html::a($title , ReturnUrl::getBackUrl($defAction), $options);
+        return Html::a($title, ReturnUrl::getBackUrl($defAction), $options);
     }
 
     /**
@@ -54,5 +58,35 @@ class CrudButton {
     public static function saveButton($text = 'Сохранить', $options = ['class' => 'btn btn-primary'])
     {
         return Html::submitButton($text, $options);
+    }
+
+    /**
+     * @param \yii\db\ActiveRecord $model
+     * @param bool $isModal
+     * @return string
+     */
+    public static function editButton($model, $isModal)
+    {
+        if (!ModelPermission::canUpdate($model->tableName())) return '';
+        return Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])],
+            ['class' => 'btn btn-primary', 'data-modal' => $isModal ? 1 : 0]);
+    }
+
+    /**
+     * @param \yii\db\ActiveRecord $model
+     * @return string
+     */
+    public static function deleteButton($model)
+    {
+        if (!ModelPermission::canDelete($model->tableName())) return '';
+
+        return Html::a(Html::icon('trash'), ['delete', 'id' => $model->getPrimaryKey()], [
+            'class' => 'btn btn-danger pull-right',
+            'data' => [
+                'confirm' => 'Удалить запись?',
+                'method' => 'post',
+            ],
+        ]);
+
     }
 }
