@@ -1,16 +1,14 @@
 <?php
 namespace kozlovsv\crud\widgets;
+use kozlovsv\crud\helpers\ReturnUrl;
+use Yii;
+use yii\helpers\Html;
 
 /**
  * Class ActiveForm
  */
-class ActiveForm extends \yii\bootstrap\ActiveForm
+class ActiveForm extends  \kartik\form\ActiveForm
 {
-    /**
-     * @var string
-     */
-    public $fieldClass = 'kozlovsv\crud\widgets\ActiveField';
-
     /**
      * @var bool
      */
@@ -27,9 +25,9 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
     public $validateOnChange = false;
 
     /**
-     * @var string
+     * @inheritdoc
      */
-    public $layout = 'horizontal';
+    public $type = self::TYPE_HORIZONTAL;
 
     /**\
      * @var array
@@ -47,17 +45,57 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      * @var array
      */
     public $options = [
-        'data' => [
-            'pjax' => 1,
-        ],
+        'role' => 'form',
+        'data' => ['pjax' => 1],
+    ];
+
+    /**
+     * Конфиг для виджета Pjax
+     * @var array
+     */
+    public $pjaxConfig = [
+        'id' => 'pjax-form',
+        'enablePushState' => false,
     ];
 
     /**
      * @inheritdoc
-     * @return ActiveField|\yii\bootstrap\ActiveField
      */
-    public function field($model, $attribute, $options = [])
-    {
-        return parent::field($model, $attribute, $options);
+    public function init() {
+        //Для нормальной работы круд в диалоговых окнах нужен Pjax контейнер
+        if ($this->needPjax()) {
+            Pjax::begin($this->pjaxConfig);
+        }
+        parent::init();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function run() {
+        if (ReturnUrl::isSetReturnUrl()) echo Html::hiddenInput(ReturnUrl::REQUEST_PARAM_NAME, ReturnUrl::getReturnUrlParam());
+        parent::run();
+        if ($this->needPjax()) Pjax::end();
+    }
+
+
+
+    protected function needPjax(){
+        return Yii::$app->request->isAjax;
+    }
+
+    /**
+     * This registers the necessary JavaScript code.
+     * @since 2.0.12
+     */
+    public function registerClientScript()
+    {
+        parent::registerClientScript();
+        //Задаем параметр обновления родительского окна после закрытия
+        if ($this->needPjax() && ReturnUrl::isSetReturnUrl()) {
+            $this->view->registerJs('var parent_window_reloaded = 1');
+        }
+    }
+
+
 }

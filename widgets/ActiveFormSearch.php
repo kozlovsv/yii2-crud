@@ -1,16 +1,15 @@
 <?php
 namespace kozlovsv\crud\widgets;
 
-use yii\bootstrap\ActiveForm as BActiveForm;
 use yii\web\View;
 
-class SearchActiveForm extends BActiveForm
+class ActiveFormSearch extends ActiveForm
 {
 
     /**
      * @var string
      */
-    public $fieldClass = 'kozlovsv\crud\widgets\SearchActiveField';
+    public $fieldClass = 'kozlovsv\crud\widgets\ActiveFieldSearch';
 
     public $enableClientValidation = false;
 
@@ -24,7 +23,7 @@ class SearchActiveForm extends BActiveForm
         ],
     ];
 
-    public $layout = 'inline';
+    public $type = self::TYPE_INLINE;
     
     public $options = [
         'class' => 'search'
@@ -48,9 +47,6 @@ class SearchActiveForm extends BActiveForm
      */
     public $action = ['index'];
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function init()
     {
         parent::init();

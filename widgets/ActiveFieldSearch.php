@@ -2,6 +2,7 @@
 
 namespace kozlovsv\crud\widgets;
 
+use kartik\form\ActiveField;
 use yii\bootstrap\Html;
 
 /**
@@ -9,14 +10,8 @@ use yii\bootstrap\Html;
  * Class ActiveSearchField
  * @package kozlovsv\crud\widgets
  */
-class SearchActiveField extends ActiveField
+class ActiveFieldSearch extends ActiveField
 {
-
-    /**
-     * @var \yii\base\Model | \yii\db\ActiveRecord the data model that this field is associated with
-     */
-    public $model;
-
     /**
      * Инициализация
      */
@@ -48,5 +43,4 @@ class SearchActiveField extends ActiveField
         $defaultOptions = ['placeholder' => $label, 'prompt' => $label];
         $this->inputOptions = array_merge($defaultOptions, $this->inputOptions);
     }
-
 }

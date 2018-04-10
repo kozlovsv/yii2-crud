@@ -21,7 +21,8 @@
   "require": {
     "yiisoft/yii2-bootstrap": "@dev",
     "kozlovsv/yii2-widget-datetimepicker": "*",
-    "kartik-v/yii2-widget-select2": "*"
+    "kartik-v/yii2-widget-select2": "*",
+    "kartik-v/yii2-builder": "*"
   },
   "autoload": {
     "psr-4": {
