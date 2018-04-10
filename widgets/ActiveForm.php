@@ -1,5 +1,7 @@
 <?php
+
 namespace kozlovsv\crud\widgets;
+
 use kozlovsv\crud\helpers\ReturnUrl;
 use Yii;
 use yii\helpers\Html;
@@ -7,8 +9,11 @@ use yii\helpers\Html;
 /**
  * Class ActiveForm
  */
-class ActiveForm extends  \kartik\form\ActiveForm
+class ActiveForm extends \kartik\form\ActiveForm
 {
+
+    public $pjaxId = 'pjax-form';
+
     /**
      * @var bool
      */
@@ -53,17 +58,16 @@ class ActiveForm extends  \kartik\form\ActiveForm
      * Конфиг для виджета Pjax
      * @var array
      */
-    public $pjaxConfig = [
-        'id' => 'pjax-form',
-        'enablePushState' => false,
-    ];
+    public $pjaxConfig = [];
 
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         //Для нормальной работы круд в диалоговых окнах нужен Pjax контейнер
         if ($this->needPjax()) {
+            $this->initPjaxConfig();
             Pjax::begin($this->pjaxConfig);
         }
         parent::init();
@@ -72,15 +76,16 @@ class ActiveForm extends  \kartik\form\ActiveForm
     /**
      * @inheritdoc
      */
-    public function run() {
+    public function run()
+    {
         if (ReturnUrl::isSetReturnUrl()) echo Html::hiddenInput(ReturnUrl::REQUEST_PARAM_NAME, ReturnUrl::getReturnUrlParam());
         parent::run();
         if ($this->needPjax()) Pjax::end();
     }
 
 
-
-    protected function needPjax(){
+    protected function needPjax()
+    {
         return Yii::$app->request->isAjax;
     }
 
@@ -95,5 +100,16 @@ class ActiveForm extends  \kartik\form\ActiveForm
         if ($this->needPjax() && ReturnUrl::isSetReturnUrl()) {
             $this->view->registerJs('var parent_window_reloaded = 1');
         }
+    }
+
+    protected function initPjaxConfig()
+    {
+        $this->pjaxConfig = array_merge(
+            [
+                'id' => $this->pjaxId,
+                'enablePushState' => false,
+            ],
+            $this->pjaxConfig
+        );
     }
 }

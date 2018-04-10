@@ -6,6 +6,8 @@ use yii\web\View;
 class ActiveFormSearch extends ActiveForm
 {
 
+    public $pjaxId = 'pjax-search-form';
+
     /**
      * @var string
      */
