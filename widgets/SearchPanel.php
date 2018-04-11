@@ -35,6 +35,7 @@ class SearchPanel extends Widget
                     'model' => $this->model,
                     'form' => $form,
                     'attributes' => $this->attributes,
+                    'needAutoFocus' => false,
                     'options' => [
                         'tag' => 'div',
                         'class' => 'form-group',

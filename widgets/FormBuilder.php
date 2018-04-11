@@ -19,6 +19,12 @@ use yii\helpers\ArrayHelper;
 class FormBuilder extends Form
 {
     /**
+     * Установить автофокус по умолчанию
+     * @var bool
+     */
+    public $needAutoFocus = true;
+
+    /**
      * @var array the basic inputs
      */
     protected static $_textInputs = [
@@ -26,6 +32,15 @@ class FormBuilder extends Form
         self::INPUT_PASSWORD => true,
         self::INPUT_TEXTAREA => true,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->setAutoFocus();
+    }
 
     /**
      * Prepares attributes based on visibility setting
@@ -47,20 +62,10 @@ class FormBuilder extends Form
         $attributes = $newAttributes;
         parent::prepareAttributes($attributes);
 
-        //Автофокус  + максимальная длинна
-        $first = true;
+        //Максимальная длинна
         foreach ($attributes as $key => &$setting) {
-            $opt = [];
-            if ($first) {
-                $opt['autofocus'] = true;
-            }
-            $first = false;
             if (!empty(static::$_textInputs[ArrayHelper::getValue($setting, 'type')])) {
-                $opt['maxlength'] = true;
-            }
-
-            if (!empty($opt)) {
-                $setting = array_merge(['options' => $opt], $setting);
+                $setting = array_merge(['options' => ['maxlength' => true]], $setting);
             }
         }
     }
@@ -71,15 +76,31 @@ class FormBuilder extends Form
         $attribute = $arr[0];
         $setting = ['type' => self::INPUT_TEXT];
         if (!empty($arr[1])) {
+            $icon = '';
             if ($arr[1] == 'fa') {
                 $iconName = !empty($arr[2]) ? $arr[2] : 'file-alt';
-                $setting['prepend'] = Html::fa($iconName);
+                $icon = Html::fa($iconName);
             } elseif ($arr[1] == 'gi') {
                 $iconName = !empty($arr[2]) ? $arr[2] : 'file-alt';
-                $setting['prepend'] = Html::icon($iconName);
+                $icon = Html::icon($iconName);
+            }
+            if ($icon) {
+                $setting['fieldConfig'] = ['addon' => ['prepend' => ['content' => $icon]]];
             }
         }
-
         return [$attribute, $setting];
+    }
+
+    /**
+     * Устанавливаем флаг автофокуса для первого элемента массива
+     */
+    protected function setAutoFocus()
+    {
+        if (!$this->needAutoFocus || empty($this->attributes)) return;
+        reset($this->attributes);
+        $key = key($this->attributes);
+        $value = current($this->attributes);
+        $value = array_merge(['options' => ['autofocus' => true]], $value);
+        $this->attributes[$key] = $value;
     }
 }
