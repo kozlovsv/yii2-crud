@@ -37,14 +37,16 @@ class CrudButton
 
     /**
      * Кнопка отмена
+     * @param string $tableName наименование раздела для определения разрешения
      * @param bool $isModal - вызвать модальный диалог или нет
      * @param string $text - Текст кнопки
      * @param array $url - URL кнопки
      * @param array $options - Html опции кнопки
      * @return string
      */
-    public static function createButton($isModal = true, $text = 'Добавить', $url = ['create'], $options = [])
+    public static function createButton($tableName, $isModal = true, $text = 'Добавить', $url = ['create'], $options = [])
     {
+        if (!ModelPermission::canCreate($tableName)) return '';
         $defOptions = ['class' => 'btn btn-success btn-create', 'data-modal' => $isModal ? 1 : 0, 'data-pjax' => 0];
         $options = array_merge($defOptions, $options);
         return Html::a($text, $url, $options);
