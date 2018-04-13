@@ -27,11 +27,12 @@ class CrudButton
 
     /**
      * Кнопка отмена
+     * @param string $text
      * @return string
      */
-    public static function cancelButton()
+    public static function cancelButton($text = 'Отмена')
     {
-        return Html::a('Отмена', ReturnUrl::getBackUrl(), ['class' => 'btn btn-default form-cancel']);
+        return Html::a($text, ReturnUrl::getBackUrl(), ['class' => 'btn btn-default form-cancel']);
     }
 
     /**
