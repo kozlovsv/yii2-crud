@@ -21,7 +21,7 @@ class CrudButton
     {
         Html::addCssClass($options, ['btn', 'btn-default']);
         $title = ReturnUrl::isSetReturnUrl() ? $backTitle : $indexTitle;
-        if ($iconName) $title = Html::icon('') . ' ' . $title;
+        if ($iconName) $title = Html::icon($iconName) . ' ' . $title;
         return Html::a($title, ReturnUrl::getBackUrl($defAction), $options);
     }
 
