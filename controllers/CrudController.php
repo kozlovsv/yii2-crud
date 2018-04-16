@@ -258,7 +258,7 @@ abstract class CrudController extends Controller
     /**
      * @return string
      */
-    protected function getPermissionCategory()
+    public function getPermissionCategory()
     {
         $className = $this->modelClassName;
         /** @noinspection PhpUndefinedMethodInspection */
