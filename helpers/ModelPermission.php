@@ -12,52 +12,52 @@ class ModelPermission
 {
     /**
      * Проверка разрешения на действия с моделью
-     * @param string $tablelName
+     * @param string $permissionCategory
      * @param $permission
      * @return bool
      */
-    public static function can($tablelName, $permission)
+    public static function can($permissionCategory, $permission)
     {
-        return Yii::$app->user->can("{$tablelName}.$permission");
+        return Yii::$app->user->can("{$permissionCategory}.$permission");
     }
 
     /**
      * Разрешен просмотр
-     * @param string $tablelName
+     * @param string $permissionCategory
      * @return bool
      */
-    public static function canView($tablelName)
+    public static function canView($permissionCategory)
     {
-        return self::can($tablelName, 'view');
+        return self::can($permissionCategory, 'view');
     }
 
     /**
      * Разрешено создание новой записи
-     * @param string $tablelName
+     * @param string $permissionCategory
      * @return bool
      */
-    public static function canCreate($tablelName)
+    public static function canCreate($permissionCategory)
     {
-        return self::can($tablelName, 'create');
+        return self::can($permissionCategory, 'create');
     }
 
     /**
      * Разрешено редактирование
-     * @param string $tablelName
+     * @param string $permissionCategory
      * @return bool
      */
-    public static function canUpdate($tablelName)
+    public static function canUpdate($permissionCategory)
     {
-        return self::can($tablelName, 'update');
+        return self::can($permissionCategory, 'update');
     }
 
     /**
      * Разрешено удаление
-     * @param string $tablelName
+     * @param string $permissionCategory
      * @return bool
      */
-    public static function canDelete($tablelName)
+    public static function canDelete($permissionCategory)
     {
-        return self::can($tablelName, 'delete');
+        return self::can($permissionCategory, 'delete');
     }
 }

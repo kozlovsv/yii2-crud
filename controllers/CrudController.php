@@ -64,28 +64,26 @@ abstract class CrudController extends Controller
      */
     public function behaviors()
     {
-        $className = $this->modelClassName;
-        /** @noinspection PhpUndefinedMethodInspection */
-        $tableName = $className::tableName();
+        $permissionCategory = $this->getPermissionCategory();
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => array_merge([
                     [
                         'actions' => ['index', 'view'],
-                        'allow' => ModelPermission::canView($tableName),
+                        'allow' => ModelPermission::canView($permissionCategory),
                     ],
                     [
                         'actions' => ['create'],
-                        'allow' => ModelPermission::canCreate($tableName),
+                        'allow' => ModelPermission::canCreate($permissionCategory),
                     ],
                     [
                         'actions' => ['update'],
-                        'allow' => ModelPermission::canUpdate($tableName),
+                        'allow' => ModelPermission::canUpdate($permissionCategory),
                     ],
                     [
                         'actions' => ['delete'],
-                        'allow' => ModelPermission::canDelete($tableName),
+                        'allow' => ModelPermission::canDelete($permissionCategory),
                     ],
                 ], $this->accessRules),
             ],
@@ -255,5 +253,15 @@ abstract class CrudController extends Controller
     {
         if (Yii::$app->request->isAjax) return $this->renderAjax($view, $params);
         return $this->render($view, $params);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPermissionCategory()
+    {
+        $className = $this->modelClassName;
+        /** @noinspection PhpUndefinedMethodInspection */
+        return $className::tableName();
     }
 }

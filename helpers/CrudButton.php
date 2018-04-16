@@ -37,16 +37,16 @@ class CrudButton
 
     /**
      * Кнопка отмена
-     * @param string $tableName наименование раздела для определения разрешения
+     * @param string $permissionCategory наименование раздела для определения разрешения
      * @param bool $isModal - вызвать модальный диалог или нет
      * @param string $text - Текст кнопки
      * @param array $url - URL кнопки
      * @param array $options - Html опции кнопки
      * @return string
      */
-    public static function createButton($tableName, $isModal = true, $text = 'Добавить', $url = ['create'], $options = [])
+    public static function createButton($permissionCategory, $isModal = true, $text = 'Добавить', $url = ['create'], $options = [])
     {
-        if (!ModelPermission::canCreate($tableName)) return '';
+        if (!ModelPermission::canCreate($permissionCategory)) return '';
         $defOptions = ['class' => 'btn btn-success btn-create', 'data-modal' => $isModal ? 1 : 0, 'data-pjax' => 0];
         $options = array_merge($defOptions, $options);
         return Html::a($text, $url, $options);
@@ -64,26 +64,28 @@ class CrudButton
     }
 
     /**
-     * @param \yii\db\ActiveRecord $model
-     * @param bool $isModal
+     * @param string $permissionCategory Категория разрешения
+     * @param int $id ID записи
+     * @param bool $isModal Отображать форму редактирования в модальном окне
      * @return string
      */
-    public static function editButton($model, $isModal)
+    public static function editButton($permissionCategory, $id, $isModal)
     {
-        if (!ModelPermission::canUpdate($model->tableName())) return '';
-        return Html::a(Html::icon('pencil'), ['update', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])],
+        if (!ModelPermission::canUpdate($permissionCategory)) return '';
+        return Html::a(Html::icon('pencil'), ['update', 'id' => $id, ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $id])],
             ['class' => 'btn btn-primary', 'data-modal' => $isModal ? 1 : 0]);
     }
 
     /**
-     * @param \yii\db\ActiveRecord $model
+     * @param string $permissionCategory Категория разрешения
+     * @param int $id ID записи
      * @return string
      */
-    public static function deleteButton($model)
+    public static function deleteButton($permissionCategory, $id)
     {
-        if (!ModelPermission::canDelete($model->tableName())) return '';
+        if (!ModelPermission::canDelete($permissionCategory)) return '';
 
-        return Html::a(Html::icon('trash'), ['delete', 'id' => $model->getPrimaryKey()], [
+        return Html::a(Html::icon('trash'), ['delete', 'id' => $id], [
             'class' => 'btn btn-danger pull-right',
             'data' => [
                 'confirm' => 'Удалить запись?',

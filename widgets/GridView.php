@@ -28,10 +28,10 @@ class GridView extends \yii\grid\GridView
     public $isModal = true;
 
     /**
-     * Название таблицы для проверки разрешений.
+     * Название раздела для проверки разрешений.
      * @var string
      */
-    public $tableName;
+    public $permissionCategory;
 
 
     /**
@@ -73,29 +73,29 @@ class GridView extends \yii\grid\GridView
         echo Html::endTag('div');
     }
 
-    public static function defaultActionColumnsBefore($isModal, $tableName){
+    public static function defaultActionColumnsBefore($isModal, $permissionCategory){
         return [
             [
                 'class' => ActionColumn::class,
                 'template' => '{view}',
                 'isModal' => $isModal,
-                'visible' => ModelPermission::canView($tableName),
+                'visible' => ModelPermission::canView($permissionCategory),
             ],
         ];
     }
 
-    public static function defaultActionColumnsAfter($isModal, $tableName){
+    public static function defaultActionColumnsAfter($isModal, $permissionCategory){
         return [
             [
                 'class' => ActionColumn::class,
                 'template' => '{update}',
                 'isModal' => $isModal,
-                'visible' => ModelPermission::canUpdate($tableName),
+                'visible' => ModelPermission::canUpdate($permissionCategory),
             ],
             [
                 'class' => ActionColumn::class,
                 'template' => '{delete}',
-                'visible' => ModelPermission::canDelete($tableName),
+                'visible' => ModelPermission::canDelete($permissionCategory),
             ],
         ];
     }
@@ -103,14 +103,14 @@ class GridView extends \yii\grid\GridView
     protected function initDefaultActionColumnsBefore()
     {
         if ($this->actionColumnsBefore == null) {
-            $this->actionColumnsBefore = self::defaultActionColumnsBefore($this->isModal, $this->tableName);
+            $this->actionColumnsBefore = self::defaultActionColumnsBefore($this->isModal, $this->permissionCategory);
         }
     }
 
     protected function initDefaultActionColumnsAfter()
     {
         if ($this->actionColumnsAfter == null) {
-            $this->actionColumnsAfter = self::defaultActionColumnsAfter($this->isModal, $this->tableName);
+            $this->actionColumnsAfter = self::defaultActionColumnsAfter($this->isModal, $this->permissionCategory);
         }
     }
 
