@@ -17,7 +17,7 @@ class CrudButton
      * @param string $iconName Имя Bootstrap3 иконки
      * @return string
      */
-    public static function backButton($indexTitle = 'Список', $backTitle = 'Назад', $defaultBackUrl = 'index', $options = [], $iconName = 'arrow-left')
+    public static function backButton($indexTitle = 'Список', $backTitle = 'Назад', $defaultBackUrl = ['index'], $options = [], $iconName = 'arrow-left')
     {
         Html::addCssClass($options, ['btn', 'btn-default']);
         $title = ReturnUrl::isSetReturnUrl() ? $backTitle : $indexTitle;
@@ -31,7 +31,7 @@ class CrudButton
      * @param array|string $defaultBackUrl - URL возврата по умолчанию
      * @return string
      */
-    public static function cancelButton($text = 'Отмена', $defaultBackUrl = 'index')
+    public static function cancelButton($text = 'Отмена', $defaultBackUrl = ['index'])
     {
         return Html::a($text, ReturnUrl::getBackUrl($defaultBackUrl), ['class' => 'btn btn-default form-cancel']);
     }
