@@ -52,6 +52,12 @@ abstract class CrudController extends Controller
      */
     public $indexViewName = 'index';
 
+    /**
+     * Загружать значения по умолчанию при создании модели
+     * @var bool
+     */
+    public $loadDefaultValue = true;
+
 
     /**
      * Обновляемая, удаляемая или добавленная модель.
@@ -194,7 +200,10 @@ abstract class CrudController extends Controller
      * @return \yii\db\ActiveRecord
      */
     public function createModel(){
+
+        /** @var \yii\db\ActiveRecord $model */
         $model = new $this->modelClassName();
+        if ($this->loadDefaultValue) $model->loadDefaultValues(true);
         $this->model = $model;
         return $model;
     }
