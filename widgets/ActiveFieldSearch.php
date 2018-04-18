@@ -55,7 +55,7 @@ class ActiveFieldSearch extends ActiveField
 
     public function widget($class, $config = [])
     {
-        if (is_subclass_of($class, \kartik\select2\Select2::class)) {
+        if (is_subclass_of($class, 'yii\widgets\InputWidget')) {
             if (!isset($config['options'])) $config['options'] = [];
             $config['options'] = ArrayHelper::merge($this->getDefaultLabel(), $config['options']);
         }
