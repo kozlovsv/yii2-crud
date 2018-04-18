@@ -4,6 +4,7 @@ namespace kozlovsv\crud\widgets;
 
 use kartik\form\ActiveField;
 use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
 
 /**
  * Поле для формы поиска (филтры)
@@ -35,12 +36,29 @@ class ActiveFieldSearch extends ActiveField
     }
 
     /**
-     * Дефолтное название поля
+     * Установить дефолтное название поля
      */
     protected function attachDefaultLabel()
     {
+        $this->inputOptions = array_merge($this->getDefaultLabel(), $this->inputOptions);
+    }
+
+    /**
+     * Получить дефолтное название поля
+     */
+    protected function getDefaultLabel()
+    {
         $label = $this->model->getAttributeLabel($this->attribute);
         $defaultOptions = ['placeholder' => $label, 'prompt' => $label];
-        $this->inputOptions = array_merge($defaultOptions, $this->inputOptions);
+        return $defaultOptions;
+    }
+
+    public function widget($class, $config = [])
+    {
+        if (is_subclass_of($class, \kartik\select2\Select2::class)) {
+            if (!isset($config['options'])) $config['options'] = [];
+            $config['options'] = ArrayHelper::merge($this->getDefaultLabel(), $config['options']);
+        }
+        return parent::widget($class, $config);
     }
 }
