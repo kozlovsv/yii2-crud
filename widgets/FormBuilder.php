@@ -68,13 +68,6 @@ class FormBuilder extends Form
             if (!empty(static::$_textInputs[ArrayHelper::getValue($setting, 'type')])) {
                 $setting = array_merge(['options' => ['maxlength' => true]], $setting);
             }
-            //Задаем значения по умолчанию для Select2 (так как нужно везде)
-            if (ArrayHelper::getValue($setting, 'type') == static::INPUT_WIDGET && strpos(ArrayHelper::getValue($setting, 'widgetClass'), '\Select2') !== false) {
-                $setting = ArrayHelper::merge(['options' => [
-                    'options' => ['prompt' => '-- --', ],
-                    'pluginOptions' => ['allowClear' => true],
-                ]], $setting);
-            }
         }
     }
 
