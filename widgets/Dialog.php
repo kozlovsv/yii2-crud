@@ -72,7 +72,10 @@ class Dialog extends Modal
             });
             $("' . $selector . '").on("hidden.bs.modal", function (e) {
               if (typeof parent_window_reloaded != "undefined") location.reload();
-            })
+            });
+            $("' . $selector . '").on("shown.bs.modal", function(e) {
+                $( "input[autofocus]" ).focus();
+            });
         });
         ';
 

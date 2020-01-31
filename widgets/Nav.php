@@ -28,7 +28,6 @@ class Nav extends \yii\bootstrap\Nav
 
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {

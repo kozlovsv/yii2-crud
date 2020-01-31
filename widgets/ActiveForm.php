@@ -63,24 +63,39 @@ class ActiveForm extends \kartik\form\ActiveForm
     /**
      * @inheritdoc
      */
-    public function init()
+    public function run()
     {
+        if (ReturnUrl::isSetReturnUrl()) echo Html::hiddenInput(ReturnUrl::REQUEST_PARAM_NAME, ReturnUrl::getReturnUrlParam());
+        return parent::run();
+    }
+
+    /*
+     * Данная функция нужна чтобе обернуть нормально форму ActiveForm в PJAX контейнер.
+     * Так как внутри родной ActiveForm все формируется в строку. А в Pjax данные идут в буфер через ECHO.
+     * То возникает два варианта. Либо мы оборачиваем в контейнер снаружи вызова ActiveForm::begin()ActiveForm::end()
+     * Либо вот такие пляски с бубном.
+     */
+    public function afterRun($result)
+    {
+        ob_start();
+        ob_implicit_flush(false);
+
         //Для нормальной работы круд в диалоговых окнах нужен Pjax контейнер
         if ($this->needPjax()) {
             $this->initPjaxConfig();
             Pjax::begin($this->pjaxConfig);
         }
-        parent::init();
-    }
+        //Запускаем построение формы
+        $result = parent::afterRun($result);
+        //Кидаем в буфер
+        echo $result;
 
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-        if (ReturnUrl::isSetReturnUrl()) echo Html::hiddenInput(ReturnUrl::REQUEST_PARAM_NAME, ReturnUrl::getReturnUrlParam());
-        parent::run();
         if ($this->needPjax()) Pjax::end();
+
+        //Получаем форму, обернутую в PJAX контейнер.
+        $result = ob_get_clean();
+
+        return $result;
     }
 
 

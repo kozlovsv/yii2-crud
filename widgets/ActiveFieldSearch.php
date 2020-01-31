@@ -49,8 +49,7 @@ class ActiveFieldSearch extends ActiveField
     protected function getDefaultLabel()
     {
         $label = $this->model->getAttributeLabel($this->attribute);
-        $defaultOptions = ['placeholder' => $label, 'prompt' => $label];
-        return $defaultOptions;
+        return ['placeholder' => $label, 'prompt' => $label];
     }
 
     public function widget($class, $config = [])

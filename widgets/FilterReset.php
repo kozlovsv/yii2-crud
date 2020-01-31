@@ -2,9 +2,12 @@
 
 namespace kozlovsv\crud\widgets;
 
+use ReflectionClass;
+use ReflectionException;
 use Yii;
 use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
+use yii\db\ActiveRecord;
 
 /**
  * Кнопка сброса фильтра
@@ -27,7 +30,7 @@ class FilterReset extends Widget
 
     /**
      * Модель
-     * @var \yii\db\ActiveRecord
+     * @var ActiveRecord
      */
     public $model;
 
@@ -67,11 +70,11 @@ class FilterReset extends Widget
     /**
      * Получить параметры
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function getParams()
     {
-        $modelClassName =  (new \ReflectionClass($this->model))->getShortName();
+        $modelClassName =  (new ReflectionClass($this->model))->getShortName();
         return isset(Yii::$app->request->queryParams[$modelClassName]) ? Yii::$app->request->queryParams[$modelClassName] : [];
     }
 }

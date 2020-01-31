@@ -2,6 +2,7 @@
 
 namespace kozlovsv\crud\widgets;
 
+use Exception;
 use Yii;
 use yii\bootstrap\Widget;
 
@@ -26,7 +27,7 @@ abstract class Menu extends Widget
      * Собрать меню
      * Пункты меню кэшируются для каждого юзера!
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @return string
      */
     public function run()

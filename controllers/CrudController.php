@@ -2,14 +2,17 @@
 
 namespace kozlovsv\crud\controllers;
 
+use Exception;
 use kozlovsv\crud\filters\RememberQueryParams;
 use kozlovsv\crud\helpers\ModelPermission;
 use kozlovsv\crud\helpers\ReturnUrl;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 
 /**
@@ -61,7 +64,7 @@ abstract class CrudController extends Controller
 
     /**
      * Обновляемая, удаляемая или добавленная модель.
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord
      */
     protected $model;
 
@@ -116,7 +119,7 @@ abstract class CrudController extends Controller
                return $this->goBackAfterCreate();
            }
            return $this->renderIfAjax($this->createViewName, compact('model'));
-       } catch (\Exception $e) {
+       } catch (Exception $e) {
            if (YII_ENV_DEV) throw $e;
            Yii::error($e->getMessage());
            $message = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
@@ -127,8 +130,8 @@ abstract class CrudController extends Controller
 
     /**
      * @param $id
-     * @return \yii\web\Response
-     * @throws \Exception
+     * @return Response
+     * @throws Exception
      */
     public function actionDelete($id)
     {
@@ -137,7 +140,7 @@ abstract class CrudController extends Controller
             if ($model->delete()) {
                 Yii::$app->session->setFlash('success', 'Запись удалена');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $message = 'Запись не может быть удалена, имеются связанные данные';
             Yii::$app->session->setFlash('error', $message);
         }
@@ -154,7 +157,7 @@ abstract class CrudController extends Controller
                 return $this->goBackAfterUpdate();
             }
             return $this->renderIfAjax($this->updateViewName, compact('model'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
             $message = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
@@ -197,11 +200,11 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord
      */
     public function createModel(){
 
-        /** @var \yii\db\ActiveRecord $model */
+        /** @var ActiveRecord $model */
         $model = new $this->modelClassName();
         if ($this->loadDefaultValue) $model->loadDefaultValues(true);
         $this->model = $model;
@@ -216,12 +219,12 @@ abstract class CrudController extends Controller
 
     /**
      * Возвращает модель для поиска
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord
      */
     public abstract function getSearchModel();
 
     /**
-     * @return \yii\web\Response
+     * @return Response
      */
     public function goBackCrud()
     {
@@ -230,7 +233,7 @@ abstract class CrudController extends Controller
 
     /**
      * Возврат после добавления записи
-     * @return \yii\web\Response
+     * @return Response
      */
     public function goBackAfterCreate() {
         return $this->goBackCrud();
@@ -238,7 +241,7 @@ abstract class CrudController extends Controller
 
     /**
      * Возврат после обновления записи
-     * @return \yii\web\Response
+     * @return Response
      */
     public function goBackAfterUpdate() {
         return $this->goBackCrud();
@@ -246,7 +249,7 @@ abstract class CrudController extends Controller
 
     /**
      * Возврат после удаления записи
-     * @return \yii\web\Response
+     * @return Response
      */
     public function goBackAfterDelete() {
         return $this->goBackCrud();

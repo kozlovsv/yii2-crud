@@ -36,7 +36,7 @@ class RememberQueryParams extends ActionFilter
 
     private function restoreQueryParams($key)
     {
-        if (empty(\Yii::$app->request->get(ReturnUrl::RESTORE_QUERY_PARAM_NAME)) || !Yii::$app->session->has($key) || Yii::$app->request->isAjax) return;
+        if (empty(Yii::$app->request->get(ReturnUrl::RESTORE_QUERY_PARAM_NAME)) || !Yii::$app->session->has($key) || Yii::$app->request->isAjax) return;
         $queryString = Yii::$app->session->get($key);
         parse_str($queryString, $queryParams);
         if (empty($queryParams) || !is_array($queryParams)) return;
@@ -45,8 +45,8 @@ class RememberQueryParams extends ActionFilter
 
     private function rememberQueryParams($key)
     {
-        if (!empty(\Yii::$app->request->queryParams)) {
-            $queryString = http_build_query(\Yii::$app->request->queryParams);
+        if (!empty(Yii::$app->request->queryParams)) {
+            $queryString = http_build_query(Yii::$app->request->queryParams);
             Yii::$app->session->set($key, $queryString);
         } else {
             Yii::$app->session->remove($key);

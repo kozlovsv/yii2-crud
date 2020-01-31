@@ -1,8 +1,13 @@
 <?php
 namespace kozlovsv\crud\helpers;
 use Yii;
+use yii\base\InvalidRouteException;
+use yii\console\Exception;
+use yii\db\ActiveRecord;
 use yii\helpers\Url;
+use yii\web\Controller;
 use yii\web\Request;
+use yii\web\Response;
 
 /**
  * Вспомогательный класс для работы с параметрами возврата после закрытия формы
@@ -64,9 +69,11 @@ class ReturnUrl {
 
     /**
      * Редирект назад
-     * @param \yii\web\Controller $controller
+     * @param Controller $controller
      * @param string $defaultUrl URL для возврата по умолчанию
-     * @return \yii\web\Response
+     * @return Response
+     * @throws InvalidRouteException
+     * @throws Exception
      */
     public static function goBack($controller, $defaultUrl) {
         $url = self::getBackUrl($defaultUrl);
@@ -86,7 +93,7 @@ class ReturnUrl {
 
     /**
      * Получить параметры для формирования URL возврата на $action (view, update ...) с параметрами 'id' => $model->getPrimaryKey()
-     * @param \yii\db\ActiveRecord $model
+     * @param ActiveRecord $model
      * @param string $action
      * @return array
      */

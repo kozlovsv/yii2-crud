@@ -4,6 +4,7 @@ namespace kozlovsv\crud\widgets;
 
 use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
+use yii\db\ActiveRecord;
 
 
 /**
@@ -14,7 +15,7 @@ class SearchPanel extends Widget
     /**
      * Модель для формы поиска
      *
-     * @var \yii\db\ActiveRecord
+     * @var ActiveRecord
      */
     public $model;
 
