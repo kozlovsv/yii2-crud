@@ -71,14 +71,15 @@ class ReturnUrl {
      * Редирект назад
      * @param Controller $controller
      * @param string $defaultUrl URL для возврата по умолчанию
+     * @param bool $onlyRender Флаг принудительной отрисовки формы, без редиректа. Возвращает только отрендеренный HTML код
      * @return Response
-     * @throws InvalidRouteException
      * @throws Exception
+     * @throws InvalidRouteException
      */
-    public static function goBack($controller, $defaultUrl) {
+    public static function goBack($controller, $defaultUrl, $onlyRender = false) {
         $url = self::getBackUrl($defaultUrl);
         //Если возврат нужен по параметру returnUrl и в Ajax запросе (диалоговом окне) то вместо Redirect делам отображение контроллера.
-        if (Yii::$app->request->isPjax && self::isSetReturnUrl()) {
+        if ((Yii::$app->request->isPjax && self::isSetReturnUrl()) || $onlyRender) {
             $request = new Request();
             $request->setUrl(Url::to(parse_url($url,  PHP_URL_PATH)));
             $routeParams = Yii::$app->getUrlManager()->parseRequest($request);
