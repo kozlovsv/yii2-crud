@@ -29,11 +29,12 @@ class CrudButton
      * Кнопка отмена
      * @param string $text
      * @param array|string $defaultBackUrl - URL возврата по умолчанию
+     * @param array $options HTML опции
      * @return string
      */
-    public static function cancelButton($text = 'Отмена', $defaultBackUrl = ['index'])
+    public static function cancelButton($text = 'Отмена', $defaultBackUrl = ['index'], $options = ['class' => 'btn btn-default form-cancel'])
     {
-        return Html::a($text, ReturnUrl::getBackUrl($defaultBackUrl), ['class' => 'btn btn-default form-cancel']);
+        return Html::a($text, ReturnUrl::getBackUrl($defaultBackUrl), $options);
     }
     /**
      * Кнопка отмена
