@@ -97,4 +97,18 @@ class CrudButton
             ],
         ]);
     }
+
+    /**
+     * @param string $text Заголовок кнопки
+     * @param string $permissionCategory Категория разрешения. Если пусто, то разрешение не проверяется
+     * @param array $url URL кнопки.
+     * @param array $options HTML опции кнопке.
+     * @see \yii\helpers\BaseHtml::a() options
+     * @return string
+     */
+    public static function button($text, $permissionCategory, $url, $options = ['class' => 'btn btn-primary', 'data-modal' => 1])
+    {
+        if ($permissionCategory && !ModelPermission::canUpdate($permissionCategory)) return '';
+        return Html::a($text, $url, $options);
+    }
 }
