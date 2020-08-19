@@ -23,9 +23,6 @@ class ActiveFieldSearch extends ActiveField
         $this->attachDefaultLabel();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function renderActiveClass()
     {
         $containerClass = 'search-field';
