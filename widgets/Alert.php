@@ -2,116 +2,41 @@
 
 namespace kozlovsv\crud\widgets;
 
-use kartik\icons\FontAwesomeAsset;
-use kozlovsv\crud\assets\PNotifyAsset;
-use Yii;
-use yii\base\Widget;
-use yii\helpers\Json;
 
+use Yii;
+use yii\bootstrap\Widget;
+
+/**
+ *
+ */
 class Alert extends Widget
 {
-
-    const STYLING_FONTAWESOME = 'fontawesome';
-    const STYLING_BOOTSTRAP = 'bootstrap3';
-
     /**
-     * Настройки плагина PNotify
      * @var array
      */
-    public $clientOptions = [];
-
-    public $styling = self::STYLING_FONTAWESOME;
-
-    /**
-     * Таймаут скрытия
-     * @var int
-     */
-    public $closeTimeout = 3000;
+    public $alertTypes = [
+        'error'  => 'stickr-danger',
+        'danger'  => 'stickr-danger',
+        'success' => 'stickr-success',
+    ];
 
     /**
-     * Initializes the widget.
+     * @inheritdoc
      */
+
     public function init()
     {
         parent::init();
-        $this->initOptions();
-    }
-
-    /**
-     * Initializes the widget options.
-     * This method sets the default values for various options.
-     */
-    protected function initOptions()
-    {
-        $this->clientOptions = array_merge([
-            'delay' => $this->closeTimeout,
-            'styling' => $this->styling,
-            'addclass' => 'stack-bottomright',
-            'stack' => [
-                'dir1' => 'up',
-                'dir2' => 'left',
-                'firstpos1' => 60,
-                'firstpos2' => 10
-            ]
-        ], $this->clientOptions);
-    }
-
-    /**
-     * Renders the widget.
-     */
-    public function run()
-    {
-        $this->registerClientScript();
-    }
-
-
-    /**
-     * Registers the needed JavaScript.
-     */
-    public function registerClientScript()
-    {
-        $flashes = Yii::$app->session->getAllFlashes(true);
-        if (!$flashes) return; //Если нет сообщений, то скрипты не подключаем.
-        $this->registerAssets();
-        $optionsJSVarName = 'alertPnotifyOptions';
-        $js = "var {$optionsJSVarName}  = {$this->getPnotifyOptionsJS()} \n";
-        $js .= "var {$optionsJSVarName}  = {$this->getPnotifyOptionsJS()} \n";
-        foreach ($flashes as $key => $message) {
-            $js .= $this->notifyJS($key, $message, $optionsJSVarName) . "\n";
+        $session = Yii::$app->session;
+        $flashes = $session->getAllFlashes();
+        foreach ($flashes as $type => $data) {
+            if (isset($this->alertTypes[$type])) {
+                $data = (array) $data;
+                foreach ($data as $i => $message) {
+                    Stickr::widget(['note' => $message, 'className' => $this->alertTypes[$type]]);
+                }
+                $session->removeFlash($type);
+            }
         }
-        $this->getView()->registerJs($js);
-    }
-
-    public function registerAssets()
-    {
-        $view = $this->getView();
-        if ($this->styling === self::STYLING_FONTAWESOME) FontAwesomeAsset::register($view);
-        PNotifyAsset::register($view);
-    }
-
-    /**
-     * Получить настройки для плагина PNotify в формате JSON
-     * @return string
-     */
-    public function getPnotifyOptionsJS()
-    {
-        return Json::encode($this->clientOptions);
-    }
-
-    /**
-     * JS Код вывода сообщения
-     * @param $type string Тип сообщения (info, error, success, warning)
-     * @param $text string Текст сообщения
-     * @param $optionsJSVarName string Имя переменной JS в котором хранятся настройки
-     * @return string
-     */
-    public function notifyJS($type, $text, $optionsJSVarName)
-    {
-        return <<<JS
-            new PNotify($.extend({}, {$optionsJSVarName}, {
-                            type: "{$type}",
-                            text: "{$text}"
-                        }));
-JS;
     }
 }

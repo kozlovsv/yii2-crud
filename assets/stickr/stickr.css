@@ -1,0 +1,57 @@
+#jquery-stickers {
+    width: 100%;
+}
+.stickr {
+    padding: 12px 70px 12px 30px;
+    font: 18px Arial, sans-serif;
+    z-index: 10000;
+    display: block;
+    width: fit-content;
+    max-width: 750px;
+    margin: 0 auto 5px;
+    position: relative;
+    color: #FFFFFF;
+    background: #499c50;
+    opacity: 1;
+}
+.stickr a {
+    font: 18px Arial, sans-serif;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.stickr a:hover {
+    color: #FFFFFF;
+}
+.stickr-close {
+    margin-right: 0;
+    font-family: 'Glyphicons Halflings', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-shadow: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px;
+    cursor: pointer;
+}
+.stickr-close:before {
+    content: '\e014';
+}
+.stickr-success {
+    background: #4cab55;
+    color: #FFFFFF;
+    opacity: 0.9;
+}
+.stickr-success .stickr-close {
+    background: #499c50;
+    opacity: 1;
+}
+.stickr-danger {
+    background: #F04336;
+    color: #FFFFFF;
+    opacity: 0.9;
+}
+.stickr-danger .stickr-close {
+    background: #d43e33;
+    opacity: 1;
+}
