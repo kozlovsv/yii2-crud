@@ -10,7 +10,6 @@ use yii\web\AssetBundle;
 class StickrAsset extends AssetBundle
 {
     public $publishOptions = ['forceCopy' => YII_DEBUG];
-    public $sourcePath = '/assets/stickr';
     public $css = [
         'stickr.css',
     ];
@@ -20,4 +19,13 @@ class StickrAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->sourcePath = __DIR__ . '/stickr';
+        parent::init();
+    }
 }
