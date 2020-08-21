@@ -9,17 +9,16 @@ use yii\bootstrap\Widget;
 abstract class Menu extends Widget
 {
     /**
+     * Префикс кэш-ключа
+     * @var string
+     */
+    const CACHE_PREFIX = 'menu-user';
+
+    /**
      * Флаг - кэшировать или нет меню.
      * @var bool
      */
     public $cache = true;
-
-
-    /**
-     * Префикс кэш-ключа
-     * @var string
-     */
-    protected $keyPrefix = 'menu-user';
 
     protected $navOptions = ['class' => 'navbar-nav navbar-left'];
 
@@ -32,7 +31,7 @@ abstract class Menu extends Widget
      */
     public function run()
     {
-        $key = $this->getCacheKey();
+        $key = $this->getCacheKey(Yii::$app->user->id);
 
         if ($this->cache) {
             if (Yii::$app->cache->exists($key)) {
@@ -54,11 +53,12 @@ abstract class Menu extends Widget
 
     /**
      * Получить кэш-ключ для меню
+     * @param $id int
      * @return string
      */
-    protected function getCacheKey()
+    public static function getCacheKey($id)
     {
-        return $this->keyPrefix . Yii::$app->user->id;
+        return self::CACHE_PREFIX . $id;
     }
 
     /**
@@ -67,8 +67,11 @@ abstract class Menu extends Widget
      */
     protected abstract function getItems();
 
-    public function clearCache()
+    /**
+     * @param $id
+     */
+    public static function clearCache($id)
     {
-        Yii::$app->cache->delete($this->getCacheKey());
+        Yii::$app->cache->delete(self::getCacheKey($id));
     }
 }
