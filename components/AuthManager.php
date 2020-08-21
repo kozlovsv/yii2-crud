@@ -36,7 +36,7 @@ class AuthManager extends DbManager
     /**
      * @param $id
      */
-    public function clearCache($id) {
+    public static function clearCache($id) {
         Yii::$app->cache->delete(self::getCacheKey($id));
     }
 }
