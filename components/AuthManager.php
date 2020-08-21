@@ -32,4 +32,11 @@ class AuthManager extends DbManager
     {
         return Yii::$app->id . '-assignments-' . $id;
     }
+
+    /**
+     * @param $id
+     */
+    public function clearCache($id) {
+        Yii::$app->cache->delete(self::getCacheKey($id));
+    }
 }

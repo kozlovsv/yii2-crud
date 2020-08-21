@@ -66,4 +66,9 @@ abstract class Menu extends Widget
      * @return array
      */
     protected abstract function getItems();
+
+    public function clearCache()
+    {
+        Yii::$app->cache->delete($this->getCacheKey());
+    }
 }
