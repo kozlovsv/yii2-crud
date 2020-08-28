@@ -1,9 +1,9 @@
 <?php
 
+use yii\bootstrap\Html;
 use yii\rbac\Role;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 
 /* @var $this View */
 /* @var $roles Role[] */
@@ -34,10 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-xs-1 text-center" style="margin-top: 30px;">
                     <p>
-                        <?= Html::button('<span class="fa fa-chevron-left"></span>', ['class' => 'btn btn-default', 'id' => 'add-permissions']) ?>
+                        <?= Html::button(Html::icon('chevron-left'), ['class' => 'btn btn-default', 'id' => 'add-permissions']) ?>
                     </p>
                     <p>
-                        <?= Html::button('<span class="fa fa-chevron-right"></span>', ['class' => 'btn btn-default', 'id' => 'delete-permissions']) ?>
+                        <?= Html::button(Html::icon('chevron-right'), ['class' => 'btn btn-default', 'id' => 'delete-permissions']) ?>
                     </p>
                 </div>
                 <div class="col-xs-4">
