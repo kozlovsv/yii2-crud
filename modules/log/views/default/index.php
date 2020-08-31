@@ -6,7 +6,7 @@ use kozlovsv\crud\widgets\ActionColumn;
 use kozlovsv\crud\helpers\ModelPermission;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\GridView;
-use kozlovsv\crud\widgets\Pjax;
+//use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\SearchPanel;
 use kozlovsv\crud\widgets\Select2;
 use kozlovsv\crud\widgets\ToolBarPanel;
@@ -19,10 +19,12 @@ use kozlovsv\crud\widgets\ToolBarPanel;
 $this->title = 'Логи приложения';
 $this->params['breadcrumbs'][] = $this->title;
 
-Pjax::begin([
+/*
+ * PJAX создает проблемы при удалении всех записей. Решено временно убрать PJAX контейнер.
+ * Pjax::begin([
     'id' => 'pjax-content',
     'formSelector' => false,
-]);
+]);*/
 
 echo ToolBarPanel::widget(
     [
@@ -91,7 +93,7 @@ echo GridView::widget(
     ]
 );
 
-Pjax::end();
+//Pjax::end();
 
 $js = <<<JS
         var lotListId = [];  
