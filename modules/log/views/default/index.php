@@ -106,7 +106,7 @@ $js = <<<JS
             }
             if (!confirm('Удалить выделенные записи?')) return false;
            $.ajax({
-                url: '/log/delete-all' ,
+                url: '/log/default/delete-all' ,
                 type: 'post',
                 data: {
                     ids:  ids                             
