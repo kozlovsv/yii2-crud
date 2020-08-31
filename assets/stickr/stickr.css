@@ -37,6 +37,7 @@
 .stickr-close:before {
     content: '\e014';
 }
+
 .stickr-success {
     background: #4cab55;
     color: #FFFFFF;
@@ -46,6 +47,8 @@
     background: #499c50;
     opacity: 1;
 }
+
+/*noinspection CssUnusedSymbol*/
 .stickr-danger {
     background: #F04336;
     color: #FFFFFF;

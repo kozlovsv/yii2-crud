@@ -182,7 +182,7 @@ abstract class CrudController extends Controller
     public function actionIndex()
     {
         $searchModel = $this->getSearchModel();
-        /** @noinspection PhpUndefinedMethodInspection */
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render($this->indexViewName, [
             'searchModel' => $searchModel,
