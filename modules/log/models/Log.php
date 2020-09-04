@@ -3,6 +3,7 @@
 namespace kozlovsv\crud\modules\log\models;
 
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 
 /**
@@ -17,11 +18,6 @@ use yii\log\Logger;
  */
 class Log extends ActiveRecord
 {
-    /**
-     * Категория приложения
-     */
-    const CATEGORY_APPLICATION = 'common';
-
 
     /**
      * @inheritdoc
@@ -54,7 +50,6 @@ class Log extends ActiveRecord
             'level' => 'Уровень',
             'category' => 'Категория',
             'levelLabel' => 'Уровень',
-            'categoryLabel' => 'Категория',
             'log_time' => 'Время',
             'prefix' => 'Префикс',
             'message' => 'Сообщение',
@@ -66,9 +61,8 @@ class Log extends ActiveRecord
      */
     public static function categoryMap()
     {
-        return [
-            self::CATEGORY_APPLICATION => 'Приложение',
-        ];
+        $items = self::find()->select('category')->distinct()->orderBy('category')->asArray()->all();
+        return ArrayHelper::map($items, 'category', 'category');
     }
 
     /**
@@ -80,6 +74,10 @@ class Log extends ActiveRecord
             Logger::LEVEL_ERROR => 'Ошибка',
             Logger::LEVEL_WARNING => 'Предупреждение',
             Logger::LEVEL_INFO => 'Уведомление',
+            Logger::LEVEL_TRACE => 'Трассировка',
+            Logger::LEVEL_PROFILE_BEGIN => 'Профайлинг начало',
+            Logger::LEVEL_PROFILE_END => 'Профайлинг конец',
+            Logger::LEVEL_PROFILE => 'Профайл',
         ];
     }
 
