@@ -27,6 +27,7 @@ Pjax::begin([
 echo ToolBarPanel::widget(
     [
         'buttons' => [
+            Html::a('Очистить журнал', ['truncate'], ['class' => 'btn btn-danger', 'data' => ['confirm' => 'Вы действительно хотите удалить все записи из журнала']]),
             SearchPanel::widget([
                 'model' => $searchModel,
                 'resetUrl' => 'index',

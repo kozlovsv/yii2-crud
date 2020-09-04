@@ -21,7 +21,7 @@ class DefaultController extends CrudController
         $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['delete-all'],
+                'actions' => ['delete-all', 'truncate'],
                 'allow' => ModelPermission::canDelete($permissionCategory),
             ],
         ];
@@ -64,6 +64,22 @@ class DefaultController extends CrudController
         } catch (Exception $e) {
             Yii::error($e->getMessage());
             $message = 'При удалении записей произошла ошибка.';
+            Yii::$app->session->setFlash('error', $message);
+        }
+        return '';
+    }
+
+
+    public function actionTruncate()
+    {
+        try {
+        $command = Log::getDb()->createCommand();
+        $command->truncateTable(Log::tableName());
+        $command->execute();
+        Yii::$app->session->setFlash('success', 'Журнал логов успешно очищен.');
+        } catch (Exception $e) {
+            Yii::error($e->getMessage());
+            $message = 'При очистки журнала произошла ошибка.';
             Yii::$app->session->setFlash('error', $message);
         }
         return '';
