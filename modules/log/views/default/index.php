@@ -36,7 +36,7 @@ echo ToolBarPanel::widget(
                         'widgetClass' => Select2::class,
                         'options' => [
                             'data' => Log::levelMap(),
-                            'pluginOptions' => ['minimumResultsForSearch' => -1]
+                            'pluginOptions' => ['minimumResultsForSearch' => -1, 'width' => '170px']
                         ],
                     ],
                     'category' => [
@@ -44,7 +44,7 @@ echo ToolBarPanel::widget(
                         'widgetClass' => Select2::class,
                         'options' => [
                             'data' => Log::categoryMap(),
-                            'pluginOptions' => ['minimumResultsForSearch' => -1],
+                            'pluginOptions' => ['minimumResultsForSearch' => -1, 'width' => '170px'],
                         ],
                     ],
                     'message',
