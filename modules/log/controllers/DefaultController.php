@@ -82,6 +82,6 @@ class DefaultController extends CrudController
             $message = 'При очистки журнала произошла ошибка.';
             Yii::$app->session->setFlash('error', $message);
         }
-        return '';
+        return $this->goBackAfterDelete();
     }
 }
