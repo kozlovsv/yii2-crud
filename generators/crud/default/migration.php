@@ -1,6 +1,6 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $generator app\generators\crud\Generator */
+/* @var $generator Generator */
 /* @var $migrationName string migration name */
 /* @var $modelName string */
 /* @var $modelLabel string */
@@ -16,7 +16,7 @@ $actions = [
 echo "<?php\n";
 ?>
 
-use app\components\RbacManager;
+use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
 class <?= $migrationName ?> extends Migration
