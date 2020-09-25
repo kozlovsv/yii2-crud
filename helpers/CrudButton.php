@@ -1,6 +1,7 @@
 <?php
 
 namespace kozlovsv\crud\helpers;
+
 use yii\helpers\Url;
 
 /**
@@ -36,6 +37,7 @@ class CrudButton
     {
         return Html::a($text, ReturnUrl::getBackUrl($defaultBackUrl), $options);
     }
+
     /**
      * Кнопка отмена
      * @param string $permissionCategory наименование раздела для определения разрешения
@@ -69,33 +71,42 @@ class CrudButton
      * @param int $id ID записи
      * @param bool $isModal Отображать форму редактирования в модальном окне
      * @param array $url URL редактирования. Если пусто то используется URL по умолчанию
+     * @param string|null $title Заголовок кнопки. Если не задан, то иконка "карандаш"
+     * @param array $options Html опции кнопки.
      * @return string
      */
-    public static function editButton($permissionCategory, $id, $isModal, $url = [])
+    public static function editButton($permissionCategory, $id, $isModal, $url = [], $title = null, $options = [])
     {
         if (!ModelPermission::canUpdate($permissionCategory)) return '';
         if (empty($url)) $url = ['update', 'id' => $id, ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $id])];
-        return Html::a(Html::icon('pencil'), $url,
-            ['class' => 'btn btn-primary', 'data-modal' => $isModal ? 1 : 0]);
+        $defOptions = ['class' => 'btn btn-primary', 'data-modal' => $isModal ? 1 : 0];
+        $options = array_merge($defOptions, $options);
+        if (!$title) $title = Html::icon('pencil');
+        return Html::a($title, $url, $options);
     }
 
     /**
      * @param string $permissionCategory Категория разрешения
      * @param int $id ID записи
      * @param array $url URL редактирования. Если пусто то используется URL по умолчанию
+     * @param string|null $title Заголовок кнопки. Если не задан, то иконка "карандаш"
+     * @param array $options Html опции кнопки.
      * @return string
      */
-    public static function deleteButton($permissionCategory, $id, $url = [])
+    public static function deleteButton($permissionCategory, $id, $url = [], $title = null, $options = [])
     {
         if (!ModelPermission::canDelete($permissionCategory)) return '';
         if (empty($url)) $url = ['delete', 'id' => $id];
-        return Html::a(Html::icon('trash'), $url, [
+        $defOptions = [
             'class' => 'btn btn-danger pull-right',
             'data' => [
                 'confirm' => 'Удалить запись?',
                 'method' => 'post',
-            ],
-        ]);
+            ]
+        ];
+        $options = array_merge($defOptions, $options);
+        if (!$title) $title = Html::icon('trash');
+        return Html::a($title, $url, $options);
     }
 
     /**
@@ -103,8 +114,8 @@ class CrudButton
      * @param string $permissionCategory Категория разрешения. Если пусто, то разрешение не проверяется
      * @param array $url URL кнопки.
      * @param array $options HTML опции кнопке.
-     * @see \yii\helpers\BaseHtml::a() options
      * @return string
+     * @see \yii\helpers\BaseHtml::a() options
      */
     public static function button($text, $permissionCategory, $url, $options = ['class' => 'btn btn-primary', 'data-modal' => 1])
     {
