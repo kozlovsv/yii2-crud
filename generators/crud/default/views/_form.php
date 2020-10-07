@@ -16,6 +16,7 @@ echo "<?php\n";
 
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
@@ -24,7 +25,10 @@ use kozlovsv\crud\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->getModelClass(), '\\') ?> */
 
-$form = ActiveForm::begin();
+<?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form']);?>\n";?>
+<?="<?php ";?>$form = ActiveForm::begin();?>
+
+<?="<?php\n";?>
 echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header']);
 echo FormBuilder::widget([
         'form' => $form,
@@ -47,5 +51,7 @@ echo ToolBarPanelContainer::widget([
         'options' => ['class' => 'form-group', 'style' => 'margin-top: 20px; margin-right: 0'],
     ]
 );
+?>
 
-ActiveForm::end();
+<?="<?php ";?>ActiveForm::end();?>
+<?php if ($generator->enableModal) echo "<?php Pjax::end();?>\n";?>
