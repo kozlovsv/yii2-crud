@@ -24,6 +24,11 @@
     "kartik-v/yii2-widget-select2": "2.1.7",
     "kartik-v/yii2-builder": "*"
   },
+  "require-dev": {
+    "yiisoft/yii2-debug": "*",
+    "yiisoft/yii2-gii": "*",
+    "yiisoft/yii2-faker": "*"
+  },
   "autoload": {
     "psr-4": {
       "kozlovsv\\crud\\": ""
