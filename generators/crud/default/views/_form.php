@@ -24,6 +24,7 @@ use kozlovsv\crud\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->getModelClass(), '\\') ?> */
+?>
 
 <?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form']);?>\n";?>
 <?="<?php ";?>$form = ActiveForm::begin();?>
