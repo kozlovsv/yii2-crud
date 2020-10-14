@@ -43,7 +43,7 @@ class DebugHelper
 
     private static function getCaller($level = 1)
     {
-        $arr = debug_backtrace($level);
+        $arr = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level);
         return count($arr) > $level - 1 ? $arr[$level - 1] : null;
     }
 }
