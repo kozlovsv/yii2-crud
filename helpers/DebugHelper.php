@@ -10,19 +10,21 @@ class DebugHelper
      * Debug function
      * d($var);
      * @param $var
-     * @param null $caller
+     * @param int $callerLevel
      */
-    public static function d($var, $caller = null)
+    public static function d($var, $callerLevel = 1)
     {
         $cli = php_sapi_name() == 'cli';
-        if (!isset($caller)) {
-            $arr = debug_backtrace(1);
-            $caller = array_shift($arr);
+        $caller = static::getCaller($callerLevel);
+        if ($caller) {
+            $s = $caller['file'] . ' / Line: ' . $caller['line'];
+            if ($cli)
+                $s .= "\r\n";
+            else
+                $s = '<code>File: ' . $s . '</code>';
+            echo $s;
         }
-        if (!$cli) {
-            echo '<code>File: ' . $caller['file'] . ' / Line: ' . $caller['line'] . '</code>';
-            echo '<pre>';
-        }
+        if (!$cli) echo '<pre>';
         VarDumper::dump($var, 10, !$cli);
         if (!$cli) echo '</pre>';
     }
@@ -31,12 +33,17 @@ class DebugHelper
      * Debug function with die() after
      * dd($var);
      * @param $var
+     * @param int $callerLevel
      */
-    public static function dd($var)
+    public static function dd($var, $callerLevel = 1)
     {
-        $arr = debug_backtrace(1);
-        $caller = array_shift($arr);
-        static::d($var, $caller);
+        static::d($var, $callerLevel);
         die();
+    }
+
+    private static function getCaller($level = 1)
+    {
+        $arr = debug_backtrace($level);
+        return count($arr) > $level - 1 ? $arr[$level - 1] : null;
     }
 }
