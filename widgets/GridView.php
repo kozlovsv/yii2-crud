@@ -4,6 +4,7 @@ namespace kozlovsv\crud\widgets;
 use kozlovsv\crud\helpers\ModelPermission;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 class GridView extends \yii\grid\GridView
 {

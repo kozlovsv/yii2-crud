@@ -16,17 +16,18 @@ echo "<?php\n";
 
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
-use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
+
+use yii\widgets\Pjax;
 
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->getModelClass(), '\\') ?> */
 ?>
 
-<?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form']);?>\n";?>
+<?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form', 'enablePushState' => false']);?>\n";?>
 <?="<?php ";?>$form = ActiveForm::begin();?>
 
 <?="<?php\n";?>

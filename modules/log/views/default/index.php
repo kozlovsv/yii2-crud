@@ -6,10 +6,10 @@ use kozlovsv\crud\widgets\ActionColumn;
 use kozlovsv\crud\helpers\ModelPermission;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\GridView;
-use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\SearchPanel;
 use kozlovsv\crud\widgets\Select2;
 use kozlovsv\crud\widgets\ToolBarPanel;
+use yii\widgets\Pjax;
 
 
 /* @var $this yii\web\View */

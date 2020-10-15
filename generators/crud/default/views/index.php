@@ -11,10 +11,10 @@ echo "<?php\n";
 
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\GridView;
-use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\SearchPanel;
 use kozlovsv\crud\widgets\ToolBarPanel;
 
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel <?= ltrim($generator->getSearchModelClass(), '\\') ?> */
