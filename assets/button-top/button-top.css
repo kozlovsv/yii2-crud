@@ -1,0 +1,6 @@
+#button-top {
+    display: none;
+    position: fixed;
+    background: url(button-top.svg);
+}
+
