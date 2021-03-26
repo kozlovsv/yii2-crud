@@ -19,6 +19,10 @@ echo "<?php\n";
 use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
+/**
+ *
+ * @property RbacManager $manager
+ */
 class <?= $migrationName ?> extends Migration
 {
     /**

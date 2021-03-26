@@ -27,7 +27,7 @@ use yii\widgets\Pjax;
 /* @var $model <?= ltrim($generator->getModelClass(), '\\') ?> */
 ?>
 
-<?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form', 'enablePushState' => false']);?>\n";?>
+<?php if ($generator->enableModal) echo "<?php Pjax::begin(['id' => 'pjax-form', 'enablePushState' => false]);?>\n";?>
 <?="<?php ";?>$form = ActiveForm::begin();?>
 
 <?="<?php\n";?>

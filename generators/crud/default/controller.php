@@ -17,12 +17,13 @@ use yii\db\ActiveRecord;
 
 /**
  * <?= StringHelper::basename($generator->getControllerClass()) ?> implements the CRUD actions for <?= StringHelper::basename($generator->getModelClass()) ?> model.
+ * @property <?= StringHelper::basename($generator->getSearchModelClass()) ?> $searchModel
  */
 class <?= StringHelper::basename($generator->getControllerClass()) ?> extends CrudController
 {
     /**
      * Возвращает модель для поиска
-     * @return ActiveRecord
+     * @return <?= StringHelper::basename($generator->getSearchModelClass()) ?>
      */
     public function getSearchModel()
     {
