@@ -11,45 +11,45 @@ use yii\widgets\ActiveForm;
 $this->title = 'Роли и права';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="auth-default-index">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="pull-left">
-                <?= Html::a("Создать", ['create'], ['class' => 'btn btn-success create-button', 'data-modal' => 1, 'data-pjax' => 0]); ?>
+    <div class="auth-default-index">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <?= Html::a("Создать", ['create'], ['class' => 'btn btn-success create-button', 'data-modal' => 1, 'data-pjax' => 0]); ?>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <?php $form = ActiveForm::begin(); ?>
+                <div class="row auth-editor">
+                    <div class="col-xs-3">
+                        <?= Html::label('Роли') ?>
+                        <?= Html::dropDownList('AuthRoles', null, $roles, ['id' => 'auth-roles', 'class' => 'auth-select', 'multiple' => true]) ?>
+                    </div>
+                    <div class="col-xs-4">
+                        <?= Html::label('Назначенные права') ?>
+                        <?= Html::textInput('auth-permissions-search', null, ['id' => 'auth-permissions-search', 'class' => 'pull-right', 'placeholder' => 'Найти']) ?>
+                        <?= Html::dropDownList('AuthPermission', null, [], ['id' => 'auth-permissions', 'class' => 'auth-select', 'multiple' => true]) ?>
+                    </div>
+                    <div class="col-xs-1 text-center" style="margin-top: 30px;">
+                        <p>
+                            <?= Html::button(Html::icon('chevron-left'), ['class' => 'btn btn-default', 'id' => 'add-permissions']) ?>
+                        </p>
+                        <p>
+                            <?= Html::button(Html::icon('chevron-right'), ['class' => 'btn btn-default', 'id' => 'delete-permissions']) ?>
+                        </p>
+                    </div>
+                    <div class="col-xs-4">
+                        <?= Html::label('Доступные права') ?>
+                        <?= Html::textInput('auth-permission-list-search', null, ['id' => 'auth-permission-list-search', 'class' => 'pull-right', 'placeholder' => 'Найти']) ?>
+                        <?= Html::dropDownList('Permissions', null, [], ['id' => 'auth-permission-list', 'class' => 'auth-select', 'multiple' => true]) ?>
+                    </div>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <?php $form = ActiveForm::begin(); ?>
-            <div class="row auth-editor">
-                <div class="col-xs-3">
-                    <?= Html::label('Роли') ?>
-                    <?= Html::dropDownList('AuthRoles', null, $roles, ['id' => 'auth-roles', 'class' => 'auth-select', 'multiple' => true]) ?>
-                </div>
-                <div class="col-xs-4">
-                    <?= Html::label('Назначенные права') ?>
-                    <?= Html::textInput('auth-permissions-search', null, ['id' => 'auth-permissions-search', 'class' => 'pull-right', 'placeholder' => 'Найти']) ?>
-                    <?= Html::dropDownList('AuthPermission', null, [], ['id' => 'auth-permissions', 'class' => 'auth-select', 'multiple' => true]) ?>
-                </div>
-                <div class="col-xs-1 text-center" style="margin-top: 30px;">
-                    <p>
-                        <?= Html::button(Html::icon('chevron-left'), ['class' => 'btn btn-default', 'id' => 'add-permissions']) ?>
-                    </p>
-                    <p>
-                        <?= Html::button(Html::icon('chevron-right'), ['class' => 'btn btn-default', 'id' => 'delete-permissions']) ?>
-                    </p>
-                </div>
-                <div class="col-xs-4">
-                    <?= Html::label('Доступные права') ?>
-                    <?= Html::textInput('auth-permission-list-search', null, ['id' => 'auth-permission-list-search', 'class' => 'pull-right', 'placeholder' => 'Найти']) ?>
-                    <?= Html::dropDownList('Permissions', null, [], ['id' => 'auth-permission-list', 'class' => 'auth-select', 'multiple' => true]) ?>
-                </div>
-            </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
-</div>
 <?php
 $js = <<<JS
 $(function () {
@@ -62,11 +62,11 @@ $(function () {
             success: function (data) {
                 $('#auth-permissions').empty();
                 $.each(data.permissions, function (key, value) {
-                    $('#auth-permissions').append($('<option></option>').val(value.name).html(value.description));
+                    $('#auth-permissions').append($('<option></option>').val(key).html(value));
                 });
                 $('#auth-permission-list').empty();
                 $.each(data.permissionList, function (key, value) {
-                    $('#auth-permission-list').append($('<option></option>').val(value.name).html(value.description));
+                    $('#auth-permission-list').append($('<option></option>').val(key).html(value));
                 });
             }
         });

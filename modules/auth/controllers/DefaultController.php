@@ -11,7 +11,7 @@ use yii\web\Response;
 use yii\helpers\ArrayHelper;
 
 /**
- * Управлене доступом 
+ * Управлене доступом
  */
 class DefaultController extends Controller
 {
@@ -43,7 +43,7 @@ class DefaultController extends Controller
     {
         $auth = Yii::$app->authManager;
         $roles = ArrayHelper::map($auth->getRoles(), 'name', 'description');
-
+        asort($roles, SORT_STRING);
         /** @noinspection MissedViewInspection */
         return $this->render('index', compact('roles'));
     }
@@ -64,7 +64,10 @@ class DefaultController extends Controller
                 unset($permissionList[$key]);
             }
         }
-
+        $permissions = ArrayHelper::map($permissions, 'name', 'description');
+        $permissionList = ArrayHelper::map($permissionList, 'name', 'description');
+        asort($permissions, SORT_STRING);
+        asort($permissionList, SORT_STRING);
         return [
             'permissions' => $permissions,
             'permissionList' => $permissionList

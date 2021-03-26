@@ -23,6 +23,11 @@ use yii\web\Response;
  */
 abstract class CrudController extends Controller
 {
+    const TYPE_ACTION_DELETE = 'delete';
+    const TYPE_ACTION_VIEW = 'view';
+    const TYPE_ACTION_CREATE = 'create';
+    const TYPE_ACTION_UPDATE = 'update';
+
     /**
      * Дополнительные настройки доступа
      * @var array
@@ -145,6 +150,7 @@ abstract class CrudController extends Controller
     {
         try {
             $model = $this->findModel($id);
+            $this->afterFindModel($model, self::TYPE_ACTION_DELETE);
             if ($model->delete()) {
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Запись удалена');
             }
@@ -162,6 +168,7 @@ abstract class CrudController extends Controller
     {
         try {
             $model = $this->findModel($id);
+            $this->afterFindModel($model, self::TYPE_ACTION_UPDATE);
             $post = Yii::$app->request->post();
             if ($model->load($post) && $model->save()) {
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
@@ -193,16 +200,19 @@ abstract class CrudController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        $this->afterFindModel($model, self::TYPE_ACTION_VIEW);
         return $this->renderIfAjax($this->viewViewName, compact('model'));
     }
 
     /**
      * @param $id
+     * @param bool $noCache Брать модель не из кэша, а запрашивать заново
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function findModel($id)
+    public function findModel($id, $noCache = false)
     {
+        if (!empty($this->model) && !$noCache) return $this->model;
         $modelClass = $this->modelClassName;
         /** @noinspection PhpUndefinedMethodInspection */
         $model = $modelClass::findOne($id);
@@ -218,7 +228,6 @@ abstract class CrudController extends Controller
      */
     public function createModel()
     {
-
         /** @var ActiveRecord $model */
         $model = new $this->modelClassName();
         if ($this->loadDefaultValue) $model->loadDefaultValues(true);
@@ -293,5 +302,14 @@ abstract class CrudController extends Controller
         $className = $this->modelClassName;
         /** @noinspection PhpUndefinedMethodInspection */
         return $className::tableName();
+    }
+
+    /**
+     * @param ActiveRecord $model
+     * @param string $typeAction
+     */
+    protected function afterFindModel($model, string $typeAction)
+    {
+        //empty
     }
 }
