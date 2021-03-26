@@ -1,5 +1,6 @@
 {
   "name": "kozlovsv/yii2-crud",
+  "description": "Набор библиотек для быстрого построение CRUD приложений",
   "keywords": [
     "yii2",
     "extension",
@@ -22,7 +23,8 @@
     "yiisoft/yii2-bootstrap": "@dev",
     "kozlovsv/yii2-widget-datetimepicker": "*",
     "kartik-v/yii2-widget-select2": "2.1.7",
-    "kartik-v/yii2-builder": "*"
+    "kartik-v/yii2-builder": "*",
+    "ext-mbstring": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "*",
