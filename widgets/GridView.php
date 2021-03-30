@@ -45,6 +45,8 @@ class GridView extends \yii\grid\GridView
 
     public $containerOptions = ['class' => 'col-lg-12 col-md-12 col-sm-12 col-xs-12', 'style' => 'margin-bottom: 50px'];
 
+    public $buttonUrlCreator;
+
     /**
      * @init
      */
@@ -74,29 +76,32 @@ class GridView extends \yii\grid\GridView
         echo Html::endTag('div');
     }
 
-    public static function defaultActionColumnsBefore($isModal, $permissionCategory){
+    public static function defaultActionColumnsBefore($isModal, $permissionCategory, $urlCreator = null){
         return [
             [
                 'class' => ActionColumn::class,
                 'template' => '{view}',
                 'isModal' => $isModal,
                 'visible' => ModelPermission::canView($permissionCategory),
+                'urlCreator' => $urlCreator,
             ],
         ];
     }
 
-    public static function defaultActionColumnsAfter($isModal, $permissionCategory){
+    public static function defaultActionColumnsAfter($isModal, $permissionCategory, $urlCreator = null){
         return [
             [
                 'class' => ActionColumn::class,
                 'template' => '{update}',
                 'isModal' => $isModal,
                 'visible' => ModelPermission::canUpdate($permissionCategory),
+                'urlCreator' => $urlCreator,
             ],
             [
                 'class' => ActionColumn::class,
                 'template' => '{delete}',
                 'visible' => ModelPermission::canDelete($permissionCategory),
+                'urlCreator' => $urlCreator,
             ],
         ];
     }
@@ -104,14 +109,14 @@ class GridView extends \yii\grid\GridView
     protected function initDefaultActionColumnsBefore()
     {
         if ($this->actionColumnsBefore === null) {
-            $this->actionColumnsBefore = self::defaultActionColumnsBefore($this->isModal, $this->permissionCategory);
+            $this->actionColumnsBefore = self::defaultActionColumnsBefore($this->isModal, $this->permissionCategory, $this->buttonUrlCreator);
         }
     }
 
     protected function initDefaultActionColumnsAfter()
     {
         if ($this->actionColumnsAfter === null) {
-            $this->actionColumnsAfter = self::defaultActionColumnsAfter($this->isModal, $this->permissionCategory);
+            $this->actionColumnsAfter = self::defaultActionColumnsAfter($this->isModal, $this->permissionCategory, $this->buttonUrlCreator);
         }
     }
 
