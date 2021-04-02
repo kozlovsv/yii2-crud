@@ -126,6 +126,7 @@ abstract class CrudController extends Controller
             $model = $this->createModel();
             $post = Yii::$app->request->post();
             if ($model->load($post) && $model->save()) {
+                $this->afterCreate($model);
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                 return $this->goBackAfterCreate();
             }
@@ -309,6 +310,14 @@ abstract class CrudController extends Controller
      * @param string $typeAction
      */
     protected function afterFindModel($model, string $typeAction)
+    {
+        //empty
+    }
+
+    /**
+     * @param ActiveRecord $model
+     */
+    protected function afterCreate($model)
     {
         //empty
     }
