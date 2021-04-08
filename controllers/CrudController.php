@@ -291,7 +291,14 @@ abstract class CrudController extends Controller
      */
     protected function renderIfAjax($view, $params = [])
     {
-        if (Yii::$app->request->isAjax) return $this->renderAjax($view, $params);
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->assetManager->bundles = [
+                'yii\bootstrap\BootstrapPluginAsset' => false,
+                'yii\bootstrap\BootstrapAsset' => false,
+                'yii\web\JqueryAsset' => false,
+            ];
+            return parent::renderAjax($view, $params);
+        }
         return $this->render($view, $params);
     }
 
