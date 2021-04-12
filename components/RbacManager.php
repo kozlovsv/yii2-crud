@@ -35,6 +35,12 @@ class RbacManager extends Component
     public $child = [];
 
     /**
+     * Удалить разрешения для ролей
+     * @var array
+     */
+    public $childRemove = [];
+
+    /**
      * Менеджер
      * @var AuthManager
      */
@@ -57,6 +63,7 @@ class RbacManager extends Component
         $this->addRoles($this->roles);
         $this->addPermissions($this->permissions);
         $this->addChild($this->child);
+        $this->removeChild($this->childRemove);
         $this->removePermissions($this->permissionsRemove);
     }
 
@@ -66,8 +73,10 @@ class RbacManager extends Component
     public function down()
     {
         $this->addPermissions($this->permissionsRemove);
-        $this->removeRoles($this->roles);
+        $this->addChild($this->childRemove);
+        $this->removeChild($this->child);
         $this->removePermissions($this->permissions);
+        $this->removeRoles($this->roles);
     }
 
     /**
@@ -114,6 +123,23 @@ class RbacManager extends Component
                 $permission = $this->authManager->getPermission($permissionName);
                 if (!$this->authManager->hasChild($role, $permission)) {
                     $this->authManager->addChild($role, $permission);
+                }
+            }
+        }
+    }
+
+    /**
+     * Присвоить права ролям
+     * @param array $child
+     */
+    protected function removeChild($child)
+    {
+        foreach ($child as $roleName => $permissionsNames) {
+            $role = $this->authManager->getRole($roleName);
+            foreach ($permissionsNames as $permissionName) {
+                $permission = $this->authManager->getPermission($permissionName);
+                if ($this->authManager->hasChild($role, $permission)) {
+                    $this->authManager->removeChild($role, $permission);
                 }
             }
         }
