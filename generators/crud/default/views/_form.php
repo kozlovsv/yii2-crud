@@ -20,7 +20,7 @@ use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
 
-use yii\widgets\Pjax;
+use kozlovsv\crud\widgets\Pjax;
 
 
 /* @var $this yii\web\View */
