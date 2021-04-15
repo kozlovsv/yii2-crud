@@ -33,8 +33,10 @@ class Dialog extends Modal
     public $attribute = 'data-modal';
 
     public function init() {
-        /** Обязательно в диалоге должен стоять 'tabindex' => '' иначе автофокус работать не будет. */
-        $this->options = array_merge($this->options, ['tabindex' => '']);
+        /** Обязательно в диалоге должен стоять 'tabindex' => -1 иначе автофокус работать не будет.
+         class = ''  чтобы не добавлялся класс fade он делает анимацию.
+         */
+        $this->options = array_merge($this->options, ['tabindex' => -1, 'class' => '']);
         parent::init();
     }
 
