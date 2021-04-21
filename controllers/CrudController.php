@@ -125,8 +125,16 @@ abstract class CrudController extends Controller
         try {
             $model = $this->createModel();
             $post = Yii::$app->request->post();
-            if ($model->load($post) && $model->save()) {
-                $this->afterCreate($model);
+            if ($model->load($post) && $model->validate()) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    $model->save(false);
+                    $this->afterCreate($model);
+                    $transaction->commit();
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                 return $this->goBackAfterCreate();
             }
