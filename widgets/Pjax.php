@@ -1,4 +1,5 @@
 <?php
+
 namespace kozlovsv\crud\widgets;
 
 use Yii;
@@ -10,21 +11,32 @@ use yii\widgets\Pjax as YiiPjax;
  */
 class Pjax extends YiiPjax
 {
+    public $onlyForDialog = true;
+
     /**
      * {@inheritdoc}
      */
     public function init()
     {
-        if (!Yii::$app->request->isAjax) return;
+        if (!Yii::$app->request->isAjax && $this->onlyForDialog) return;
         parent::init();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run() {
-        if (!Yii::$app->request->isAjax) return '';
+    public function run()
+    {
+        if (!Yii::$app->request->isAjax && $this->onlyForDialog) return '';
+        //Значение не работают в самом виджете. Помогает только вот такая вот установка.
+        //В PJAX Jquery стоит по умолчанию таймаут 650. Если его превысить то просиходит полная перезагрузка страницы.
+        //Установка значения timeout самого виджета не дает результата. Тоже самое и со сзначением scrollTo оно не работает если установить его в виджете.
+        $scrolTo = $this->scrollTo === false ? 'false' : $this->scrollTo;
+        $js = "
+            $.pjax.defaults.timeout = {$this->timeout};
+            $.pjax.defaults.scrollTo = {$scrolTo};
+        ";
+        $this->view->registerJs($js, $this->view::POS_END);
         return parent::run();
     }
-
 }
