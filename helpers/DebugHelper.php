@@ -16,8 +16,8 @@ class DebugHelper
     {
         $cli = php_sapi_name() == 'cli';
         $caller = static::getCaller($callerLevel);
-        if ($caller) {
-            $s = $caller['file'] . ' / Line: ' . $caller['line'];
+        if ($caller && !empty($caller['file']) && !empty($caller['line'])) {
+            $s = $caller['file']  . ' / Line: ' . $caller['line'];
             if ($cli)
                 $s .= "\r\n";
             else
