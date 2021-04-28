@@ -21,7 +21,7 @@
   "minimum-stability": "dev",
   "require": {
     "yiisoft/yii2-bootstrap": "@dev",
-    "kozlovsv/yii2-widget-datetimepicker": "*",
+    "kozlovsv/yii2-widget-datetimepicker": "@dev",
     "kartik-v/yii2-widget-select2": "2.1.7",
     "kartik-v/yii2-builder": "*",
     "ext-mbstring": "*"
@@ -31,6 +31,12 @@
     "yiisoft/yii2-gii": "*",
     "yiisoft/yii2-faker": "*"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url":  "https://github.com/kozlovsv/yii2-widget-datetimepicker.git"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "kozlovsv\\crud\\": ""
