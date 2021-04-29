@@ -27,7 +27,6 @@ $isModal = <?= $generator->enableModal ? 'true' : 'false' ?>;
 Pjax::begin([
     'id' => 'pjax-content',
     'formSelector' => false,
-    'scrollTo' => false,
     'onlyForDialog' => false,
 ]);
 
