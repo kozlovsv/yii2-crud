@@ -4,7 +4,6 @@ namespace kozlovsv\crud\widgets;
 use kozlovsv\crud\helpers\ModelPermission;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
-use yii\widgets\Pjax;
 
 class GridView extends \yii\grid\GridView
 {
@@ -63,15 +62,9 @@ class GridView extends \yii\grid\GridView
     public function renderContainerBegin(){
         echo Html::beginTag('div', ['class' => 'row']);
         echo Html::beginTag('div', $this->containerOptions);
-        Pjax::begin([
-            'id' => 'pjax-table',
-            'formSelector' => false,
-            'scrollTo' => 1
-        ]);
     }
 
     public function renderContainerEnd(){
-        Pjax::end();
         echo Html::endTag('div');
         echo Html::endTag('div');
     }
