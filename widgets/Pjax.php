@@ -14,6 +14,13 @@ class Pjax extends YiiPjax
     public $onlyForDialog = true;
 
     /**
+     * @var int pjax timeout setting (in milliseconds). This timeout is used when making AJAX requests.
+     * Use a bigger number if your server is slow. If the server does not respond within the timeout,
+     * a full page load will be triggered.
+     */
+    public $timeout = 5000;
+
+    /**
      * {@inheritdoc}
      */
     public function init()
