@@ -28,6 +28,7 @@ Pjax::begin([
     'id' => 'pjax-content',
     'formSelector' => false,
     'onlyForDialog' => false,
+    'scrollTo' => 0,
 ]);
 
 echo ToolBarPanel::widget(
