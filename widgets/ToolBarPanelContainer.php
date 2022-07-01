@@ -38,11 +38,13 @@ class ToolBarPanelContainer extends Widget
     public function run()
     {
         $content = ToolBarPanel::widget([
+            'showOnEmpty' => $this->showOnEmpty,
             'buttons' => $this->buttonsLeft,
             'orientation' => ToolBarPanel::ORIENTATION_LEFT,
         ]);
 
         $content .= ToolBarPanel::widget([
+            'showOnEmpty' => $this->showOnEmpty,
             'buttons' => $this->buttonsRight,
             'orientation' => ToolBarPanel::ORIENTATION_RIGHT,
         ]);
