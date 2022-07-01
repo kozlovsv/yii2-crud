@@ -48,6 +48,12 @@ class ToolBarPanel extends Widget
     public $orientation = self::ORIENTATION_LEFT;
 
     /**
+     * To show panel container om empty left and right panels
+     * @var bool
+     */
+    public $showOnEmpty = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -64,6 +70,6 @@ class ToolBarPanel extends Widget
             if (empty($button)) continue;
             $panel .= Html::tag('div', (!is_array($button)) ? $button : implode('', $button), ['class' => 'btn-group']);
         }
-        return Html::tag('div', $panel, $this->options);
+        return (!empty($panel) || $this->showOnEmpty) ? Html::tag('div', $panel, $this->options) : '';
     }
 }

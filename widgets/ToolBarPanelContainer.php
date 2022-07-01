@@ -29,6 +29,12 @@ class ToolBarPanelContainer extends Widget
      */
     public $buttonsRight = [];
 
+    /**
+     * To show panel container om empty left and right panels
+     * @var bool
+     */
+    public $showOnEmpty = true;
+
     public function run()
     {
         $content = ToolBarPanel::widget([
@@ -41,6 +47,6 @@ class ToolBarPanelContainer extends Widget
             'orientation' => ToolBarPanel::ORIENTATION_RIGHT,
         ]);
 
-        return Html::tag('div', $content, $this->options);
+        return (!empty($content) || $this->showOnEmpty) ? Html::tag('div', $content, $this->options) : '';
     }
 }
