@@ -32,6 +32,8 @@ class Dialog extends Modal
      */
     public $attribute = 'data-modal';
 
+    public $containerCssClassName = 'modal-container';
+
     public function init() {
         /** Обязательно в диалоге должен стоять 'tabindex' => -1 иначе автофокус работать не будет.
          class = ''  чтобы не добавлялся класс fade он делает анимацию.
@@ -58,8 +60,10 @@ class Dialog extends Modal
         $selector = "#{$this->getId()}";
         $js = '
         $("document").ready(function() {
+            $.ajaxSetup({
+                cache: true
+            });
             $(document).on("click", "[' . $this->attribute . ' = 1]", function() {
-                $.ajaxSetup({cache: true});
                 $.ajax({
                     method: "get",
                     url: $(this).attr("href"),
@@ -67,6 +71,11 @@ class Dialog extends Modal
                 }).done(function(html) {
                     if (html) {
                         $("' . $selector . ' .modal-body").html(html);
+                        var width = $(html).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
+                        if (width > 0) {
+                            var value = width + "px";
+                            $(".modal-dialog").css("width", value);
+                        }
                         $("' . $selector . '").modal();
                     }
                 });
