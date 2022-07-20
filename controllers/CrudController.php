@@ -71,6 +71,30 @@ abstract class CrudController extends Controller
      * @var bool
      */
     public $loadGetValue = false;
+    /**
+     * @var string
+     */
+    public $successCreateMessage = 'Данные успешно сохранены';
+    /**
+     * @var string
+     */
+    public $errorCreateMessage = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
+    /**
+     * @var string
+     */
+    public $successDeleteMessage = 'Запись удалена';
+    /**
+     * @var string
+     */
+    public $errorDeleteMessage = 'Запись не может быть удалена, имеются связанные данные';
+    /**
+     * @var string
+     */
+    public $successUpdateMessage = 'Данные успешно сохранены';
+    /**
+     * @var string
+     */
+    public $errorUpdateMessage = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
 
 
     /**
@@ -84,6 +108,8 @@ abstract class CrudController extends Controller
      * @var bool
      */
     public $addFlashMessages = true;
+
+
 
     /**
      * @inheritdoc
@@ -141,7 +167,7 @@ abstract class CrudController extends Controller
                     $transaction->rollBack();
                     throw $e;
                 }
-                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successCreateMessage);
                 return $this->goBackAfterCreate();
             }
             return $this->renderIfAjax($this->createViewName, compact('model'));
@@ -149,7 +175,7 @@ abstract class CrudController extends Controller
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
             if ($this->addFlashMessages) {
-                $message = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
+                $message = $this->errorCreateMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
             return $this->goBackAfterCreate();
@@ -167,12 +193,12 @@ abstract class CrudController extends Controller
             $model = $this->findModel($id);
             $this->afterFindModel($model, self::TYPE_ACTION_DELETE);
             if ($model->delete()) {
-                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Запись удалена');
+                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successDeleteMessage);
             }
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             if ($this->addFlashMessages) {
-                $message = 'Запись не может быть удалена, имеются связанные данные';
+                $message = $this->errorDeleteMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
         }
@@ -186,7 +212,7 @@ abstract class CrudController extends Controller
             $this->afterFindModel($model, self::TYPE_ACTION_UPDATE);
             $post = Yii::$app->request->post();
             if ($model->load($post) && $model->save()) {
-                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successUpdateMessage);
                 return $this->goBackAfterUpdate();
             }
             return $this->renderIfAjax($this->updateViewName, compact('model'));
@@ -194,7 +220,7 @@ abstract class CrudController extends Controller
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
             if ($this->addFlashMessages) {
-                $message = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
+                $message = $this->errorUpdateMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
             return $this->goBackAfterUpdate();
