@@ -66,6 +66,12 @@ abstract class CrudController extends Controller
      */
     public $loadDefaultValue = true;
 
+    /**
+     * Загружать значения переданные через Get параметры
+     * @var bool
+     */
+    public $loadGetValue = false;
+
 
     /**
      * Обновляемая, удаляемая или добавленная модель.
@@ -240,6 +246,7 @@ abstract class CrudController extends Controller
         /** @var ActiveRecord $model */
         $model = new $this->modelClassName();
         if ($this->loadDefaultValue) $model->loadDefaultValues(true);
+        if ($this->loadGetValue) $model->load(Yii::$app->request->get());
         $this->model = $model;
         return $model;
     }
