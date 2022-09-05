@@ -28,6 +28,7 @@ abstract class CrudController extends Controller
     const TYPE_ACTION_VIEW = 'view';
     const TYPE_ACTION_CREATE = 'create';
     const TYPE_ACTION_UPDATE = 'update';
+    const TYPE_ACTION_NONE = '';
 
     /**
      * Дополнительные настройки доступа
@@ -205,8 +206,7 @@ abstract class CrudController extends Controller
     public function actionDelete($id)
     {
         try {
-            $model = $this->findModel($id);
-            $this->afterFindModel($model, self::TYPE_ACTION_DELETE);
+            $model = $this->findModel($id, false, self::TYPE_ACTION_DELETE);
             if ($model->delete()) {
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successDeleteMessage);
             }
@@ -227,8 +227,7 @@ abstract class CrudController extends Controller
     public function actionUpdate($id)
     {
         try {
-            $model = $this->findModel($id);
-            $this->afterFindModel($model, self::TYPE_ACTION_UPDATE);
+            $model = $this->findModel($id, false, self::TYPE_ACTION_UPDATE);
             $post = Yii::$app->request->post();
             if ($model->load($post) && $model->save()) {
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successUpdateMessage);
@@ -264,8 +263,7 @@ abstract class CrudController extends Controller
     public function actionView($id)
     {
         try {
-            $model = $this->findModel($id);
-            $this->afterFindModel($model, self::TYPE_ACTION_VIEW);
+            $model = $this->findModel($id, false, self::TYPE_ACTION_VIEW);
             return $this->renderIfAjax($this->viewViewName, compact('model'));
         } catch (ForbiddenHttpException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
@@ -276,10 +274,11 @@ abstract class CrudController extends Controller
     /**
      * @param $id
      * @param bool $noCache Брать модель не из кэша, а запрашивать заново
+     * @param string $typeAction
      * @return mixed
-     * @throws NotFoundHttpException
+     * @throws \yii\web\NotFoundHttpException
      */
-    public function findModel($id, $noCache = false)
+    public function findModel($id, $noCache = false, string $typeAction = self::TYPE_ACTION_NONE)
     {
         if (!empty($this->model) && !$noCache) return $this->model;
         $modelClass = $this->modelClassName;
@@ -289,6 +288,7 @@ abstract class CrudController extends Controller
             throw new NotFoundHttpException('Запись не найдена');
         }
         $this->model = $model;
+        if ($typeAction != self::TYPE_ACTION_NONE) $this->afterFindModel($model, $typeAction);
         return $model;
     }
 
