@@ -342,7 +342,7 @@ abstract class CrudController extends Controller
      * @param array $params the parameters (name-value pairs) that should be made available in the view.
      * @return string
      */
-    protected function renderIfAjax($view, $params = [])
+    public function renderIfAjax($view, $params = [])
     {
         if (Yii::$app->request->isAjax) {
             Yii::$app->assetManager->bundles = [
