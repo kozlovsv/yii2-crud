@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -180,6 +181,10 @@ abstract class CrudController extends Controller
                 return $this->goBackAfterCreate();
             }
             return $this->renderIfAjax($this->createViewName, compact('model'));
+        } catch (ForbiddenHttpException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            $this->isErrorInAction = true;
+
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -188,8 +193,8 @@ abstract class CrudController extends Controller
                 Yii::$app->session->setFlash('error', $message);
             }
             $this->isErrorInAction = true;
-            return $this->goBackAfterCreate();
         }
+        return $this->goBackAfterCreate();
     }
 
     /**
@@ -205,6 +210,9 @@ abstract class CrudController extends Controller
             if ($model->delete()) {
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successDeleteMessage);
             }
+        } catch (ForbiddenHttpException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            $this->isErrorInAction = true;
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             if ($this->addFlashMessages) {
@@ -227,6 +235,9 @@ abstract class CrudController extends Controller
                 return $this->goBackAfterUpdate();
             }
             return $this->renderIfAjax($this->updateViewName, compact('model'));
+        } catch (ForbiddenHttpException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            $this->isErrorInAction = true;
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -235,8 +246,8 @@ abstract class CrudController extends Controller
                 Yii::$app->session->setFlash('error', $message);
             }
             $this->isErrorInAction = true;
-            return $this->goBackAfterUpdate();
         }
+        return $this->goBackAfterUpdate();
     }
 
     public function actionIndex()
@@ -252,9 +263,14 @@ abstract class CrudController extends Controller
 
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $this->afterFindModel($model, self::TYPE_ACTION_VIEW);
-        return $this->renderIfAjax($this->viewViewName, compact('model'));
+        try {
+            $model = $this->findModel($id);
+            $this->afterFindModel($model, self::TYPE_ACTION_VIEW);
+            return $this->renderIfAjax($this->viewViewName, compact('model'));
+        } catch (ForbiddenHttpException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            return $this->goBackCrud();
+        }
     }
 
     /**
