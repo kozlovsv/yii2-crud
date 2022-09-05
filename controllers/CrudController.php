@@ -71,31 +71,36 @@ abstract class CrudController extends Controller
      * @var bool
      */
     public $loadGetValue = false;
+
     /**
      * @var string
      */
     public $successCreateMessage = 'Данные успешно сохранены';
+
     /**
      * @var string
      */
     public $errorCreateMessage = 'При создании записи произошла ошибка. Обратитесь в службу поддержки.';
+
     /**
      * @var string
      */
     public $successDeleteMessage = 'Запись удалена';
+
     /**
      * @var string
      */
     public $errorDeleteMessage = 'Запись не может быть удалена, имеются связанные данные';
+
     /**
      * @var string
      */
     public $successUpdateMessage = 'Данные успешно сохранены';
+
     /**
      * @var string
      */
     public $errorUpdateMessage = 'При сохранении записи произошла ошибка. Обратитесь в службу поддержки.';
-
 
     /**
      * Обновляемая, удаляемая или добавленная модель.
@@ -109,7 +114,11 @@ abstract class CrudController extends Controller
      */
     public $addFlashMessages = true;
 
-
+    /**
+     * Произошла ошибка?
+     * @var bool
+     */
+    public $isErrorInAction = false;
 
     /**
      * @inheritdoc
@@ -178,6 +187,7 @@ abstract class CrudController extends Controller
                 $message = $this->errorCreateMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
+            $this->isErrorInAction = true;
             return $this->goBackAfterCreate();
         }
     }
@@ -201,6 +211,7 @@ abstract class CrudController extends Controller
                 $message = $this->errorDeleteMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
+            $this->isErrorInAction = true;
         }
         return $this->goBackAfterDelete();
     }
@@ -223,6 +234,7 @@ abstract class CrudController extends Controller
                 $message = $this->errorUpdateMessage;
                 Yii::$app->session->setFlash('error', $message);
             }
+            $this->isErrorInAction = true;
             return $this->goBackAfterUpdate();
         }
     }
