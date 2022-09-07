@@ -26,11 +26,13 @@ class Pjax extends YiiPjax
     public function init()
     {
         if (!Yii::$app->request->isAjax && $this->onlyForDialog) return;
-        if (Yii::$app->request->isAjax) {
-            $view = $this->getView();
+        $view = $this->getView();
+        $oldTitle = $view->title;
+        if (Yii::$app->request->isPjax) {
             $view->title = null;
         }
         parent::init();
+        $view->title =  $oldTitle;
     }
 
     /**
