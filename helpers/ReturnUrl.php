@@ -70,7 +70,7 @@ class ReturnUrl {
     /**
      * Редирект назад
      * @param Controller $controller
-     * @param string $defaultUrl URL для возврата по умолчанию
+     * @param string|array $defaultUrl URL для возврата по умолчанию
      * @param bool $onlyRender Флаг принудительной отрисовки формы, без редиректа. Возвращает только отрендеренный HTML код
      * @return Response
      * @throws Exception
