@@ -229,7 +229,16 @@ abstract class CrudController extends Controller
         try {
             $model = $this->findModel($id, false, self::TYPE_ACTION_UPDATE);
             $post = Yii::$app->request->post();
-            if ($model->load($post) && $model->save()) {
+            if ($model->load($post) && $model->validate()) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    $model->save(false);
+                    $this->afterUpdate($model);
+                    $transaction->commit();
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', $this->successUpdateMessage);
                 return $this->goBackAfterUpdate();
             }
@@ -394,6 +403,14 @@ abstract class CrudController extends Controller
      * @param ActiveRecord $model
      */
     protected function afterCreate($model)
+    {
+        //empty
+    }
+
+    /**
+     * @param ActiveRecord $model
+     */
+    protected function afterUpdate($model)
     {
         //empty
     }
