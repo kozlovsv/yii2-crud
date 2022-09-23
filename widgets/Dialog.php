@@ -34,9 +34,10 @@ class Dialog extends Modal
 
     public $containerCssClassName = 'modal-container';
 
-    public function init() {
+    public function init()
+    {
         /** Обязательно в диалоге должен стоять 'tabindex' => -1 иначе автофокус работать не будет.
-         class = ''  чтобы не добавлялся класс fade он делает анимацию.
+         * class = ''  чтобы не добавлялся класс fade он делает анимацию.
          */
         $this->options = array_merge($this->options, ['tabindex' => -1, 'class' => '']);
         parent::init();
@@ -68,17 +69,24 @@ class Dialog extends Modal
                     method: "get",
                     url: $(this).attr("href"),
                     dataType: "html"
-                }).done(function(html) {
-                    if (html) {
-                        $("' . $selector . ' .modal-body").html(html);
-                        var width = $(html).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
-                        if (width > 0) {
-                            var value = width + "px";
-                            $(".modal-dialog").css("width", value);
+                }).done(
+                function(response, status, xhr) {
+                    if (response) { 
+                        var ct = xhr.getResponseHeader("content-type") || "";
+                        if (ct.indexOf("html") > -1) {
+                            $("' . $selector . ' .modal-body").html(html);
+                            var width = $(html).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
+                            if (width > 0) {
+                                var value = width + "px";
+                                $(".modal-dialog").css("width", value);
+                            }
+                            $("' . $selector . '").modal();
+                        } else if (ct.indexOf("json") > -1)
+                        {
+                            $("' . $selector . '").modal("hide");
                         }
-                        $("' . $selector . '").modal();
-                    }
-                });
+                    }    
+                 });
                 return false;
             });
             $("' . $selector . '").on("hidden.bs.modal", function (e) {
@@ -89,7 +97,6 @@ class Dialog extends Modal
             });
         });
         ';
-
         $view->registerJs($js, $view::POS_END);
     }
 }
