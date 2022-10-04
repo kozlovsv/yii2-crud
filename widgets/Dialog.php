@@ -74,8 +74,8 @@ class Dialog extends Modal
                     if (response) { 
                         var ct = xhr.getResponseHeader("content-type") || "";
                         if (ct.indexOf("html") > -1) {
-                            $("' . $selector . ' .modal-body").html(html);
-                            var width = $(html).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
+                            $("' . $selector . ' .modal-body").html(response);
+                            var width = $(response).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
                             if (width > 0) {
                                 var value = width + "px";
                                 $(".modal-dialog").css("width", value);
