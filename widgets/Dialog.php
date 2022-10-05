@@ -71,21 +71,23 @@ class Dialog extends Modal
                     dataType: "html"
                 }).done(
                 function(response, status, xhr) {
-                    if (response) { 
+                     if (response) { 
                         var ct = xhr.getResponseHeader("content-type") || "";
                         if (ct.indexOf("html") > -1) {
                             $("' . $selector . ' .modal-body").html(response);
                             var width = $(response).closest(".'. $this->containerCssClassName.'").attr("data-modal-width");
                             if (width > 0) {
                                 var value = width + "px";
-                                $(".modal-dialog").css("width", value);
+                                $(".modal-dialog").css("max-width", value);
+                            } else {
+                                $(".modal-dialog").css("max-width", "");
                             }
                             $("' . $selector . '").modal();
                         } else if (ct.indexOf("json") > -1)
                         {
                             $("' . $selector . '").modal("hide");
                         }
-                    }    
+                    }        
                  });
                 return false;
             });
