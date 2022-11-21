@@ -22,7 +22,7 @@
   "require": {
     "yiisoft/yii2-bootstrap": "@dev",
     "kozlovsv/yii2-widget-datetimepicker": "@dev",
-    "kartik-v/yii2-widget-select2": "2.1.7",
+    "kartik-v/yii2-widget-select2": "*",
     "kartik-v/yii2-builder": "*",
     "ext-mbstring": "*"
   },
