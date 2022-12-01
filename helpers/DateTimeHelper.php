@@ -132,7 +132,7 @@ class DateTimeHelper
     /**
      * Получить дату начала текущей недели
      * @param string $format
-     * @return mixed
+     * @return string
      * @throws Exception
      */
     public static function beginWeek($format = 'Y-m-d')
@@ -143,7 +143,7 @@ class DateTimeHelper
     /**
      * Получить дату окончания текущей недели
      * @param string $format
-     * @return mixed
+     * @return string
      * @throws Exception
      */
     public static function endWeek($format = 'Y-m-d')
@@ -224,20 +224,19 @@ class DateTimeHelper
 
     /**
      * @param $number
-     * @return mixed|null
+     * @return string
      */
-    public static function getMonthName($number)
+    public static function monthName($number)
     {
         $list = static::monthList();
-
-        return isset($list[$number]) ? $list[$number] : null;
+        return $list[$number] ?? 'Не задано';
     }
 
     /**
      * Получить разницу во времени
      * @param string $begin
      * @param string|null $end
-     * @return bool|DateInterval
+     * @return DateInterval
      * @throws Exception
      */
     public static function spendTime($begin, $end = null)
