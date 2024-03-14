@@ -15,12 +15,12 @@
     {
       "name": "Kozlov Sergey",
       "email": "kozlovsv78@gmail.com",
-      "homepage": "http://atonex.ru/"
+      "homepage": "https://atonex.ru/"
     }
   ],
   "minimum-stability": "dev",
   "require": {
-    "yiisoft/yii2-bootstrap": "@dev",
+    "yiisoft/yii2-bootstrap": "*",
     "kozlovsv/yii2-widget-datetimepicker": "@dev",
     "kartik-v/yii2-widget-select2": "*",
     "kartik-v/yii2-builder": "*",
@@ -35,11 +35,23 @@
     {
       "type": "vcs",
       "url":  "https://github.com/kozlovsv/yii2-widget-datetimepicker.git"
+    },
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
     }
   ],
   "autoload": {
     "psr-4": {
       "kozlovsv\\crud\\": ""
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer" : true
+    },
+    "fxp-asset": {
+      "enabled": false
     }
   }
 }
