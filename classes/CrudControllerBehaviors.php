@@ -9,9 +9,8 @@ use yii\filters\VerbFilter;
 
 class CrudControllerBehaviors
 {
-    public static function config($modelClassName, $accessRules)
+    public static function config($permissionCategory, $accessRules)
     {
-        $permissionCategory = ModelPermission::getPermissionCategory($modelClassName);
         return [
             'access' => [
                 'class' => AccessControl::class,
