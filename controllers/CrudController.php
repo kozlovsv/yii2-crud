@@ -24,12 +24,6 @@ use yii\web\Response;
 abstract class CrudController extends Controller
 {
     /**
-     * Дополнительные настройки доступа
-     * @var array
-     */
-    protected array $accessRules = [];
-
-    /**
      * Контроллер куда возвращаться по умолчанию.
      * @var string
      */
@@ -180,7 +174,7 @@ abstract class CrudController extends Controller
      */
     public function behaviors()
     {
-        return CrudControllerBehaviors::config($this->getModelClassName(), $this->accessRules);
+        return CrudControllerBehaviors::config($this->getModelClassName(), $this->getAccessRules());
     }
 
     /**
@@ -205,5 +199,13 @@ abstract class CrudController extends Controller
 
     protected function getPermissionCategory(){
         return ModelPermission::getPermissionCategory($this->getModelClassName());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAccessRules(): array
+    {
+        return [];
     }
 }

@@ -15,10 +15,9 @@ use Yii;
 class DefaultController extends CrudController
 {
 
-    public function init()
+    protected function getAccessRules():array
     {
-        parent::init();
-        $this->accessRules = [
+        return[
             [
                 'actions' => ['delete-all', 'truncate'],
                 'allow' => ModelPermission::canDelete(ModelPermission::getPermissionCategory($this->getModelClassName())),
