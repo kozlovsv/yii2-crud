@@ -15,6 +15,9 @@ use Yii;
 class DefaultController extends CrudController
 {
 
+    /**
+     * @inheritdoc
+     */
     protected function getAccessRules():array
     {
         return[
