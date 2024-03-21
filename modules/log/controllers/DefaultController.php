@@ -18,7 +18,7 @@ class DefaultController extends CrudController
     /**
      * @inheritdoc
      */
-    protected function getAccessRules():array
+    protected function additionalAccessRules():array
     {
         return[
             [

@@ -174,7 +174,7 @@ abstract class CrudController extends Controller
      */
     public function behaviors()
     {
-        return CrudControllerBehaviors::config($this->getModelClassName(), $this->getAccessRules());
+        return CrudControllerBehaviors::config($this->getModelClassName(), $this->additionalAccessRules());
     }
 
     /**
@@ -204,7 +204,7 @@ abstract class CrudController extends Controller
     /**
      * @return array
      */
-    protected function getAccessRules(): array
+    protected function additionalAccessRules(): array
     {
         return [];
     }
