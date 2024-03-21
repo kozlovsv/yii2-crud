@@ -8,6 +8,7 @@ use kozlovsv\crud\controllers\actions\ActionCrudDelete;
 use kozlovsv\crud\controllers\actions\ActionCrudIndex;
 use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
+use kozlovsv\crud\helpers\ModelPermission;
 use kozlovsv\crud\helpers\ReturnUrl;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
@@ -196,5 +197,9 @@ abstract class CrudController extends Controller
 
     public function afterCreate($event) {
         //empty
+    }
+
+    protected function getPermissionCategory(){
+        return ModelPermission::getPermissionCategory($this->getModelClassName());
     }
 }
