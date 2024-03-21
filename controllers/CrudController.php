@@ -158,13 +158,21 @@ abstract class CrudController extends Controller
 
     public function actions()
     {
-        return [
+        return array_merge([
             'index' => $this->getActionIndexConfig(),
             'view' => $this->getActionViewConfig(),
             'update' => $this->getActionUpdateConfig(),
             'delete' => $this->getActionDeleteConfig(),
             'create' => $this->getActionCreateConfig(),
-        ];
+        ], $this->actions());
+    }
+
+    /**
+     * Дополнительные классы Action
+     * @return array
+     */
+    protected function additionalActions(): array {
+        return [];
     }
 
     /**
@@ -185,18 +193,14 @@ abstract class CrudController extends Controller
      * Возвращает модель для поиска
      * @return ActiveRecord
      */
-    public abstract function getSearchModel();
+    protected abstract function getSearchModel();
 
     /**
      * @return Response
      */
-    public function goBackCrud()
+    protected function goBackCrud()
     {
         return ReturnUrl::goBack($this, $this->defaultBackUrl);
-    }
-
-    public function afterCreate($event) {
-        //empty
     }
 
     protected function getPermissionCategory(){
