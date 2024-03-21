@@ -1,7 +1,7 @@
 <?php
 namespace kozlovsv\crud\permission;
 
-trait OwnPermissionTrait
+trait OwnModelPermissionTrait
 {
     /**
      * @var OwnModelPermission
