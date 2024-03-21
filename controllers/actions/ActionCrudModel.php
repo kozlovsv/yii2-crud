@@ -2,7 +2,6 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-use kozlovsv\crud\classes\EventWithModel;
 use kozlovsv\crud\classes\FindOneModel;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
@@ -10,8 +9,6 @@ use yii\web\NotFoundHttpException;
 
 class ActionCrudModel extends ActionCrudBase
 {
-    const EVENT_AFTER_FIND_MODEL = 'afterFindModel';
-
     /**
      * @var string
      */
@@ -31,17 +28,7 @@ class ActionCrudModel extends ActionCrudBase
      */
     protected function findModel($id)
     {
-        $model = FindOneModel::find($id, $this->modelClassName);
-        $this->afterFindModel($model);
-        return $model;
+        return FindOneModel::find($id, $this->modelClassName);
     }
 
-    /**
-     * @param $model
-     * @return void
-     */
-    protected function afterFindModel($model)
-    {
-        $this->trigger(self::EVENT_AFTER_FIND_MODEL, new EventWithModel(['model' => $model]));
-    }
 }

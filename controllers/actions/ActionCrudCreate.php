@@ -3,7 +3,6 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
-use kozlovsv\crud\classes\EventWithModel;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\ForbiddenHttpException;
@@ -45,11 +44,6 @@ class ActionCrudCreate extends ActionCrudOperation
         }
     }
 
-    protected function afterCreate($model)
-    {
-        $this->trigger(self::EVENT_AFTER_CREATE_MODEL, new EventWithModel(['model' => $model]));
-    }
-
     /**
      * @return ActiveRecord
      */
@@ -59,7 +53,6 @@ class ActionCrudCreate extends ActionCrudOperation
         $model = new $this->modelClassName();
         if ($this->loadDefaultValue) $model->loadDefaultValues(true);
         if ($this->loadGetValue) $model->load(Yii::$app->request->get());
-        $this->afterCreate($model);
         return $model;
     }
 }

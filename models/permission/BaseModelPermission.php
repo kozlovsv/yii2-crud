@@ -1,11 +1,11 @@
 <?php
-namespace kozlovsv\crud\permission;
+namespace kozlovsv\crud\models\permission;
 
 use yii\base\BaseObject;
 use yii\base\Model;
 use yii\web\ForbiddenHttpException;
 
-class BasePermission extends BaseObject
+class BaseModelPermission extends BaseObject
 {
     public $errorMessage =  'Доступ к данной странице закрыт';
 
@@ -23,7 +23,7 @@ class BasePermission extends BaseObject
     /**
      * @param string $typeAction
      */
-    public function checkAccess($typeAction) {
+    public function checkAccess($typeAction = '') {
         $method = 'can' . ucfirst($typeAction);
         if (!$this->$method()) $this->forbidden();
     }
