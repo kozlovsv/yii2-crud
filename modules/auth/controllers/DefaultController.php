@@ -116,7 +116,7 @@ class DefaultController extends Controller
 
     /**
      * Создание роли
-     * @return mixed
+     * @return string|Response
      */
     public function actionCreate()
     {

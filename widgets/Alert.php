@@ -32,7 +32,7 @@ class Alert extends Widget
         foreach ($flashes as $type => $data) {
             if (isset($this->alertTypes[$type])) {
                 $data = (array) $data;
-                foreach ($data as $i => $message) {
+                foreach ($data as $message) {
                     Stickr::widget(['note' => $message, 'className' => $this->alertTypes[$type]]);
                 }
                 $session->removeFlash($type);

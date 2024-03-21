@@ -48,7 +48,7 @@ class ToolBarPanel extends Widget
     public $orientation = self::ORIENTATION_LEFT;
 
     /**
-     * To show panel container om empty left and right panels
+     * To show panel container or empty left and right panels
      * @var bool
      */
     public $showOnEmpty = true;

@@ -63,7 +63,7 @@ class FormBuilder extends Form
         parent::prepareAttributes($attributes);
 
         //Настраиваем наиболее часто используемые функции для КРУД
-        foreach ($attributes as $key => &$setting) {
+        foreach ($attributes as &$setting) {
             //Ограничение максимальной длинны
             if (!empty(static::$_textInputs[ArrayHelper::getValue($setting, 'type')])) {
                 $setting = array_merge(['options' => ['maxlength' => true]], $setting);

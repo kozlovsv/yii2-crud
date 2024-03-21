@@ -24,9 +24,7 @@ class Formatter extends \yii\i18n\Formatter
 
     /**
      * Как будто денюжка
-     * @param $value
      * @param int $decimals
-     * @return mixed
      */
     public function asMoney($value, $decimals = 2)
     {

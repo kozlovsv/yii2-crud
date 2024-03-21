@@ -11,6 +11,14 @@ use Yii;
 class ModelPermission
 {
     /**
+     * @return string
+     */
+    public static function getPermissionCategory($modelClassName)
+    {
+        return $modelClassName::tableName();
+    }
+
+    /**
      * Проверка разрешения на действия с моделью
      * @param string $permissionCategory
      * @param $permission

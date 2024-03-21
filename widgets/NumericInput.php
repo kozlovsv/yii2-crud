@@ -19,10 +19,10 @@ class NumericInput extends MaskedInput
 
     /**
      * @inheritdoc
-     * @return string
+     * @return void
      */
     public function run()
     {
-        return parent::run();
+        parent::run();
     }
 }

@@ -10,14 +10,14 @@ class AuthManager extends DbManager
     /**
      * @inheritdoc
      */
-    public function getAssignments($id)
+    public function getAssignments($userId)
     {
-        $key = self::getCacheKey($id);
+        $key = self::getCacheKey($userId);
 
         if (Yii::$app->cache->exists($key)) {
             $assignments = Yii::$app->cache->get($key);
         } else {
-            $assignments = parent::getAssignments($id);
+            $assignments = parent::getAssignments($userId);
             Yii::$app->cache->add($key, $assignments);
         }
 

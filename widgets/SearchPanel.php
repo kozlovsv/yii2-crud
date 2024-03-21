@@ -58,7 +58,7 @@ class SearchPanel extends Widget
                 ]
             );
 
-            $resetButton = FilterReset::widget(['model' => $this->model, 'url' => $this->resetUrl ? $this->resetUrl : [Yii::$app->controller->getRoute()],]);
+            $resetButton = FilterReset::widget(['model' => $this->model, 'url' => $this->resetUrl ?: [Yii::$app->controller->getRoute()],]);
             if ($resetButton) echo Html::tag('div', $resetButton, ['class' => 'form-group']);
             ActiveFormSearch::end();
         }

@@ -3,7 +3,6 @@
 namespace kozlovsv\crud\widgets;
 
 use ReflectionClass;
-use ReflectionException;
 use Yii;
 use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
@@ -70,7 +69,6 @@ class FilterReset extends Widget
     /**
      * Получить параметры
      * @return array
-     * @throws ReflectionException
      */
     protected function getParams()
     {

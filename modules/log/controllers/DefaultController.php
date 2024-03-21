@@ -18,11 +18,10 @@ class DefaultController extends CrudController
     public function init()
     {
         parent::init();
-        $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
                 'actions' => ['delete-all', 'truncate'],
-                'allow' => ModelPermission::canDelete($permissionCategory),
+                'allow' => ModelPermission::canDelete(ModelPermission::getPermissionCategory($this->getModelClassName())),
             ],
         ];
     }
@@ -49,7 +48,7 @@ class DefaultController extends CrudController
     /**
      * Deletes an existing Log model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @return mixed
+     * @return string
      */
     public function actionDeleteAll()
     {
@@ -82,6 +81,6 @@ class DefaultController extends CrudController
             $message = 'При очистки журнала произошла ошибка.';
             Yii::$app->session->setFlash('error', $message);
         }
-        return $this->goBackAfterDelete();
+        return $this->goBackCrud();
     }
 }

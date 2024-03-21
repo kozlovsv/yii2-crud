@@ -36,7 +36,7 @@ class Pjax extends YiiPjax
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|void
      */
     public function run()
     {
@@ -50,6 +50,6 @@ class Pjax extends YiiPjax
             $.pjax.defaults.scrollTo = {$scrolTo};
         ";
         $this->view->registerJs($js, $this->view::POS_END);
-        return parent::run();
+        parent::run();
     }
 }

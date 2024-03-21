@@ -58,10 +58,10 @@ class Nav extends \yii\bootstrap\Nav
             if (isset($item['items'])) {
                 $items[$i]['items'] = $this->normalizeItems($item['items']);
                 if (empty($items[$i]['items']) && $this->hideEmpty) {
-                    unset($items[$i]['items']);
                     if (!isset($item['url'])) {
                         unset($items[$i]);
-                        continue;
+                    } else {
+                        unset($items[$i]['items']);
                     }
                 }
             }

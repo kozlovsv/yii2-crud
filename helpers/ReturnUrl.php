@@ -57,7 +57,7 @@ class ReturnUrl {
             if (is_array($defaultUrl)) {
                 $defaultUrl[self::RESTORE_QUERY_PARAM_NAME] = 1;
             } else {
-                $defaultUrl .= ((strpos($defaultUrl, '?') === false) ? '?' : '&') . self::RESTORE_QUERY_PARAM_NAME . '=1';
+                $defaultUrl .= ((!str_contains($defaultUrl, '?')) ? '?' : '&') . self::RESTORE_QUERY_PARAM_NAME . '=1';
             }
         }
         return is_array($defaultUrl)? $defaultUrl : [$defaultUrl];

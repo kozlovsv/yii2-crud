@@ -35,14 +35,14 @@ class DateTimeHelper
                 return null;
             }
             return Yii::$app->formatter->asDate($time, $format === null ? self::SAVE_FORMAT : $format);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }
 
     /**
      * Прибавить к дате $time значение $value
-     * @param datetime:string $time
+     * @param datetime|string $time
      * @param string $value
      * @param string $format
      * @return string
@@ -57,7 +57,7 @@ class DateTimeHelper
 
     /**
      * Отнять от даты $time значение $value
-     * @param datetime:string $time
+     * @param datetime|string $time
      * @param string $value
      * @param string $format
      * @return string
@@ -95,7 +95,7 @@ class DateTimeHelper
         try {
             $date = new DateTime($date_1);
             return $date->diff(new DateTime($date_2))->invert;
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return false;
         }
     }
