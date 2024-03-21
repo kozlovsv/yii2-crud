@@ -25,9 +25,9 @@ abstract class CrudController extends Controller
 {
     /**
      * Контроллер куда возвращаться по умолчанию.
-     * @var string
+     * @var string|array
      */
-    protected string $defaultBackUrl = 'index';
+    protected $defaultBackUrl = 'index';
 
     /**
      * Добавлять Flash сообщения после добавления, редактирования, удаления записи.
