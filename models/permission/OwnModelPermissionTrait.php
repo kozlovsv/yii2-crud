@@ -10,7 +10,7 @@ use yii\db\BaseActiveRecord;
 trait OwnModelPermissionTrait
 {
     /**
-     * @var OwnModelModelPermission
+     * @var OwnModelPermission
      */
     public $permission;
 
@@ -24,7 +24,7 @@ trait OwnModelPermissionTrait
     public function init() {
         /** @noinspection PhpUndefinedClassInspection */
         parent::init();
-        $this->permission = new OwnModelModelPermission($this);
+        $this->permission = new OwnModelPermission($this);
         $this->on(BaseActiveRecord::EVENT_AFTER_FIND, [ModelPermissionHelper::class, 'checkAccessEvent', 'access']);
     }
 }

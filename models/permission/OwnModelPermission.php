@@ -6,7 +6,7 @@ namespace kozlovsv\crud\models\permission;
 use kozlovsv\crud\classes\IOwnInterface;
 use yii\base\Model;
 
-class OwnModelModelPermission extends BaseModelPermission
+class OwnModelPermission extends BaseModelPermission
 {
     /**
      * @var Model | IOwnInterface
