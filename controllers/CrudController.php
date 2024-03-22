@@ -24,76 +24,51 @@ use yii\web\Response;
 abstract class CrudController extends Controller
 {
     /**
-     * Контроллер куда возвращаться по умолчанию.
+     * URL куда возвращаться по умолчанию после выполнения действий
      * @var string|array
      */
-    protected $defaultBackUrl = 'index';
+    protected $backUrl = 'index';
 
     /**
-     * Добавлять Flash сообщения после добавления, редактирования, удаления записи.
-     * @var bool
+     * URL куда возвращаться по умолчанию если произошла ошибка
+     * @var string|array
      */
-    protected bool $addFlashMessages = true;
-
-    /**
-     * @var array
-     */
-    protected array $defaultActionIndexConfig = [];
+    protected $errorUrl = 'index';
 
     /**
      * @var array
      */
-    protected array $defaultActionViewConfig = [];
+    protected array $actionIndexConfig = [];
 
     /**
      * @var array
      */
-    protected array $defaultActionUpdateConfig = [];
+    protected array $actionViewConfig = [];
 
     /**
      * @var array
      */
-    protected array $defaultActionCreateConfig = [];
+    protected array $actionUpdateConfig = [];
 
     /**
      * @var array
      */
-    protected array $defaultActionDeleteConfig = [];
+    protected array $actionCreateConfig = [];
 
     /**
-     * @var string
+     * @var array
      */
-    protected string $defaultActionIndexClassName = ActionCrudIndex::class;
-
-    /**
-     * @var string
-     */
-    protected string $defaultActionViewClassName = ActionCrudView::class;
-
-    /**
-     * @var string
-     */
-    protected string $defaultActionUpdateClassName = ActionCrudUpdate::class;
-
-    /**
-     * @var string
-     */
-    protected string $defaultActionCreateClassName = ActionCrudCreate::class;
-
-    /**
-     * @var string
-     */
-    protected string $defaultActionDeleteClassName = ActionCrudDelete::class;
+    protected array $actionDeleteConfig = [];
 
 
     protected function getActionIndexConfig(): array
     {
         return array_merge(
             [
-                'class' => $this->defaultActionIndexClassName,
+                'class' => ActionCrudIndex::class,
                 'searchModel' => $this->getSearchModel(),
             ],
-            $this->defaultActionIndexConfig
+            $this->actionIndexConfig
         );
     }
 
@@ -101,11 +76,12 @@ abstract class CrudController extends Controller
     {
         return array_merge(
             [
-                'class' => $this->defaultActionViewClassName,
+                'class' => ActionCrudView::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->defaultBackUrl,
+                'backUrl' => $this->backUrl,
+                'errorBackUrl' => $this->errorUrl,
             ],
-            $this->defaultActionViewConfig
+            $this->actionViewConfig
         );
     }
 
@@ -113,12 +89,12 @@ abstract class CrudController extends Controller
     {
         return array_merge(
             [
-                'class' => $this->defaultActionUpdateClassName,
+                'class' => ActionCrudUpdate::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->defaultBackUrl,
-                'addFlashMessages' => $this->addFlashMessages,
+                'backUrl' => $this->backUrl,
+                'errorBackUrl' => $this->errorUrl,
             ],
-            $this->defaultActionUpdateConfig
+            $this->actionUpdateConfig
         );
     }
 
@@ -126,13 +102,12 @@ abstract class CrudController extends Controller
     {
         return array_merge(
             [
-                'class' => $this->defaultActionCreateClassName,
+                'class' => ActionCrudCreate::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->defaultBackUrl,
-                'addFlashMessages' => $this->addFlashMessages,
-                'on afterCreateModel' => [$this, 'afterCreate']
+                'backUrl' => $this->backUrl,
+                'errorBackUrl' => $this->errorUrl,
             ],
-            $this->defaultActionCreateConfig
+            $this->actionCreateConfig
         );
     }
 
@@ -140,15 +115,14 @@ abstract class CrudController extends Controller
     {
         return array_merge(
             [
-                'class' => $this->defaultActionDeleteClassName,
+                'class' => ActionCrudDelete::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->defaultBackUrl,
-                'addFlashMessages' => $this->addFlashMessages,
+                'backUrl' => $this->backUrl,
+                'errorBackUrl' => $this->errorUrl,
             ],
-            $this->defaultActionDeleteConfig
+            $this->actionDeleteConfig
         );
     }
-
 
     public function actions()
     {
@@ -158,7 +132,7 @@ abstract class CrudController extends Controller
             'update' => $this->getActionUpdateConfig(),
             'delete' => $this->getActionDeleteConfig(),
             'create' => $this->getActionCreateConfig(),
-        ], $this->actions());
+        ], $this->additionalActions());
     }
 
     /**
@@ -194,7 +168,7 @@ abstract class CrudController extends Controller
      */
     protected function goBackCrud()
     {
-        return ReturnUrl::goBack($this, $this->defaultBackUrl);
+        return ReturnUrl::goBack($this, $this->backUrl);
     }
 
     protected function getPermissionCategory(){

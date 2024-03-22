@@ -1,5 +1,7 @@
 <?php
+
 namespace kozlovsv\crud\helpers;
+
 use Yii;
 use yii\base\InvalidRouteException;
 use yii\console\Exception;
@@ -13,7 +15,8 @@ use yii\web\Response;
  * Вспомогательный класс для работы с параметрами возврата после закрытия формы
  * Class ReturnUrl
  */
-class ReturnUrl {
+class ReturnUrl
+{
     /**
      * Наименование GET или POST параметра, который указывает куда редиректиться после закрытия
      */
@@ -49,9 +52,10 @@ class ReturnUrl {
      * @param string|array $defaultUrl URL для возврата по умолчанию
      * @return array|string
      */
-    public static function getBackUrl($defaultUrl = ['index']) {
+    public static function getBackUrl($defaultUrl = ['index'])
+    {
         if (self::isSetReturnUrl()) return self::getReturnUrlParam();
-        if (!empty(Yii::$app->request->referrer) && Yii::$app->request->isAjax)  return Yii::$app->request->referrer;
+        if (!empty(Yii::$app->request->referrer) && Yii::$app->request->isAjax) return Yii::$app->request->referrer;
         //Добавляем гет параметр необходимости восстановится.
         if (!Yii::$app->request->isAjax) {
             if (is_array($defaultUrl)) {
@@ -60,10 +64,11 @@ class ReturnUrl {
                 $defaultUrl .= ((!str_contains($defaultUrl, '?')) ? '?' : '&') . self::RESTORE_QUERY_PARAM_NAME . '=1';
             }
         }
-        return is_array($defaultUrl)? $defaultUrl : [$defaultUrl];
+        return is_array($defaultUrl) ? $defaultUrl : [$defaultUrl];
     }
 
-    public static function isSetReturnUrl() {
+    public static function isSetReturnUrl()
+    {
         return !empty(self::getReturnUrlParam());
     }
 
@@ -76,16 +81,17 @@ class ReturnUrl {
      * @throws Exception
      * @throws InvalidRouteException
      */
-    public static function goBack($controller, $defaultUrl, $onlyRender = false) {
+    public static function goBack($controller, $defaultUrl, $onlyRender = false)
+    {
         $url = self::getBackUrl($defaultUrl);
         //Если возврат нужен по параметру returnUrl и в Ajax запросе (диалоговом окне) то вместо Redirect делам отображение контроллера.
         if ((Yii::$app->request->isPjax && self::isSetReturnUrl()) || $onlyRender) {
             $request = new Request();
-            $request->setUrl(Url::to(parse_url($url,  PHP_URL_PATH)));
+            $request->setUrl(Url::to(parse_url($url, PHP_URL_PATH)));
             $routeParams = Yii::$app->getUrlManager()->parseRequest($request);
             if (!empty($routeParams)) {
                 $route = $routeParams[0];
-                $params = empty($routeParams[1])? [] : $routeParams[1];
+                $params = empty($routeParams[1]) ? [] : $routeParams[1];
                 return Yii::$app->runAction($route, $params);
             }
         }
@@ -98,7 +104,23 @@ class ReturnUrl {
      * @param string $action
      * @return array
      */
-    public static function formatReturnUrlParam($model, $action = 'view'){
+    public static function formatReturnUrlParam($model, $action = 'view')
+    {
         return [ReturnUrl::REQUEST_PARAM_NAME => Url::to([$action, 'id' => $model->getPrimaryKey()])];
+    }
+
+    /**
+     * Добавляет параметр ID к URL. Если параемтр ID уже задан, то ничего не делает.
+     * @param array|string $url
+     * @param int | null $id
+     * @return array
+     */
+    public static function addIdToUrl($url, $id): array
+    {
+        if (!is_array($url)) $url = [$url];
+        if (!is_null($id) && !isset($url['id'])) {
+            $url['id'] = $id;
+        }
+        return $url;
     }
 }

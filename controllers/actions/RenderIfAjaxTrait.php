@@ -25,6 +25,7 @@ trait RenderIfAjaxTrait
                 'yii\bootstrap\BootstrapAsset' => false,
                 'yii\web\JqueryAsset' => false,
             ];
+            /** @noinspection PhpMultipleClassDeclarationsInspection */
             /** @noinspection PhpUndefinedMethodInspection */
             return parent::renderAjax($view, $params);
         }
