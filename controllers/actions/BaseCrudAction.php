@@ -161,7 +161,7 @@ abstract class BaseCrudAction extends Action
      * @return Response|string
      * @throws ForbiddenHttpException
      */
-    public function doRun($id = null)
+    public function Run($id = null)
     {
         try {
             $model = $id ? $this->findModel($id) : $this->createModel();
