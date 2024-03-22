@@ -2,7 +2,7 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-abstract class ActionCrudUpdate extends BaseCrudFormAction
+class ActionCrudUpdate extends BaseCrudFormAction
 {
     /**
      * @var string

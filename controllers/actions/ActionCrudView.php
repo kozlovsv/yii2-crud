@@ -2,7 +2,7 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-abstract class ActionCrudView extends BaseCrudAction
+class ActionCrudView extends BaseCrudAction
 {
     use RenderIfAjaxTrait;
 

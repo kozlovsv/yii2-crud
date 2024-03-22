@@ -2,7 +2,7 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-abstract class ActionCrudDelete extends BaseCrudAction
+class ActionCrudDelete extends BaseCrudAction
 {
     /**
      * @var string
