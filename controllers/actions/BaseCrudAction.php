@@ -20,13 +20,21 @@ use yii\web\Response;
 abstract class BaseCrudAction extends Action
 {
     /**
-     * URL для возврата назад после действия
-     * @var array|string
+     * @var Model | null
+     */
+    protected $model = null;
+
+    /**
+     * URL для возврата назад после действия. Может быть в формате для Url::to(). Может передаваться как анонимная функция.
+     * Сигнатура функции function($model) : Responce
+     * @var array|string|callable
      */
     public $backUrl = 'index';
 
     /**
-     * URL для возврата назад если в действии произошла ошибка
+     * URL для возврата назад если в действии произошла ошибка.
+     * Может быть в формате для Url::to(). Может передаваться как анонимная функция.
+     * Сигнатура функции function($model) : Responce
      * @var array|string
      */
     public $errorBackUrl = 'index';
@@ -97,6 +105,9 @@ abstract class BaseCrudAction extends Action
      */
     protected function goBack($backUrl, $addIdParemeterInBackUrl, $id = null)
     {
+        if (is_callable($backUrl)) {
+            return call_user_func($backUrl, $this->model);
+        }
         $url = $addIdParemeterInBackUrl? ReturnUrl::addIdToUrl($backUrl, $id) : $backUrl;
         return ReturnUrl::goBack($this->controller, $url);
     }
@@ -182,6 +193,7 @@ abstract class BaseCrudAction extends Action
     {
         $model = FindOneModel::find($id, $this->modelClassName);
         $this->checkPermission($model);
+        $this->model = $model;
         return $model;
     }
 
@@ -192,6 +204,7 @@ abstract class BaseCrudAction extends Action
     {
         /** @var ActiveRecord $model */
         $model = new $this->modelClassName();
+        $this->model = $model;
         return $model;
     }
 }
