@@ -2,7 +2,6 @@
 
 namespace kozlovsv\crud\controllers;
 
-use kozlovsv\crud\classes\CrudControllerBehaviors;
 use kozlovsv\crud\controllers\actions\ActionCrudCreate;
 use kozlovsv\crud\controllers\actions\ActionCrudDelete;
 use kozlovsv\crud\controllers\actions\ActionCrudIndex;

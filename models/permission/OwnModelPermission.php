@@ -3,7 +3,7 @@
 namespace kozlovsv\crud\models\permission;
 
 
-use kozlovsv\crud\classes\IOwnInterface;
+use kozlovsv\crud\models\IOwnInterface;
 use yii\base\Model;
 
 class OwnModelPermission extends BaseModelPermission
@@ -20,26 +20,19 @@ class OwnModelPermission extends BaseModelPermission
     /**
      * @return bool
      */
-    public function own() {
+    public function own()
+    {
         if ($this->needCache && !empty($this->_own)) return $this->_own;
         $own = $this->model->own();
         if ($this->needCache) $this->_own = $own;
         return $own;
     }
 
-    /**
-     * @param string $typeAction
-     */
-    public function checkAccess($typeAction = '') {
-        //Сначала проверяем общий доступ. А потом уже специальный по правилам.
-        parent::checkAccess('access');
-        if ($typeAction) parent::checkAccess($typeAction);
-    }
 
     /**
      * @return bool
      */
-    public function canAccess()
+    protected function checkCommonAccess(): bool
     {
         return $this->own();
     }

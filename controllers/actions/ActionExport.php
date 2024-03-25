@@ -3,9 +3,9 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
-use kozlovsv\crud\classes\IExportedSearchModelInterface;
 use kozlovsv\crud\components\ExportGridViewToExcelXML;
 use kozlovsv\crud\helpers\DateTimeHelper;
+use kozlovsv\crud\models\IExportedSearchModelInterface;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;

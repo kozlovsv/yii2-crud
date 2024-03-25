@@ -1,6 +1,6 @@
 <?php
 
-namespace kozlovsv\crud\classes;
+namespace kozlovsv\crud\controllers;
 
 use kozlovsv\crud\filters\RememberQueryParams;
 use kozlovsv\crud\helpers\ModelPermission;

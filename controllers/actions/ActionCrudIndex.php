@@ -2,7 +2,7 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-use kozlovsv\crud\classes\ISearchModelInterface;
+use kozlovsv\crud\models\ISearchModelInterface;
 use Yii;
 use yii\base\Action;
 

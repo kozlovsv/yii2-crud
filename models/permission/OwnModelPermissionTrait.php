@@ -1,9 +1,6 @@
 <?php
 namespace kozlovsv\crud\models\permission;
 
-use kozlovsv\crud\helpers\ModelPermissionHelper;
-use yii\db\BaseActiveRecord;
-
 trait OwnModelPermissionTrait
 {
     /**

@@ -3,9 +3,8 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
-use kozlovsv\crud\classes\FindOneModel;
+use kozlovsv\crud\helpers\FindOneModelHelper;
 use kozlovsv\crud\helpers\ReturnUrl;
-use kozlovsv\crud\models\permission\IModelPermissionInterface;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
@@ -84,28 +83,13 @@ abstract class BaseCrudAction extends Action
      * Обязательно проверять разрешение на доступ к модели.
      * @var bool
      */
-    public bool $needCheckModelPermission = true;
+    public bool $modelPermissionRequired = true;
 
     public function init()
     {
         if (empty($this->modelClassName))
             throw new InvalidConfigException('The "modelClassName" config is required.');
         parent::init();
-    }
-
-    /**
-     * Проверка разрешение на действие с моделью. Данная проверка это не RBACK доступ а проверка возможности конкретного
-     * действия с конкретной моделью. Если проверка не пройдена, то выкидывается исключение ForbiddenHttpException
-     * @param Model $model
-     */
-    protected function checkPermission($model) {
-        if ($model instanceof IModelPermissionInterface) {
-            $permission = $model->getPermission();
-            if (!$this->permissionDeniedMessage) $this->permissionDeniedMessage = $permission->errorMessage;
-            $permission->checkAccess($this->permissionMethod);
-        } else {
-            if ($this->needCheckModelPermission) throw new InvalidConfigException('CRUD Model must implements IModelPermissionInterface');
-        }
     }
 
     /**
@@ -199,10 +183,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function findModel($id)
     {
-        $model = FindOneModel::find($id, $this->modelClassName);
-        $this->checkPermission($model);
-        $this->model = $model;
-        return $model;
+        return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, '', $this->modelPermissionRequired);
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace kozlovsv\crud\classes;
+namespace kozlovsv\crud\models;
 
 use yii\data\ActiveDataProvider;
 
