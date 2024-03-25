@@ -85,8 +85,8 @@ abstract class BaseCrudAction extends Action
     {
         if (empty($this->modelClassName))
             throw new InvalidConfigException('The "modelClassName" config is required.');
-        if (!($this->successBackRedirecter instanceof IBackRedirecrer)) $this->successBackRedirecter = Yii::createObject($this->successBackRedirecter);
-        if (!($this->errorBackRedirecter instanceof IBackRedirecrer)) $this->errorBackRedirecter = Yii::createObject($this->errorBackRedirecter);
+        if (!($this->successBackRedirecter instanceof IBackRedirecrer)) $this->successBackRedirecter = Yii::createObject($this->successBackRedirecter, ['controller' => $this->controller]);
+        if (!($this->errorBackRedirecter instanceof IBackRedirecrer)) $this->errorBackRedirecter = Yii::createObject($this->errorBackRedirecter, ['controller' => $this->controller]);
         parent::init();
     }
 

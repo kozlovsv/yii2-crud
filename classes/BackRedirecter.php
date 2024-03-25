@@ -14,7 +14,7 @@ class BackRedirecter extends BaseObject implements IBackRedirecrer
     /**
      * @var Controller
      */
-    public Controller $controller;
+    protected Controller $controller;
 
     /**
      *  URL для возврата. Формат для Url::to().
@@ -33,6 +33,12 @@ class BackRedirecter extends BaseObject implements IBackRedirecrer
      * @var bool
      */
     public $hardRedirect = false;
+
+    public function __construct(Controller $controller, $config = [])
+    {
+        $this->controller = $controller;
+        parent::__construct($config);
+    }
 
 
     public function back($id = null)
