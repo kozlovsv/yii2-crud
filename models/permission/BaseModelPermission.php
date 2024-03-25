@@ -47,8 +47,10 @@ abstract class BaseModelPermission extends BaseObject
      */
     public function checkAccess($actionName = '') {
         if (!$this->checkCommonAccess()) $this->forbidden();
-        $method = 'can' . ucfirst($actionName);
-        if (!$this->$method()) $this->forbidden();
+        if ($actionName) {
+            $method = 'can' . ucfirst($actionName);
+            if (!$this->$method()) $this->forbidden();
+        }
     }
 
 
