@@ -36,7 +36,7 @@ class FindOneModelHelper
      * @throws NotFoundHttpException
      * @throws InvalidConfigException
      */
-    public static function findOneAndCheckAccess($id, string $modelClassName, string $actionName = '', bool $modelPermissionRequired = false): ActiveRecord
+    public static function findOneAndCheckAccess($id, string $modelClassName, string $actionName = '', bool $modelPermissionRequired = true): ActiveRecord
     {
         $model = self::findOne($id, $modelClassName);
         ModelPermission::checkPermission($model, $actionName, $modelPermissionRequired);
