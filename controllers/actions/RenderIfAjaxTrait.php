@@ -3,12 +3,9 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Yii;
+use yii\web\Controller;
 use yii\web\Response;
 
-/**
- * @method render($view, $params = [])
- * @method renderAjax($view, $params = [])
- */
 trait RenderIfAjaxTrait
 {
     /**
@@ -19,16 +16,21 @@ trait RenderIfAjaxTrait
      */
     public function renderIfAjax($view, $params = [])
     {
+        if ($this instanceof Controller) {
+            $controller = $this;
+        } else {
+            $controller = $this->controller;
+        }
+
         if (Yii::$app->request->isAjax) {
             Yii::$app->assetManager->bundles = [
                 'yii\bootstrap\BootstrapPluginAsset' => false,
                 'yii\bootstrap\BootstrapAsset' => false,
                 'yii\web\JqueryAsset' => false,
             ];
-            /** @noinspection PhpMultipleClassDeclarationsInspection */
-            /** @noinspection PhpUndefinedMethodInspection */
-            return parent::renderAjax($view, $params);
+            return $controller->renderAjax($view, $params);
+
         }
-        return $this->render($view, $params);
+        return $controller->render($view, $params);
     }
 }
