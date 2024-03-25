@@ -51,15 +51,7 @@ abstract class BaseCrudAction extends Action
     public string $modelClassName = '';
 
     /**
-     *  Сообщение которое выводится на экран, при нарушении доступа. Если данное поле Null то будет выведено сообщение,
-     *  которое указано в классе наследние BaseModelPermission, модели
-     * @var null | string
-     */
-    public $permissionDeniedMessage = null;
-
-    /**
-     * Название метода для проверки разрашения. Данным метод будет вызван в классе наследнике от BaseModelPermission.
-     * Название метода должно быть без префикса can.  Например $permissionMethod = 'view' вызовет метод проверки canView
+     * @see BaseModelPermission::checkAccess()
      * @var string
      */
     public $permissionMethod = '';
@@ -183,7 +175,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function findModel($id)
     {
-        return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, '', $this->modelPermissionRequired);
+        return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
     }
 
     /**
