@@ -132,7 +132,7 @@ abstract class BaseCrudAction extends Action
      * @return void
      */
     protected function setFlash($key, $message) {
-        if ($message) Yii::$app->session->setFlash($key, $this->errorMessage);
+        if ($message) Yii::$app->session->setFlash($key, $message);
     }
 
     /**
