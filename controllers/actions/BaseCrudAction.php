@@ -3,8 +3,9 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
+use kozlovsv\crud\classes\BackRedirecter;
+use kozlovsv\crud\classes\IBackRedirecrer;
 use kozlovsv\crud\helpers\FindOneModelHelper;
-use kozlovsv\crud\helpers\ReturnUrl;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
@@ -24,25 +25,22 @@ abstract class BaseCrudAction extends Action
     protected $model = null;
 
     /**
-     * URL для возврата назад после действия. Может быть в формате для Url::to(). Может передаваться как анонимная функция.
-     * Сигнатура функции function($model) : Responce
-     * @var array|string|callable
+     * Класс для редиректа назад после успешного действия
+     * @var string|array|IBackRedirecrer
      */
-    public $backUrl = 'index';
+    public $successBackRedirecter = [
+        'class' => BackRedirecter::class,
+        'backUrl' => 'index',
+    ];
 
     /**
-     * URL для возврата назад если в действии произошла ошибка.
-     * Может быть в формате для Url::to(). Может передаваться как анонимная функция.
-     * Сигнатура функции function($model) : Responce
-     * @var array|string
+     * Класс для редиректа назад в случае ошибки
+     * @var string|array|IBackRedirecrer
      */
-    public $errorBackUrl = 'index';
-
-    /**
-     * Если = true, то к URL $backUrl и $errorBackUrl будет доабвяляться параметр ID, для возврата назад
-     * @var bool
-     */
-    public $addIdParemeterInBackUrl = false;
+    public $errorBackRedirecter = [
+        'class' => BackRedirecter::class,
+        'backUrl' => 'index',
+    ];
 
     /**
      * Имя базового класса модели. Используется для поика и создания модели.
@@ -72,6 +70,12 @@ abstract class BaseCrudAction extends Action
     public string $errorMessage = '';
 
     /**
+     * Сообщение при ошибки при отработке функции Action::run
+     * @var string
+     */
+    public string $successMessage = '';
+
+    /**
      * Обязательно проверять разрешение на доступ к модели.
      * @var bool
      */
@@ -81,19 +85,9 @@ abstract class BaseCrudAction extends Action
     {
         if (empty($this->modelClassName))
             throw new InvalidConfigException('The "modelClassName" config is required.');
+        if (!($this->successBackRedirecter instanceof IBackRedirecrer)) $this->successBackRedirecter = Yii::createObject($this->successBackRedirecter);
+        if (!($this->errorBackRedirecter instanceof IBackRedirecrer)) $this->errorBackRedirecter = Yii::createObject($this->errorBackRedirecter);
         parent::init();
-    }
-
-    /**
-     * @return Response
-     */
-    protected function goBack($backUrl, $addIdParemeterInBackUrl, $id = null)
-    {
-        if (is_callable($backUrl)) {
-            return call_user_func($backUrl, $this->model);
-        }
-        $url = $addIdParemeterInBackUrl? ReturnUrl::addIdToUrl($backUrl, $id) : $backUrl;
-        return ReturnUrl::goBack($this->controller, $url);
     }
 
     /**
@@ -101,7 +95,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function goBackSuccess($id = null)
     {
-        return $this->goBack($this->backUrl, $this->addIdParemeterInBackUrl, $id);
+        return $this->successBackRedirecter->back($id);
     }
 
     /**
@@ -109,27 +103,30 @@ abstract class BaseCrudAction extends Action
      */
     protected function goBackError($id = null)
     {
-        return $this->goBack($this->errorBackUrl, $this->addIdParemeterInBackUrl, $id);
+        return $this->errorBackRedirecter->back($id);
     }
 
     /**
      * @return void
      */
-    protected function setFlash($key, $message) {
+    protected function setFlash($key, $message)
+    {
         if ($message) Yii::$app->session->setFlash($key, $message);
     }
 
     /**
      * @return void
      */
-    protected function setFlashError($message) {
+    protected function setFlashError($message)
+    {
         $this->setFlash('error', $message);
     }
 
     /**
      * @return void
      */
-    protected function setFlashSuccess($message) {
+    protected function setFlashSuccess($message)
+    {
         $this->setFlash('success', $message);
     }
 

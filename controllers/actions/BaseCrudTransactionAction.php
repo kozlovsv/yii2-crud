@@ -12,13 +12,6 @@ use yii\web\Response;
  */
 abstract class BaseCrudTransactionAction extends BaseCrudAction
 {
-
-    /**
-     * Сообщение при ошибки при отработке функции Action::run
-     * @var string
-     */
-    public string $successMessage = '';
-
     /**
      * Specific action which should be implemented in derived classes
      * @param $model
