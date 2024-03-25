@@ -8,11 +8,8 @@ use kozlovsv\crud\controllers\actions\ActionCrudIndex;
 use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
 use kozlovsv\crud\helpers\ModelPermission;
-use kozlovsv\crud\helpers\ReturnUrl;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
-use yii\web\Response;
-
 
 /**
  * Каркас контроллера CRUD
@@ -22,18 +19,6 @@ use yii\web\Response;
  */
 abstract class CrudController extends Controller
 {
-    /**
-     * URL куда возвращаться по умолчанию после выполнения действий
-     * @var string|array
-     */
-    protected $backUrl = 'index';
-
-    /**
-     * URL куда возвращаться по умолчанию если произошла ошибка
-     * @var string|array
-     */
-    protected $errorUrl = 'index';
-
     /**
      * @var array
      */
@@ -77,8 +62,6 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudView::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->backUrl,
-                'errorBackUrl' => $this->errorUrl,
             ],
             $this->actionViewConfig
         );
@@ -90,8 +73,6 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudUpdate::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->backUrl,
-                'errorBackUrl' => $this->errorUrl,
             ],
             $this->actionUpdateConfig
         );
@@ -103,8 +84,6 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudCreate::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->backUrl,
-                'errorBackUrl' => $this->errorUrl,
             ],
             $this->actionCreateConfig
         );
@@ -116,8 +95,6 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudDelete::class,
                 'modelClassName' => $this->getModelClassName(),
-                'backUrl' => $this->backUrl,
-                'errorBackUrl' => $this->errorUrl,
             ],
             $this->actionDeleteConfig
         );
@@ -135,6 +112,18 @@ abstract class CrudController extends Controller
     }
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return CrudControllerBehaviors::config($this->getPermissionCategory(), $this->additionalAccessRules());
+    }
+
+    protected function getPermissionCategory(){
+        return ModelPermission::getPermissionCategory($this->getModelClassName());
+    }
+
+    /**
      * Дополнительные классы Action
      * @return array
      */
@@ -143,11 +132,11 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function behaviors()
+    protected function additionalAccessRules(): array
     {
-        return CrudControllerBehaviors::config($this->getPermissionCategory(), $this->additionalAccessRules());
+        return [];
     }
 
     /**
@@ -161,24 +150,4 @@ abstract class CrudController extends Controller
      * @return ActiveRecord
      */
     protected abstract function getSearchModel();
-
-    /**
-     * @return Response
-     */
-    protected function goBackCrud()
-    {
-        return ReturnUrl::goBack($this, $this->backUrl);
-    }
-
-    protected function getPermissionCategory(){
-        return ModelPermission::getPermissionCategory($this->getModelClassName());
-    }
-
-    /**
-     * @return array
-     */
-    protected function additionalAccessRules(): array
-    {
-        return [];
-    }
 }
