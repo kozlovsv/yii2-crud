@@ -3,8 +3,6 @@
 namespace kozlovsv\crud\classes;
 
 use kozlovsv\crud\helpers\ReturnUrl;
-use yii\base\BaseObject;
-use yii\web\Controller;
 
 /**
  * Класс возврата после совершения CRUD операции не в 'index' в на страницу просмотра 'view'
