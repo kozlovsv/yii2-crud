@@ -80,6 +80,12 @@ abstract class BaseCrudAction extends Action
      */
     public string $errorMessage = '';
 
+    /**
+     * Обязательно проверять разрешение на доступ к модели.
+     * @var bool
+     */
+    public bool $needCheckModelPermission = true;
+
     public function init()
     {
         if (empty($this->modelClassName))
@@ -97,6 +103,8 @@ abstract class BaseCrudAction extends Action
             $permission = $model->getPermission();
             if (!$this->permissionDeniedMessage) $this->permissionDeniedMessage = $permission->errorMessage;
             $permission->checkAccess($this->permissionMethod);
+        } else {
+            if ($this->needCheckModelPermission) throw new InvalidConfigException('CRUD Model must implements IModelPermissionInterface');
         }
     }
 
