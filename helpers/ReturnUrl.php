@@ -123,4 +123,18 @@ class ReturnUrl
         }
         return $url;
     }
+
+    /**
+     * Adds the ReturnUrl parameter to the given URL.
+     *
+     * @param string|array $url The URL to add the ReturnUrl parameter to. Can be a string or an array.
+     * @param string|array $returnUrl The ReturnUrl parameter value.
+     * @return string|array The modified URL with the ReturnUrl parameter added.
+     */
+    public static function addReturnUrlParamToUrl($url, $returnUrl) {
+        if (!is_array($url)) $url = [$url];
+        $url[ReturnUrl::REQUEST_PARAM_NAME] = Url::to($returnUrl);
+        return $url;
+    }
 }
+
