@@ -2,7 +2,7 @@
 namespace kozlovsv\crud\models\permission;
 
 use yii\base\BaseObject;
-use yii\base\Model;
+use yii\db\ActiveRecord;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -27,7 +27,7 @@ abstract class BaseModelPermission extends BaseObject
 
     /**
      * Проверяемая модель
-     * @var Model
+     * @var ActiveRecord
      */
     public $model = null;
 

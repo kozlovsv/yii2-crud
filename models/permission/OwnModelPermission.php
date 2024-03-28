@@ -4,12 +4,12 @@ namespace kozlovsv\crud\models\permission;
 
 
 use kozlovsv\crud\models\IOwnInterface;
-use yii\base\Model;
+use yii\db\ActiveRecord;
 
 class OwnModelPermission extends BaseModelPermission
 {
     /**
-     * @var Model | IOwnInterface
+     * @var ActiveRecord | IOwnInterface
      */
     public $model;
 
