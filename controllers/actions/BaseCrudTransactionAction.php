@@ -4,6 +4,7 @@ namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
 use Yii;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\web\Response;
 
@@ -13,11 +14,17 @@ use yii\web\Response;
 abstract class BaseCrudTransactionAction extends BaseCrudAction
 {
     /**
+     * @var bool
+     */
+    public $useModelIdToBackSuccess = true;
+
+    /**
      * Specific action which should be implemented in derived classes
-     * @param $model
+     * @param ActiveRecord|Model $model
+     * @param mixed $id
      * @return Response
      */
-    protected function doAction($model) {
+    protected function doAction($model, $id) {
         $transaction = Yii::$app->db->beginTransaction();
         try {
             if ($this->doActionModel($model)) {
@@ -30,11 +37,11 @@ abstract class BaseCrudTransactionAction extends BaseCrudAction
             $transaction->rollBack();
             throw $e;
         }
-        return $this->goBackSuccess($model->id);
+        return $this->goBackSuccess($this->useModelIdToBackSuccess ? $model->getPrimaryKey() : $id);
     }
 
     /**
-     * @param ActiveRecord $model
+     * @param Model $model
      * @return bool
      */
     protected abstract function doActionModel($model): bool;

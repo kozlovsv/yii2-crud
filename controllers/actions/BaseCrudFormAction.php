@@ -3,8 +3,8 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Yii;
+use yii\base\Model;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\web\Response;
 
 class BaseCrudFormAction extends BaseCrudTransactionAction {
@@ -17,15 +17,15 @@ class BaseCrudFormAction extends BaseCrudTransactionAction {
     public string $viewName = '';
 
     /**
-     * @param $model
+     * @param Model $model
+     * @param mixed $id
      * @return string|Response
-     * @throws Exception
      */
-    protected function doAction($model)
+    protected function doAction($model, $id)
     {
         $post = Yii::$app->request->post();
         if ($model->load($post) && $model->validate()) {
-            return parent::doAction($model);
+            return parent::doAction($model, $id);
         }
         return $this->renderIfAjax($this->viewName, compact('model'));
     }

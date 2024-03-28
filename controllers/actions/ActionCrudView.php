@@ -11,7 +11,7 @@ class ActionCrudView extends BaseCrudAction
      */
     public string $viewName = 'view';
 
-    protected function doAction($model) {
+    protected function doAction($model, $id) {
         return $this->renderIfAjax($this->viewName, compact('model'));
     }
 }

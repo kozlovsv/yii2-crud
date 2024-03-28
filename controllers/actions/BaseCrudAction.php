@@ -10,7 +10,6 @@ use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\db\ActiveRecord;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
@@ -169,7 +168,7 @@ abstract class BaseCrudAction extends Action
         try {
             $model = $id ? $this->findModel($id) : $this->createModel();
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
-            return $this->doAction($model);
+            return $this->doAction($model, $id);
         } catch (ForbiddenHttpException $e) {
             $this->setFlashError($e->getMessage());
             return $this->goBackError($id);
@@ -182,15 +181,19 @@ abstract class BaseCrudAction extends Action
     }
 
     /**
-     * Specific action which should be implemented in derived classes
-     * @param $model
-     * @return Response|string
+     * Executes the main action.
+     * This method is called by the Run method.
+     *
+     * @param Model $model The model associated with the action.
+     * @param mixed $id The ID of the model. Defaults to null.
+     * @return Response|string The response or the rendered string.
+     * @throws ForbiddenHttpException if the user does not have the required permission.
      */
-    abstract protected function doAction($model);
+    abstract protected function doAction($model, $id);
 
     /**
      * @param int $id
-     * @return ActiveRecord
+     * @return Model
      */
     protected function findModel($id)
     {
@@ -205,11 +208,11 @@ abstract class BaseCrudAction extends Action
     }
 
     /**
-     * @return ActiveRecord
+     * @return Model
      */
     protected function createModel()
     {
-        /** @var ActiveRecord $model */
+        /** @var Model $model */
         $model = new $this->modelClassName();
         $this->model = $model;
 
