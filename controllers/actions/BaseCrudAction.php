@@ -76,6 +76,28 @@ abstract class BaseCrudAction extends Action
     public string $successMessage = '';
 
     /**
+     * The hook function to be executed after finding a model.
+     *
+     * This hook function is called after finding a model in the code. It can be used to perform additional logic or manipulate the model data before it is returned.
+     *
+     * @var callable|null
+     *
+     * @see BaseCrudAction::findModel()
+     */
+    public $afterFindModelHook = null;
+
+    /**
+     * The hook that is called after a model was created.
+     *
+     * This hook allows custom code to be executed after a model has been created.
+     *
+     * @var callable|null
+     *
+     * @see BaseCrudAction::createModel()
+     */
+    public $afterCreateModelHook = null;
+
+    /**
      * Обязательно проверять разрешение на доступ к модели.
      * @var bool
      */
@@ -172,7 +194,14 @@ abstract class BaseCrudAction extends Action
      */
     protected function findModel($id)
     {
-        return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
+        $model = FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
+        $this->model = $model;
+
+        if ($this->afterFindModelHook && is_callable($this->afterFindModelHook)) {
+            call_user_func($this->afterFindModelHook, $model);
+        }
+
+        return $model;
     }
 
     /**
@@ -183,6 +212,11 @@ abstract class BaseCrudAction extends Action
         /** @var ActiveRecord $model */
         $model = new $this->modelClassName();
         $this->model = $model;
+
+        if ($this->afterCreateModelHook && is_callable($this->afterCreateModelHook)) {
+            call_user_func($this->afterCreateModelHook, $model);
+        }
+
         return $model;
     }
 }
