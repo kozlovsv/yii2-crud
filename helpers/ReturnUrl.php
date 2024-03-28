@@ -117,7 +117,7 @@ class ReturnUrl
      * Adds a return URL parameter to the given URL.
      *
      * @param array|string $url The URL to modify. If a string is provided, it will be converted to an array.
-     * @param string $returnUrl The return URL to append to the URL.
+     * @param array|string $returnUrl The return URL to append to the URL.
      * @param bool $crudRestore Optional. Whether to add a restore query parameter for CRUD operations. Defaults to false.
      * @return array The modified URL array with the return URL parameter added.
      */
