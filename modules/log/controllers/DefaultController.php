@@ -5,6 +5,7 @@ namespace kozlovsv\crud\modules\log\controllers;
 use Exception;
 use kozlovsv\crud\controllers\CrudController;
 use kozlovsv\crud\helpers\ModelPermission;
+use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\modules\log\models\Log;
 use kozlovsv\crud\modules\log\models\LogSearch;
 use Yii;
@@ -83,6 +84,6 @@ class DefaultController extends CrudController
             $message = 'При очистки журнала произошла ошибка.';
             Yii::$app->session->setFlash('error', $message);
         }
-        return $this->goBackCrud();
+        return ReturnUrl::goBack($this, 'index');
     }
 }

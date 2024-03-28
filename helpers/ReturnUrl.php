@@ -5,15 +5,15 @@ namespace kozlovsv\crud\helpers;
 use Yii;
 use yii\base\InvalidRouteException;
 use yii\console\Exception;
-use yii\db\ActiveRecord;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Request;
 use yii\web\Response;
 
 /**
- * Вспомогательный класс для работы с параметрами возврата после закрытия формы
  * Class ReturnUrl
+ *
+ * The ReturnUrl class provides methods for handling return URLs in a web application.
  */
 class ReturnUrl
 {
@@ -99,17 +99,6 @@ class ReturnUrl
     }
 
     /**
-     * Получить параметры для формирования URL возврата на $action (view, update ...) с параметрами 'id' => $model->getPrimaryKey()
-     * @param ActiveRecord $model
-     * @param string $action
-     * @return array
-     */
-    public static function formatReturnUrlParam($model, $action = 'view')
-    {
-        return [ReturnUrl::REQUEST_PARAM_NAME => Url::to([$action, 'id' => $model->getPrimaryKey()])];
-    }
-
-    /**
      * Добавляет параметр ID к URL. Если параемтр ID уже задан, то ничего не делает.
      * @param array|string $url
      * @param int | null $id
@@ -125,15 +114,19 @@ class ReturnUrl
     }
 
     /**
-     * Adds the ReturnUrl parameter to the given URL.
+     * Adds a return URL parameter to the given URL.
      *
-     * @param string|array $url The URL to add the ReturnUrl parameter to. Can be a string or an array.
-     * @param string|array $returnUrl The ReturnUrl parameter value.
-     * @return string|array The modified URL with the ReturnUrl parameter added.
+     * @param array|string $url The URL to modify. If a string is provided, it will be converted to an array.
+     * @param string $returnUrl The return URL to append to the URL.
+     * @param bool $crudRestore Optional. Whether to add a restore query parameter for CRUD operations. Defaults to false.
+     * @return array The modified URL array with the return URL parameter added.
      */
-    public static function addReturnUrlParamToUrl($url, $returnUrl) {
+    public static function withReturnParam($url, $returnUrl, $crudRestore= false) {
         if (!is_array($url)) $url = [$url];
         $url[ReturnUrl::REQUEST_PARAM_NAME] = Url::to($returnUrl);
+        if ($crudRestore) {
+            $url[ReturnUrl::RESTORE_QUERY_PARAM_NAME] = 1;
+        }
         return $url;
     }
 }
