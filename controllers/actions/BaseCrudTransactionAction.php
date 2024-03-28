@@ -14,7 +14,9 @@ use yii\web\Response;
 abstract class BaseCrudTransactionAction extends BaseCrudAction
 {
     /**
-     * @var bool
+     * Indicates whether to use the model ID to back success.
+     *
+     * @var bool $useModelIdToBackSuccess Flag to determine if the model ID should be used for back success.
      */
     public $useModelIdToBackSuccess = true;
 
