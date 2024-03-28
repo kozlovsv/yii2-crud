@@ -99,6 +99,18 @@ class ReturnUrl
     }
 
     /**
+     * Format string URL to array [$url].
+     *
+     * @param string|array $url The URL to normalize.
+     * @return array The normalized URL.
+     */
+    protected static function normalizeUrl($url): array
+    {
+        if (!is_array($url)) $url = [$url];
+        return $url;
+    }
+
+    /**
      * Добавляет параметр ID к URL. Если параемтр ID уже задан, то ничего не делает.
      * @param array|string $url
      * @param int | null $id
@@ -106,7 +118,7 @@ class ReturnUrl
      */
     public static function addIdToUrl($url, $id): array
     {
-        if (!is_array($url)) $url = [$url];
+        $url = self::normalizeUrl($url);
         if (!is_null($id) && !isset($url['id'])) {
             $url['id'] = $id;
         }
@@ -114,19 +126,32 @@ class ReturnUrl
     }
 
     /**
+     * Добавляет параметр ID к URL. Если параемтр ID уже задан, то ничего не делает.
+     * @param array|string $url
+     * @return array
+     */
+    public static function addCrudRestoreUrl($url): array
+    {
+        $url = self::normalizeUrl($url);
+        $url[ReturnUrl::RESTORE_QUERY_PARAM_NAME] = 1;
+        return $url;
+    }
+
+    /**
      * Adds a return URL parameter to the given URL.
      *
      * @param array|string $url The URL to modify. If a string is provided, it will be converted to an array.
-     * @param array|string $returnUrl The return URL to append to the URL.
-     * @param bool $crudRestore Optional. Whether to add a restore query parameter for CRUD operations. Defaults to false.
+     * @param array|string  $returnUrl The return URL to append to the URL.
+     * @param bool $addCrudRestoreToReturnUrl Optional. Whether to add a restore query parameter for $returnUrl. Defaults to false.
      * @return array The modified URL array with the return URL parameter added.
      */
-    public static function withReturnParam($url, $returnUrl, $crudRestore= false) {
-        if (!is_array($url)) $url = [$url];
-        $url[ReturnUrl::REQUEST_PARAM_NAME] = Url::to($returnUrl);
-        if ($crudRestore) {
-            $url[ReturnUrl::RESTORE_QUERY_PARAM_NAME] = 1;
+    public static function withReturnParam(array|string $url, array|string $returnUrl, bool $addCrudRestoreToReturnUrl = false): array
+    {
+        $url = self::normalizeUrl($url);
+        if ($addCrudRestoreToReturnUrl) {
+            $returnUrl = self::addCrudRestoreUrl($returnUrl);
         }
+        $url[ReturnUrl::REQUEST_PARAM_NAME] = Url::to($returnUrl);
         return $url;
     }
 }
