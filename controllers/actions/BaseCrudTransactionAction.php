@@ -39,7 +39,7 @@ abstract class BaseCrudTransactionAction extends BaseCrudAction
             $transaction->rollBack();
             throw $e;
         }
-        return $this->goBackSuccess($this->useModelIdToBackSuccess ? $model->getPrimaryKey() : $id);
+        return $this->goBackSuccess($this->useModelIdToBackSuccess ? $model->getPrimaryKey() : $id, $model);
     }
 
     /**

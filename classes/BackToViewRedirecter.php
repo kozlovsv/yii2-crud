@@ -3,6 +3,7 @@
 namespace kozlovsv\crud\classes;
 
 use kozlovsv\crud\helpers\ReturnUrl;
+use yii\base\Model;
 
 /**
  * Класс возврата после совершения CRUD операции не в 'index' в на страницу просмотра 'view'
@@ -16,21 +17,17 @@ class BackToViewRedirecter extends BackRedirecter
     public $backUrl = 'view';
 
     /**
-     * Если = true, то к URL будет доабвяляться параметр ID
-     * @var bool
-     */
-    public $addIdParemeter = true;
-
-    /**
      * Если = true, то редирект будет осуществлен точно по $backUrl без логики возврата по ReturnUrl и пр.
      * @var bool
      */
     public $hardRedirect = true;
 
-
-    public function back($id = null)
+    /**
+     * @inheritdoc
+     */
+    protected function getBackUrl(string|int|null $id, ?Model $model): array|string
     {
-        $url = $this->addIdParemeter? ReturnUrl::addIdToUrl($this->backUrl, $id) : $this->backUrl;
-        return $this->hardRedirect ? $this->controller->redirect($url) : ReturnUrl::goBack($this->controller, $url);
+        $url = parent::getBackUrl($id, $model);
+        return ReturnUrl::addIdToUrl($url, $id);
     }
 }

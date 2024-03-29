@@ -115,9 +115,9 @@ abstract class BaseCrudAction extends Action
     /**
      * @return Response
      */
-    protected function goBackSuccess($id = null)
+    protected function goBackSuccess($id = null, $model = null)
     {
-        return $this->successBackRedirecter->back($id);
+        return $this->successBackRedirecter->back($id, $model);
     }
 
     /**

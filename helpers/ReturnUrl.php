@@ -104,7 +104,7 @@ class ReturnUrl
      * @param string|array $url The URL to normalize.
      * @return array The normalized URL.
      */
-    protected static function normalizeUrl($url): array
+    public static function normalizeUrl($url): array
     {
         if (!is_array($url)) $url = [$url];
         return $url;

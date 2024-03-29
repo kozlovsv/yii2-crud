@@ -4,7 +4,9 @@ namespace kozlovsv\crud\classes;
 
 use kozlovsv\crud\helpers\ReturnUrl;
 use yii\base\BaseObject;
+use yii\base\Model;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Класс возврата после совершения CRUD операции
@@ -17,16 +19,12 @@ class BackRedirecter extends BaseObject implements IBackRedirecrer
     protected Controller $controller;
 
     /**
-     *  URL для возврата. Формат для Url::to().
-     * @var string|array
+     *  URL для возврата.
+     *  Формат для Url::to().
+     *  Может быть call_back функцией function (string|int|null $id, ?Model $model): array|string
+     * @var string|array|callable
      */
     public $backUrl = 'index';
-
-    /**
-     * Если = true, то к URL будет доабвяляться параметр ID
-     * @var bool
-     */
-    public $addIdParemeter = false;
 
     /**
      * Если = true, то редирект будет осуществлен точно по $backUrl без логики возврата по ReturnUrl и пр.
@@ -40,10 +38,29 @@ class BackRedirecter extends BaseObject implements IBackRedirecrer
         parent::__construct($config);
     }
 
-
-    public function back($id = null)
+    /**
+     * Redirects the user back to the previous page or a specified URL.
+     *
+     * @param string|int|null $id The ID value.
+     * @param Model|null $model The model object or model class name.
+     * @return string|Response The URL to redirect to, or an instance of `yii\web\Response`.
+     */
+    public function back(string|int|null $id = null, ?Model $model = null): string|Response
     {
-        $url = $this->addIdParemeter? ReturnUrl::addIdToUrl($this->backUrl, $id) : $this->backUrl;
+        $url = $this->getBackUrl($id, $model);
         return $this->hardRedirect ? $this->controller->redirect($url) : ReturnUrl::goBack($this->controller, $url);
+    }
+
+    /**
+     * Retrieves the URL to redirect the user back to the previous page or a specified URL.
+     *
+     * @param string|int|null $id The ID value.
+     * @param Model|null $model The model object or model class name.
+     * @return array|string The URL to redirect to as an array or string.
+     */
+    protected function getBackUrl(string|int|null $id, ?Model $model): array|string
+    {
+        if (is_callable($this->backUrl)) return call_user_func($this->backUrl, $id, $model);
+        return $this->backUrl;
     }
 }

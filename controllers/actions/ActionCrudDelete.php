@@ -26,6 +26,6 @@ class ActionCrudDelete extends BaseCrudAction
      */
     protected function doAction($model, $id) {
         if ($model->delete()) $this->setFlashSuccess($this->successMessage);
-        return $this->goBackSuccess($id);
+        return $this->goBackSuccess($id, $model);
     }
 }
