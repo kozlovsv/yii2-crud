@@ -32,7 +32,7 @@ class OwnModelPermission extends BaseModelPermission
     /**
      * @return bool
      */
-    protected function checkCommonAccess(): bool
+    public function canView(): bool
     {
         return $this->own();
     }

@@ -46,7 +46,7 @@ abstract class BaseModelPermission extends BaseObject
      * @throws ForbiddenHttpException
      */
     public function checkAccess($actionName = '') {
-        if (!$this->checkCommonAccess()) $this->forbidden();
+        if (!$this->canView()) $this->forbidden();
         if ($actionName) {
             $method = 'can' . ucfirst($actionName);
             if (!$this->$method()) $this->forbidden();
@@ -54,7 +54,12 @@ abstract class BaseModelPermission extends BaseObject
     }
 
 
-    protected abstract function checkCommonAccess(): bool;
+    /**
+     * Determines if the user has permission to view the resource.
+     *
+     * @return bool Returns true if the user has permission to view the resource, false otherwise.
+     */
+    public abstract function canView(): bool;
 
     /**
      * @return mixed
