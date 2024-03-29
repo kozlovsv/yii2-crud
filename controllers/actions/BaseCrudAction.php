@@ -11,6 +11,7 @@ use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -169,7 +170,7 @@ abstract class BaseCrudAction extends Action
             $model = $id ? $this->findModel($id) : $this->createModel();
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
             return $this->doAction($model, $id);
-        } catch (ForbiddenHttpException $e) {
+        } catch (ForbiddenHttpException | NotFoundHttpException $e) {
             $this->setFlashError($e->getMessage());
             return $this->goBackError($id);
         } catch (Exception $e) {
