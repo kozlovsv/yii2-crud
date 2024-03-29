@@ -5,6 +5,7 @@ namespace kozlovsv\crud\controllers\actions;
 use kozlovsv\crud\models\ISearchModelInterface;
 use Yii;
 use yii\base\Action;
+use yii\base\Model;
 
 class ActionCrudIndex extends Action
 {
@@ -14,9 +15,9 @@ class ActionCrudIndex extends Action
     public string $viewName = 'index';
 
     /**
-     * @var ISearchModelInterface
+     * @var ISearchModelInterface| Model
      */
-    public ISearchModelInterface $searchModel;
+    public ISearchModelInterface | Model $searchModel;
 
 
     /**
