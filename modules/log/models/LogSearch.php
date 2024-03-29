@@ -2,6 +2,7 @@
 
 namespace kozlovsv\crud\modules\log\models;
 
+use kozlovsv\crud\models\ISearchModelInterface;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -9,7 +10,7 @@ use yii\data\ActiveDataProvider;
 /**
  * LogSearch represents the model behind the search form of `app\models\Log`.
  */
-class LogSearch extends Log
+class LogSearch extends Log implements ISearchModelInterface
 {
     /**
      * @inheritdoc
@@ -36,7 +37,7 @@ class LogSearch extends Log
      * @param array $params
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params = [])
     {
         $query = Log::find();
 
