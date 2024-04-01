@@ -43,9 +43,9 @@ class BackRedirecter extends BaseObject implements IBackRedirecrer
      *
      * @param string|int|null $id The ID value.
      * @param Model|null $model The model object or model class name.
-     * @return string|Response The URL to redirect to, or an instance of `yii\web\Response`.
+     * @return Response The URL to redirect to, or an instance of `yii\web\Response`.
      */
-    public function back(string|int|null $id = null, ?Model $model = null): string|Response
+    public function back(string|int|null $id = null, ?Model $model = null)
     {
         $url = $this->getBackUrl($id, $model);
         return $this->hardRedirect ? $this->controller->redirect($url) : ReturnUrl::goBack($this->controller, $url);

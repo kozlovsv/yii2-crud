@@ -28,19 +28,13 @@ abstract class BaseCrudAction extends Action
      * Класс для редиректа назад после успешного действия
      * @var string|array|IBackRedirecrer
      */
-    public $successBackRedirecter = [
-        'class' => BackRedirecter::class,
-        'backUrl' => 'index',
-    ];
+    public $successBackRedirecter = ['backUrl' => 'index'];
 
     /**
      * Класс для редиректа назад в случае ошибки
      * @var string|array|IBackRedirecrer
      */
-    public $errorBackRedirecter = [
-        'class' => BackRedirecter::class,
-        'backUrl' => 'index',
-    ];
+    public $errorBackRedirecter = ['backUrl' => 'index'];
 
     /**
      * Имя базового класса модели. Используется для поика и создания модели.
@@ -107,9 +101,18 @@ abstract class BaseCrudAction extends Action
     {
         if (empty($this->modelClassName))
             throw new InvalidConfigException('The "modelClassName" config is required.');
-        if (!($this->successBackRedirecter instanceof IBackRedirecrer)) $this->successBackRedirecter = Yii::createObject($this->successBackRedirecter, ['controller' => $this->controller]);
-        if (!($this->errorBackRedirecter instanceof IBackRedirecrer)) $this->errorBackRedirecter = Yii::createObject($this->errorBackRedirecter, ['controller' => $this->controller]);
+        $this->successBackRedirecter = $this->_createRedirecter($this->successBackRedirecter);
+        $this->errorBackRedirecter = $this->_createRedirecter($this->errorBackRedirecter);
         parent::init();
+    }
+
+    private function _createRedirecter($config)
+    {
+        if ($config instanceof IBackRedirecrer) return $config;
+        if (is_array($config) && !isset($config['class'])) {
+            $config['class'] = BackRedirecter::class;
+        }
+        return Yii::createObject($config, ['controller' => $this->controller]);
     }
 
     /**
@@ -170,7 +173,7 @@ abstract class BaseCrudAction extends Action
             $model = $id ? $this->findModel($id) : $this->createModel();
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
             return $this->doAction($model, $id);
-        } catch (ForbiddenHttpException | NotFoundHttpException $e) {
+        } catch (ForbiddenHttpException|NotFoundHttpException $e) {
             $this->setFlashError($e->getMessage());
             return $this->goBackError($id);
         } catch (Exception $e) {
