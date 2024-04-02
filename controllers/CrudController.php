@@ -44,6 +44,11 @@ abstract class CrudController extends Controller
      */
     protected array $actionDeleteConfig = [];
 
+    /**
+     * @var bool
+     */
+    protected bool $modelPermissionRequired = true;
+
 
     protected function getActionIndexConfig(): array
     {
@@ -62,6 +67,7 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudView::class,
                 'modelClassName' => $this->getModelClassName(),
+                'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
             $this->actionViewConfig
         );
@@ -73,6 +79,7 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudUpdate::class,
                 'modelClassName' => $this->getModelClassName(),
+                'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
             $this->actionUpdateConfig
         );
@@ -95,6 +102,7 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudDelete::class,
                 'modelClassName' => $this->getModelClassName(),
+                'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
             $this->actionDeleteConfig
         );
