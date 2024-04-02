@@ -16,6 +16,8 @@ use Yii;
 class DefaultController extends CrudController
 {
 
+    protected bool $modelPermissionRequired = false;
+
     /**
      * @inheritdoc
      */
