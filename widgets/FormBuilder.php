@@ -65,7 +65,7 @@ class FormBuilder extends Form
         //Настраиваем наиболее часто используемые функции для КРУД
         foreach ($attributes as &$setting) {
             //Ограничение максимальной длинны
-            if (!empty(static::$_textInputs[ArrayHelper::getValue($setting, 'type')])) {
+            if (isset(static::$_textInputs[ArrayHelper::getValue($setting, 'type', 'null')])) {
                 $setting = array_merge(['options' => ['maxlength' => true]], $setting);
             }
         }
