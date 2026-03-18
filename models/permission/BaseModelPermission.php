@@ -71,7 +71,7 @@ abstract class BaseModelPermission extends BaseObject
     }
 
     protected function permissionName(): string {
-        if ($this->model instanceof IPermitionName) {
+        if ($this->model instanceof IPermissionName) {
             return $this->model::permissionName();
         }
         return $this->model::tableName();

@@ -1,7 +1,7 @@
 <?php
 namespace kozlovsv\crud\models\permission;
 
-interface IPermitionName
+interface IPermissionName
 {
     /**
      * @return string
