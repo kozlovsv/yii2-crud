@@ -69,4 +69,11 @@ abstract class BaseModelPermission extends BaseObject
     {
         throw new ForbiddenHttpException($this->errorMessage);
     }
+
+    protected function permissionName(): string {
+        if ($this->model instanceof IPermitionName) {
+            return $this->model::permissionName();
+        }
+        return $this->model::tableName();
+    }
 }
