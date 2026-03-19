@@ -99,8 +99,8 @@ abstract class BaseCrudAction extends Action
 
     public function init()
     {
-        if (empty($this->modelClassName))
-            throw new InvalidConfigException('The "modelClassName" config is required.');
+        if (empty($this->modelClassName) && empty($this->model))
+            throw new InvalidConfigException('The "modelClassName" or "model" config is required.');
         $this->successBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->successBackRedirecter);
         $this->errorBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->errorBackRedirecter);
         parent::init();
