@@ -5,7 +5,7 @@ namespace kozlovsv\crud\controllers\actions;
 use Exception;
 use kozlovsv\crud\classes\BackRedirecter;
 use kozlovsv\crud\classes\IBackRedirecrer;
-use kozlovsv\crud\classes\ModelEvent;
+use kozlovsv\crud\helpers\CreateCrudModelHelper;
 use kozlovsv\crud\helpers\FindOneModelHelper;
 use Yii;
 use yii\base\Action;
@@ -20,8 +20,6 @@ use yii\web\Response;
  */
 abstract class BaseCrudAction extends Action
 {
-    const EVENT_AFTER_CREATE_MODEL = 'afterCreateModel';
-
     /**
      * @var Model | null
      */
@@ -211,11 +209,6 @@ abstract class BaseCrudAction extends Action
     {
         $model = FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
         $this->model = $model;
-
-        if ($this->afterFindModelHook && is_callable($this->afterFindModelHook)) {
-            call_user_func($this->afterFindModelHook, $model);
-        }
-
         return $model;
     }
 
@@ -224,17 +217,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function createModel()
     {
-        /** @var Model $model */
-        $model = new $this->modelClassName();
-        $this->model = $model;
-        $this->afterCreateModel($model);
-        return $model;
-    }
-
-    protected function afterCreateModel(Model $model)
-    {
-        $this->trigger(self::EVENT_AFTER_CREATE_MODEL, new ModelEvent([
-            'model' => $model,
-        ]));
+        $this->model = CreateCrudModelHelper::createSimpleModel($this->modelClassName);
+        return $this->model;
     }
 }

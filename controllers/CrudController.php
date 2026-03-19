@@ -7,6 +7,7 @@ use kozlovsv\crud\controllers\actions\ActionCrudDelete;
 use kozlovsv\crud\controllers\actions\ActionCrudIndex;
 use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
+use kozlovsv\crud\helpers\CreateCrudModelHelper;
 use kozlovsv\crud\helpers\ModelPermission;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
@@ -90,7 +91,7 @@ abstract class CrudController extends Controller
         return array_merge(
             [
                 'class' => ActionCrudCreate::class,
-                'modelClassName' => $this->getCreateModelClassName(),
+                'model' => $this->createModel(),
             ],
             $this->actionCreateConfig
         );
@@ -174,4 +175,8 @@ abstract class CrudController extends Controller
      * @return ActiveRecord
      */
     protected abstract function getSearchModel();
+
+    protected function createModel() {
+        return CreateCrudModelHelper::createSimpleModel($this->getCreateModelClassName());
+    }
 }
