@@ -22,7 +22,7 @@ abstract class BaseCrudAction extends Action
     /**
      * @var Model | null
      */
-    protected $model = null;
+    public $model = null;
 
     /**
      * Класс для редиректа назад после успешного действия
