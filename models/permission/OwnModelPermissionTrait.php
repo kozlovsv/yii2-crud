@@ -12,12 +12,9 @@ trait OwnModelPermissionTrait
      * @return BaseModelPermission
      */
     public function getPermission() {
+        if ($this->permission === null) {
+            $this->permission = new OwnModelPermission($this);
+        }
         return $this->permission;
-    }
-
-    public function init() {
-        /** @noinspection PhpUndefinedClassInspection */
-        parent::init();
-        $this->permission = new OwnModelPermission($this);
     }
 }
