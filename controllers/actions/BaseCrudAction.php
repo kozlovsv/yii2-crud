@@ -5,6 +5,7 @@ namespace kozlovsv\crud\controllers\actions;
 use Exception;
 use kozlovsv\crud\classes\BackRedirecter;
 use kozlovsv\crud\classes\IBackRedirecrer;
+use kozlovsv\crud\classes\ModelEvent;
 use kozlovsv\crud\helpers\FindOneModelHelper;
 use Yii;
 use yii\base\Action;
@@ -19,6 +20,8 @@ use yii\web\Response;
  */
 abstract class BaseCrudAction extends Action
 {
+    const EVENT_AFTER_CREATE_MODEL = 'afterCreateModel';
+
     /**
      * @var Model | null
      */
@@ -170,7 +173,12 @@ abstract class BaseCrudAction extends Action
     public function Run($id = null)
     {
         try {
-            $model = $id ? $this->findModel($id) : $this->createModel();
+            #Если модель пришла в качестве параметра, то не надо ее создавать.
+            if (empty($this->model)) {
+                $model = $id ? $this->findModel($id) : $this->createModel();
+            } else {
+               $model = $this->model;
+            }
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
             return $this->doAction($model, $id);
         } catch (ForbiddenHttpException|NotFoundHttpException $e) {
@@ -219,11 +227,14 @@ abstract class BaseCrudAction extends Action
         /** @var Model $model */
         $model = new $this->modelClassName();
         $this->model = $model;
-
-        if ($this->afterCreateModelHook && is_callable($this->afterCreateModelHook)) {
-            call_user_func($this->afterCreateModelHook, $model);
-        }
-
+        $this->afterCreateModel($model);
         return $model;
+    }
+
+    protected function afterCreateModel(Model $model)
+    {
+        $this->trigger(self::EVENT_AFTER_CREATE_MODEL, new ModelEvent([
+            'model' => $model,
+        ]));
     }
 }

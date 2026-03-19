@@ -66,7 +66,7 @@ abstract class CrudController extends Controller
         return array_merge(
             [
                 'class' => ActionCrudView::class,
-                'modelClassName' => $this->getModelClassName(),
+                'modelClassName' => $this->getViewModelClassName(),
                 'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
             $this->actionViewConfig
@@ -78,7 +78,7 @@ abstract class CrudController extends Controller
         return array_merge(
             [
                 'class' => ActionCrudUpdate::class,
-                'modelClassName' => $this->getModelClassName(),
+                'modelClassName' => $this->getUpdateModelClassName(),
                 'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
             $this->actionUpdateConfig
@@ -90,7 +90,7 @@ abstract class CrudController extends Controller
         return array_merge(
             [
                 'class' => ActionCrudCreate::class,
-                'modelClassName' => $this->getModelClassName(),
+                'modelClassName' => $this->getCreateModelClassName(),
             ],
             $this->actionCreateConfig
         );
@@ -152,6 +152,22 @@ abstract class CrudController extends Controller
      * @return string
      */
     protected abstract function getModelClassName();
+
+    protected function getCreateModelClassName() {
+        return $this->getModelClassName();
+    }
+
+    protected function getViewModelClassName() {
+        return $this->getModelClassName();
+    }
+
+    protected function getUpdateModelClassName() {
+        return $this->getModelClassName();
+    }
+
+    protected function getDeleteModelClassName() {
+        return $this->getModelClassName();
+    }
 
     /**
      * Возвращает модель для поиска
