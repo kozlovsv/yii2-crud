@@ -2,7 +2,7 @@
 
 namespace kozlovsv\crud\controllers\actions;
 
-use kozlovsv\crud\helpers\CreateCrudModelHelper;
+use kozlovsv\crud\helpers\CreateCrudObjectHelper;
 
 class ActionCrudCreate extends BaseCrudFormAction
 {
@@ -36,7 +36,7 @@ class ActionCrudCreate extends BaseCrudFormAction
 
     protected function createModel()
     {
-        $this->model = CreateCrudModelHelper::createSimpleModel($this->modelClassName);
+        $this->model = CreateCrudObjectHelper::createSimpleModel($this->modelClassName);
         return $this->model;
     }
 }

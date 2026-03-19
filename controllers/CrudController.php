@@ -2,12 +2,13 @@
 
 namespace kozlovsv\crud\controllers;
 
+use kozlovsv\crud\classes\BackRedirecter;
 use kozlovsv\crud\controllers\actions\ActionCrudCreate;
 use kozlovsv\crud\controllers\actions\ActionCrudDelete;
 use kozlovsv\crud\controllers\actions\ActionCrudIndex;
 use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
-use kozlovsv\crud\helpers\CreateCrudModelHelper;
+use kozlovsv\crud\helpers\CreateCrudObjectHelper;
 use kozlovsv\crud\helpers\ModelPermission;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
@@ -50,6 +51,13 @@ abstract class CrudController extends Controller
      */
     protected bool $modelPermissionRequired = true;
 
+    private BackRedirecter $_backRedirecter;
+
+    public function init()
+    {
+        parent::init();
+        $this->_backRedirecter = CreateCrudObjectHelper::createRedirecter($this);
+    }
 
     protected function getActionIndexConfig(): array
     {
@@ -177,6 +185,11 @@ abstract class CrudController extends Controller
     protected abstract function getSearchModel();
 
     protected function createModel() {
-        return CreateCrudModelHelper::createSimpleModel($this->getCreateModelClassName());
+        return CreateCrudObjectHelper::createSimpleModel($this->getCreateModelClassName());
+    }
+
+    protected function goBackCrud()
+    {
+        return $this->_backRedirecter->back();
     }
 }

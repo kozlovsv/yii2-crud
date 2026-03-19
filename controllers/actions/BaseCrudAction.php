@@ -3,9 +3,8 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
-use kozlovsv\crud\classes\BackRedirecter;
 use kozlovsv\crud\classes\IBackRedirecrer;
-use kozlovsv\crud\helpers\CreateCrudModelHelper;
+use kozlovsv\crud\helpers\CreateCrudObjectHelper;
 use kozlovsv\crud\helpers\FindOneModelHelper;
 use Yii;
 use yii\base\Action;
@@ -102,18 +101,9 @@ abstract class BaseCrudAction extends Action
     {
         if (empty($this->modelClassName))
             throw new InvalidConfigException('The "modelClassName" config is required.');
-        $this->successBackRedirecter = $this->_createRedirecter($this->successBackRedirecter);
-        $this->errorBackRedirecter = $this->_createRedirecter($this->errorBackRedirecter);
+        $this->successBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->successBackRedirecter);
+        $this->errorBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->errorBackRedirecter);
         parent::init();
-    }
-
-    private function _createRedirecter($config)
-    {
-        if ($config instanceof IBackRedirecrer) return $config;
-        if (is_array($config) && !isset($config['class'])) {
-            $config['class'] = BackRedirecter::class;
-        }
-        return Yii::createObject($config, ['controller' => $this->controller]);
     }
 
     /**
@@ -217,7 +207,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function createModel()
     {
-        $this->model = CreateCrudModelHelper::createSimpleModel($this->modelClassName);
+        $this->model = CreateCrudObjectHelper::createSimpleModel($this->modelClassName);
         return $this->model;
     }
 }
