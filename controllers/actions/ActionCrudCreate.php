@@ -4,6 +4,7 @@ namespace kozlovsv\crud\controllers\actions;
 
 use Exception;
 use Yii;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 
 class ActionCrudCreate extends BaseCrudFormAction
@@ -36,16 +37,12 @@ class ActionCrudCreate extends BaseCrudFormAction
      */
     public $loadGetValue = false;
 
-    /**
-     * @return ActiveRecord
-     */
-    protected function createModel()
+    protected function afterCreateModel(Model $model)
     {
         /** @var ActiveRecord $model */
-        $model = parent::createModel();
         if (!$model instanceof ActiveRecord) throw new Exception('Created model must be instance of ActiveRecord');
         if ($this->loadDefaultValue) $model->loadDefaultValues(true);
         if ($this->loadGetValue) $model->load(Yii::$app->request->get());
-        return $model;
+        parent::afterCreateModel($model);
     }
 }
