@@ -6,15 +6,15 @@ trait OwnModelPermissionTrait
     /**
      * @var OwnModelPermission
      */
-    public $permission;
+    private $_permission;
 
     /**
      * @return BaseModelPermission
      */
     public function getPermission() {
-        if ($this->permission === null) {
-            $this->permission = new OwnModelPermission($this);
+        if ($this->_permission === null) {
+            $this->_permission = new OwnModelPermission($this);
         }
-        return $this->permission;
+        return $this->_permission;
     }
 }
