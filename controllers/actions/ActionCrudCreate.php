@@ -3,6 +3,7 @@
 namespace kozlovsv\crud\controllers\actions;
 
 use kozlovsv\crud\helpers\CreateCrudObjectHelper;
+use yii\base\Model;
 
 class ActionCrudCreate extends BaseCrudFormAction
 {
@@ -34,8 +35,11 @@ class ActionCrudCreate extends BaseCrudFormAction
      */
     public $loadGetValue = false;
 
-    protected function createModel()
+    /**
+     * @return Model
+     */
+    protected function createModel(): Model
     {
-        $this->model = CreateCrudObjectHelper::createNewCrudModel($this->modelClassName, $this->loadDefaultValue, $this->loadGetValue);
+        return CreateCrudObjectHelper::createNewCrudModel($this->modelClassName, $this->loadDefaultValue, $this->loadGetValue);
     }
 }

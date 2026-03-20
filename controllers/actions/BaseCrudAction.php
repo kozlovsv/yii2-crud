@@ -180,7 +180,7 @@ abstract class BaseCrudAction extends Action
      * @param int $id
      * @return Model
      */
-    protected function findModel($id)
+    protected function findModel($id): Model
     {
         return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
     }
@@ -188,7 +188,7 @@ abstract class BaseCrudAction extends Action
     /**
      * @return Model
      */
-    protected function createModel()
+    protected function createModel(): Model
     {
         throw new NotSupportedException('Метод "createModel" должен быть переопределен в классе предке');
     }
