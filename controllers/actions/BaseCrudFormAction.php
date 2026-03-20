@@ -35,6 +35,6 @@ class BaseCrudFormAction extends BaseCrudTransactionAction {
      * @return bool
      */
     protected function doActionModel($model): bool {
-        return $model->save();
+        return $model->save(false);
     }
 }

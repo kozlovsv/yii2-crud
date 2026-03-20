@@ -21,6 +21,15 @@ abstract class BaseCrudTransactionAction extends BaseCrudAction
     public $useModelIdToBackSuccess = true;
 
     /**
+     * The hook function to be executed after action for model runned (ex after save model).
+     *
+     * @var callable|null
+     *
+     * @see BaseCrudTransactionAction::doAction()
+     */
+    public $afterActionModelHook = null;
+
+    /**
      * Specific action which should be implemented in derived classes
      * @param ActiveRecord|Model $model
      * @param mixed $id
@@ -29,7 +38,11 @@ abstract class BaseCrudTransactionAction extends BaseCrudAction
     protected function doAction($model, $id) {
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            if ($this->doActionModel($model)) {
+            $res = $this->doActionModel($model);
+            if ($res) {
+                if ($this->afterActionModelHook && is_callable($this->afterActionModelHook)) {
+                    call_user_func($this->afterActionModelHook, $this->model, $this);
+                }
                 $transaction->commit();
                 $this->setFlashSuccess($this->successMessage) ;
             } else {
