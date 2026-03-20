@@ -187,7 +187,7 @@ abstract class CrudController extends Controller
      */
     protected abstract function getSearchModel();
 
-    protected function afterCreateModel(Model $model, Action $action) {
+    protected function afterCreateModel(Model $model, Action $action): void {
         //Для потомков
     }
 
