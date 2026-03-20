@@ -6,8 +6,6 @@ use Exception;
 use kozlovsv\crud\classes\BackRedirecter;
 use kozlovsv\crud\classes\IBackRedirecrer;
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
 
@@ -17,22 +15,17 @@ use yii\web\Controller;
 class CreateCrudObjectHelper
 {
     /**
-     * Создание обычной модели по имени класса
+     * Создание CRUD модели по имени класса для новой записи
      * @param string $modelClassName
+     * @param bool $loadDefaultValue
+     * @param bool $loadGetValue
      * @param array $params
-     * @return Model
-     * @throws InvalidConfigException
+     * @return ActiveRecord
+     * @throws Exception
      */
-    public static function createSimpleModel(string $modelClassName, array $params = []): Model
+    public static function createNewCrudModel(string $modelClassName, bool $loadDefaultValue, bool $loadGetValue, array $params = []): ActiveRecord
     {
         $model = Yii::createObject($modelClassName, $params);
-        if (!$model instanceof Model) throw new Exception('Created model must be instance of Model');
-        return $model;
-    }
-
-    public static function createNewModel(string $modelClassName, bool $loadDefaultValue, bool $loadGetValue, array $params = []): ActiveRecord
-    {
-        $model = self::createSimpleModel($modelClassName, $params);
         if (!$model instanceof ActiveRecord) throw new Exception('Created model must be instance of ActiveRecord');
         if ($loadDefaultValue) $model->loadDefaultValues(true);
         if ($loadGetValue) $model->load(Yii::$app->request->get());

@@ -10,6 +10,8 @@ use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
 use kozlovsv\crud\helpers\CreateCrudObjectHelper;
 use kozlovsv\crud\helpers\ModelPermission;
+use yii\base\Action;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
 
@@ -99,7 +101,8 @@ abstract class CrudController extends Controller
         return array_merge(
             [
                 'class' => ActionCrudCreate::class,
-                'model' => $this->createModel(),
+                'modelClassName' => $this->getCreateModelClassName(),
+                'afterGetModelHook' => 'afterCreateModel'
             ],
             $this->actionCreateConfig
         );
@@ -184,8 +187,8 @@ abstract class CrudController extends Controller
      */
     protected abstract function getSearchModel();
 
-    protected function createModel() {
-        return CreateCrudObjectHelper::createSimpleModel($this->getCreateModelClassName());
+    protected function afterCreateModel(Model $model, Action $action) {
+        //Для потомков
     }
 
     protected function goBackCrud()

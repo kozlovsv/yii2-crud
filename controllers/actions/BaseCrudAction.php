@@ -10,6 +10,7 @@ use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\base\NotSupportedException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -70,26 +71,15 @@ abstract class BaseCrudAction extends Action
     public string $successMessage = '';
 
     /**
-     * The hook function to be executed after finding a model.
+     * The hook function to be executed after finding or created a model.
      *
      * This hook function is called after finding a model in the code. It can be used to perform additional logic or manipulate the model data before it is returned.
      *
      * @var callable|null
      *
-     * @see BaseCrudAction::findModel()
+     * @see BaseCrudAction::getModel()
      */
-    public $afterFindModelHook = null;
-
-    /**
-     * The hook that is called after a model was created.
-     *
-     * This hook allows custom code to be executed after a model has been created.
-     *
-     * @var callable|null
-     *
-     * @see BaseCrudAction::createModel()
-     */
-    public $afterCreateModelHook = null;
+    public $afterGetModelHook = null;
 
     /**
      * Обязательно проверять разрешение на доступ к модели.
@@ -161,12 +151,7 @@ abstract class BaseCrudAction extends Action
     public function Run($id = null)
     {
         try {
-            #Если модель пришла в качестве параметра, то не надо ее создавать.
-            if (empty($this->model)) {
-                $model = $id ? $this->findModel($id) : $this->createModel();
-            } else {
-               $model = $this->model;
-            }
+            $model = $this->getModel($id);
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
             return $this->doAction($model, $id);
         } catch (ForbiddenHttpException|NotFoundHttpException $e) {
@@ -197,9 +182,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function findModel($id)
     {
-        $model = FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
-        $this->model = $model;
-        return $model;
+        return FindOneModelHelper::findOneAndCheckAccess($id, $this->modelClassName, $this->permissionMethod, $this->modelPermissionRequired);
     }
 
     /**
@@ -207,7 +190,17 @@ abstract class BaseCrudAction extends Action
      */
     protected function createModel()
     {
-        $this->model = CreateCrudObjectHelper::createSimpleModel($this->modelClassName);
+        throw new NotSupportedException('Метод "createModel" должен быть переопределен в классе предке');
+    }
+
+    protected function getModel(int|null $id)
+    {
+        if (empty($this->model)) {
+            $this->model = $id ? $this->findModel($id) : $this->createModel();
+        }
+        if ($this->afterGetModelHook) {
+            call_user_func($this->afterGetModelHook, $this->model, $this);
+        }
         return $this->model;
     }
 }

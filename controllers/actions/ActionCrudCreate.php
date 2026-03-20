@@ -36,7 +36,6 @@ class ActionCrudCreate extends BaseCrudFormAction
 
     protected function createModel()
     {
-        $this->model = CreateCrudObjectHelper::createSimpleModel($this->modelClassName);
-        return $this->model;
+        $this->model = CreateCrudObjectHelper::createNewCrudModel($this->modelClassName, $this->loadDefaultValue, $this->loadGetValue);
     }
 }
