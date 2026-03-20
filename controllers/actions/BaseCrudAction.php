@@ -198,7 +198,7 @@ abstract class BaseCrudAction extends Action
         if (empty($this->model)) {
             $this->model = $id ? $this->findModel($id) : $this->createModel();
         }
-        if ($this->afterGetModelHook) {
+        if ($this->afterGetModelHook && is_callable($this->afterGetModelHook)) {
             call_user_func($this->afterGetModelHook, $this->model, $this);
         }
         return $this->model;

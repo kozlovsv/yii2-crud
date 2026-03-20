@@ -10,8 +10,6 @@ use kozlovsv\crud\controllers\actions\ActionCrudUpdate;
 use kozlovsv\crud\controllers\actions\ActionCrudView;
 use kozlovsv\crud\helpers\CreateCrudObjectHelper;
 use kozlovsv\crud\helpers\ModelPermission;
-use yii\base\Action;
-use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
 
@@ -68,7 +66,8 @@ abstract class CrudController extends Controller
                 'class' => ActionCrudIndex::class,
                 'searchModel' => $this->getSearchModel(),
             ],
-            $this->actionIndexConfig
+            $this->actionIndexConfig,
+            $this->getCustomActionIndexConfig(),
         );
     }
 
@@ -80,7 +79,8 @@ abstract class CrudController extends Controller
                 'modelClassName' => $this->getViewModelClassName(),
                 'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
-            $this->actionViewConfig
+            $this->actionViewConfig,
+            $this->getCustomActionViewConfig(),
         );
     }
 
@@ -92,7 +92,8 @@ abstract class CrudController extends Controller
                 'modelClassName' => $this->getUpdateModelClassName(),
                 'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
-            $this->actionUpdateConfig
+            $this->actionUpdateConfig,
+            $this->getCustomActionUpdateConfig(),
         );
     }
 
@@ -102,9 +103,9 @@ abstract class CrudController extends Controller
             [
                 'class' => ActionCrudCreate::class,
                 'modelClassName' => $this->getCreateModelClassName(),
-                'afterGetModelHook' => 'afterCreateModel'
             ],
-            $this->actionCreateConfig
+            $this->actionCreateConfig,
+            $this->getCustomActionCreateConfig(),
         );
     }
 
@@ -116,7 +117,8 @@ abstract class CrudController extends Controller
                 'modelClassName' => $this->getModelClassName(),
                 'modelPermissionRequired' => $this->modelPermissionRequired,
             ],
-            $this->actionDeleteConfig
+            $this->actionDeleteConfig,
+            $this->getCustomActionDeleteConfig(),
         );
     }
 
@@ -187,12 +189,40 @@ abstract class CrudController extends Controller
      */
     protected abstract function getSearchModel();
 
-    protected function afterCreateModel(Model $model, Action $action): void {
-        //Для потомков
-    }
-
     protected function goBackCrud()
     {
         return $this->_backRedirecter->back();
     }
+
+    /**
+     * Дополнительные настройки для Action, отличаются от параметров переменной actionDeleteConfig,тем
+     * что в функции можно задавать анонимные фунции хуки, а в перемерах переменной PHP этого не дает
+     * @return array
+     */
+    protected function getCustomActionDeleteConfig(): array
+    {
+        return [];
+    }
+
+    protected function getCustomActionIndexConfig(): array
+    {
+        return [];
+    }
+
+    protected function getCustomActionViewConfig(): array
+    {
+        return [];
+    }
+
+    protected function getCustomActionCreateConfig(): array
+    {
+        return [];
+    }
+
+    protected function getCustomActionUpdateConfig(): array
+    {
+        return [];
+    }
+
+
 }
