@@ -11,6 +11,7 @@ use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\base\NotSupportedException;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -48,6 +49,12 @@ abstract class BaseCrudAction extends Action
      * @var string
      */
     public $permissionMethod = '';
+
+    /**
+     * Данный параметр указывает что метод может быть вызван только через Ajax,
+     * @var bool
+     */
+    public $ajaxOnly = false;
 
     /**
      * Функция проверки соблюдения условий, для запуска Action. Если условия не соблюдены, то Action не выполняется.
@@ -150,6 +157,9 @@ abstract class BaseCrudAction extends Action
      */
     public function Run($id = null)
     {
+        if ($this->ajaxOnly && !Yii::$app->request->isAjax) {
+            throw new BadRequestHttpException('Этот action доступен только через AJAX');
+        }
         try {
             $model = $this->getModel($id);
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
