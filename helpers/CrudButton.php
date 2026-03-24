@@ -49,7 +49,7 @@ class CrudButton
      */
     public static function createButton($permissionCategory, $isModal = true, $text = 'Добавить', $url = ['create'], $options = [])
     {
-        if (!ModelPermission::canCreate($permissionCategory)) return '';
+        if ($permissionCategory && !ModelPermission::canCreate($permissionCategory)) return '';
         $defOptions = ['class' => 'btn btn-success btn-create', 'data-modal' => $isModal ? 1 : 0, 'data-pjax' => 0];
         $options = array_merge($defOptions, $options);
         return Html::a($text, $url, $options);
@@ -77,7 +77,7 @@ class CrudButton
      */
     public static function editButton($permissionCategory, $id, $isModal, $url = [], $title = null, $options = [])
     {
-        if (!ModelPermission::canUpdate($permissionCategory)) return '';
+        if ($permissionCategory && !ModelPermission::canUpdate($permissionCategory)) return '';
         if (empty($url)) $url = ['update', 'id' => $id, ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $id])];
         $defOptions = ['class' => 'btn btn-primary', 'data-modal' => $isModal ? 1 : 0];
         $options = array_merge($defOptions, $options);
@@ -95,7 +95,7 @@ class CrudButton
      */
     public static function deleteButton($permissionCategory, $id, $url = [], $title = null, $options = [])
     {
-        if (!ModelPermission::canDelete($permissionCategory)) return '';
+        if ($permissionCategory && !ModelPermission::canDelete($permissionCategory)) return '';
         if (empty($url)) $url = ['delete', 'id' => $id];
         $defOptions = [
             'class' => 'btn btn-danger pull-right',
