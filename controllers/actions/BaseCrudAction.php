@@ -33,10 +33,11 @@ abstract class BaseCrudAction extends Action
     public $successBackRedirecter = ['backUrl' => 'index'];
 
     /**
-     * Класс для редиректа назад в случае ошибки
-     * @var string|array|IBackRedirecrer
+     * Класс для редиректа назад в случае ошибки. Если он null, то испоьзуется successBackRedirecter.
+     * Тоесть данный параметр необходимо задавать только если редирект при успехе и ошибке различаются.
+     * @var null|string|array|IBackRedirecrer
      */
-    public $errorBackRedirecter = ['backUrl' => 'index'];
+    public $errorBackRedirecter = null;
 
     /**
      * Имя базового класса модели. Используется для поика и создания модели.
@@ -99,7 +100,9 @@ abstract class BaseCrudAction extends Action
         if (empty($this->modelClassName) && empty($this->model))
             throw new InvalidConfigException('The "modelClassName" or "model" config is required.');
         $this->successBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->successBackRedirecter);
-        $this->errorBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->errorBackRedirecter);
+        if ($this->errorBackRedirecter) {
+            $this->errorBackRedirecter = CreateCrudObjectHelper::createRedirecter($this->controller, $this->errorBackRedirecter);
+        }
         parent::init();
     }
 
@@ -116,6 +119,7 @@ abstract class BaseCrudAction extends Action
      */
     protected function goBackError($id = null, $model = null)
     {
+        if (!$this->errorBackRedirecter) return $this->goBackSuccess($id, $model);
         return $this->errorBackRedirecter->back($id, $model);
     }
 
