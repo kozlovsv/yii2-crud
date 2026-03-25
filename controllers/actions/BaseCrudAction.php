@@ -114,9 +114,9 @@ abstract class BaseCrudAction extends Action
     /**
      * @return Response
      */
-    protected function goBackError($id = null)
+    protected function goBackError($id = null, $model = null)
     {
-        return $this->errorBackRedirecter->back($id);
+        return $this->errorBackRedirecter->back($id, $model);
     }
 
     /**
@@ -157,21 +157,22 @@ abstract class BaseCrudAction extends Action
      */
     public function Run($id = null)
     {
-        if ($this->ajaxOnly && !Yii::$app->request->isAjax) {
+        if ($this->ajaxOnly && !Yii::$app->request->isAjax && !YII_ENV_DEV) {
             throw new BadRequestHttpException('Этот action доступен только через AJAX');
         }
+        $model = null;
         try {
             $model = $this->getModel($id);
             if (!is_null($this->onCheckConditionAction) && !call_user_func($this->onCheckConditionAction, $model, $this)) return $this->goBackError($id);
             return $this->doAction($model, $id);
         } catch (ForbiddenHttpException|NotFoundHttpException $e) {
             $this->setFlashError($e->getMessage());
-            return $this->goBackError($id);
+            return $this->goBackError($id, $model);
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
             $this->setFlashError($this->errorMessage);
-            return $this->goBackError($id);
+            return $this->goBackError($id, $model);
         }
     }
 
