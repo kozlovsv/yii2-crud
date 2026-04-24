@@ -24,6 +24,11 @@ class RequestAccess extends AccessControl
     /**
      * @var array
      */
+    public $allow_not_auth_modules = [];
+
+    /**
+     * @var array
+     */
     public $rules = [
         [
             'allow' => true,
@@ -58,6 +63,11 @@ class RequestAccess extends AccessControl
         if (!empty($this->allow_not_auth_controllers)) {
             $controllerId = Yii::$app->controller->id ?? '';
             if (in_array($controllerId, $this->allow_not_auth_controllers)) return true;
+        }
+
+        if (!empty($this->allow_not_auth_modules)) {
+            $moduleId = Yii::$app->controller->module->id ?? '';
+            if (in_array($moduleId, $this->allow_not_auth_modules)) return true;
         }
         return parent::beforeAction($action);
     }
