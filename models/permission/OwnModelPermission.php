@@ -22,10 +22,11 @@ class OwnModelPermission extends BaseModelPermission
      */
     public function own()
     {
-        if ($this->needCache && !empty($this->_own)) return $this->_own;
-        $own = $this->model->own();
-        if ($this->needCache) $this->_own = $own;
-        return $own;
+        if (!$this->needCache) return $this->model->own();
+        if (is_null($this->_own)) {
+            $this->_own = $this->model->own();
+        }
+        return $this->_own;
     }
 
 
